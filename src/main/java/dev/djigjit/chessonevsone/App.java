@@ -1,10 +1,12 @@
 package dev.djigjit.chessonevsone;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+
+import java.net.URL;
 
 
 public class App extends Application {
@@ -13,14 +15,10 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Chess One vs One");
 
-        HBox hBox = new HBox();
-        Button helloButton = new Button("Print 'Hello'");
-        helloButton.setOnAction(e -> {
-            System.out.println("Hello");
-        });
-        hBox.getChildren().add(helloButton);
+        URL introSceneURL = getClass().getResource("/scenes/IntroScene.fxml");
+        Parent parent = FXMLLoader.load(introSceneURL);
 
-        primaryStage.setScene(new Scene(hBox));
+        primaryStage.setScene(new Scene(parent));
         primaryStage.show();
     }
 }
