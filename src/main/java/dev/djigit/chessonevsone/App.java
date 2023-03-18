@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         Game game = new Game(primaryStage, null);
         game.start();
     }
