@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
+group 'dev.djigit'
 
 repositories {
     mavenCentral()
@@ -18,6 +18,6 @@ test {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'App'
+        attributes 'Main-Class': 'dev.djigit.chessonevsone.App'
     }
 }

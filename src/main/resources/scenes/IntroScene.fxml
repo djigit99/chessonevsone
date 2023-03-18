@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" spacing="10.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.djigjit.chessonevsone.controller.IntroSceneController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" spacing="10.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Button fx:id="cng_button" mnemonicParsing="false" onAction="#chooseNewGameAction" prefHeight="100.0" prefWidth="200.0" text="CREATE NEW GAME" textAlignment="CENTER" textFill="#55ab55" wrapText="true">
+        <Button fx:id="cng_button" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" text="CREATE NEW GAME" textAlignment="CENTER" textFill="#55ab55" wrapText="true">
             <font>
                 <Font name="Arial Bold" size="18.0" />
             </font>
