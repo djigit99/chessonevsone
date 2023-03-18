@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.net.URL;
 
@@ -88,7 +89,7 @@ public class Game {
 
         Parent chessBoardRootNode;
         URL url;
-        if (color == Player.Color.WHITE) {
+        if (color.isWhite()) {
             url = getClass().getResource(CHESSBOARD_FOR_WHITE_SCENE_URL);
         } else {
             url = getClass().getResource(CHESSBOARD_FOR_BLACK_SCENE_URL);
@@ -112,7 +113,7 @@ public class Game {
     }
 
     public void close() {
-
+        throw new NotImplementedException();
     }
 
     private void setPlayerRole(String playerRole) {

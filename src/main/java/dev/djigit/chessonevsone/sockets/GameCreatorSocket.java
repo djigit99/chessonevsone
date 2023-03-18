@@ -57,7 +57,7 @@ public class GameCreatorSocket {
     }
 
     private Messages getColorResponse(Player.Color createColor) {
-        if(createColor.equals(Player.Color.WHITE))
+        if(createColor.isWhite())
             return Messages.BLACK_COLOR_RESPONSE;
         else
             return Messages.WHITE_COLOR_RESPONSE;

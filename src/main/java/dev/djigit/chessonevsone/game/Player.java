@@ -6,15 +6,17 @@ public class Player {
 
     private Board board;
     public enum Color {
-        WHITE {
-            @Override
-            boolean isWhite() {
-                return true;
-            }
-        },
-        BLACK;
+        WHITE(true),
+        BLACK(false);
 
-        boolean isWhite() { return false;}
+        private boolean isWhite;
+        Color(boolean isWhite) {
+            this.isWhite = isWhite;
+        }
+
+        public boolean isWhite() {
+            return isWhite;
+        }
     }
 
     private Color color;
