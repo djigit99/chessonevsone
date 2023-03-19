@@ -5,11 +5,13 @@ import dev.djigit.chessonevsone.game.popup.ConnectingStage;
 import dev.djigit.chessonevsone.sockets.GameCreatorSocket;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -85,9 +87,20 @@ public class AdminPlayer {
             url = getClass().getResource(CHESSBOARD_FOR_BLACK_SCENE_URL);
         }
         chessBoardRootNode = FXMLLoaderFactory.getRootNode(url);
+
         primaryStage.setScene(new Scene(chessBoardRootNode));
+        primaryStage.setX(getCenterXForChessBoard());
+        primaryStage.setY(getCenterYForChessBoard());
         primaryStage.show();
     }
 
+    private double getCenterXForChessBoard() {
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        return screenBounds.getWidth() / 2 - primaryStage.getWidth() / 2;
+    }
 
+    private double getCenterYForChessBoard() {
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        return screenBounds.getHeight() / 2 - primaryStage.getHeight() / 2;
+    }
 }

@@ -2,8 +2,8 @@ package dev.djigit.chessonevsone.game.popup;
 
 import dev.djigit.chessonevsone.factories.FXMLLoaderFactory;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.net.URL;
 
