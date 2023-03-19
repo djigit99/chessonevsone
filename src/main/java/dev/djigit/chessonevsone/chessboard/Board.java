@@ -23,8 +23,6 @@ public class Board {
         cellPanes.forEach(pane -> cells.add(new Cell(pane)));
     }
 
-
-
     public GridPane getPane() {
         return pane;
     }

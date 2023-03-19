@@ -1,6 +1,7 @@
 package dev.djigit.chessonevsone.game;
 
 import dev.djigit.chessonevsone.chessboard.Board;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Player {
 
@@ -22,7 +23,6 @@ public class Player {
     private Color color;
 
     public void makeMove() {
-
-
+        throw new NotImplementedException();
     }
 }
