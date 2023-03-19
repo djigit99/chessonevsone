@@ -3,8 +3,10 @@ package dev.djigit.chessonevsone.game;
 import dev.djigit.chessonevsone.factories.FXMLLoaderFactory;
 import dev.djigit.chessonevsone.sockets.GameClientSocket;
 import javafx.application.Platform;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -45,6 +47,18 @@ public class ClientPlayer {
         }
         chessBoardRootNode = FXMLLoaderFactory.getRootNode(url);
         primaryStage.setScene(new Scene(chessBoardRootNode));
+        primaryStage.setX(getCenterXForChessBoard());
+        primaryStage.setY(getCenterYForChessBoard());
         primaryStage.show();
+    }
+
+    private double getCenterXForChessBoard() {
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        return screenBounds.getWidth() / 2 - primaryStage.getWidth() / 2;
+    }
+
+    private double getCenterYForChessBoard() {
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        return screenBounds.getHeight() / 2 - primaryStage.getHeight() / 2;
     }
 }
