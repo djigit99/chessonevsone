@@ -2,21 +2,22 @@ package dev.djigit.chessonevsone.game.popup;
 
 import dev.djigit.chessonevsone.factories.FXMLLoaderFactory;
 import javafx.scene.Scene;
-import javafx.stage.Popup;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.*;
 
 import java.net.URL;
 
-public class ConnectingPopup extends Popup {
+public class ConnectingStage extends Stage {
 
-    public ConnectingPopup() {
+    public ConnectingStage() {
         super();
         init();
     }
 
     private void init() {
-        URL url = getClass().getResource("scenes/ConnectingPopUp.fxml");
+        initModality(Modality.APPLICATION_MODAL);
+        URL url = getClass().getResource("/scenes/ConnectingPopUp.fxml");
         Scene scene = new Scene(FXMLLoaderFactory.getRootNode(url));
         setScene(scene);
-        show();
     }
 }

@@ -1,6 +1,7 @@
 package dev.djigit.chessonevsone.game;
 
 import dev.djigit.chessonevsone.factories.FXMLLoaderFactory;
+import dev.djigit.chessonevsone.game.popup.ConnectingStage;
 import dev.djigit.chessonevsone.sockets.GameCreatorSocket;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -58,21 +59,21 @@ public class AdminPlayer {
 
     private void lookForAnOpponent() {
 
-        String LOOK_FOR_AN_OPPONENT_URL = "/scenes/ConnectingPopUp.fxml";
-        Parent lookForAnOpponentRoot = FXMLLoaderFactory.getRootNode(getClass().getResource(LOOK_FOR_AN_OPPONENT_URL));
-        primaryStage.setScene(new Scene(lookForAnOpponentRoot));
-        primaryStage.show();
+        ConnectingStage connectingStage = new ConnectingStage();
+        connectingStage.setOnCloseRequest(we -> adminSocket.close());
+        connectingStage.show();
 
         adminSocket = new GameCreatorSocket();
         Thread waitForOpponentThread = new Thread(() -> {
             adminSocket.startServer(color);
-            Platform.runLater(this::showChessBoard);
+            Platform.runLater(() -> showChessBoard(connectingStage));
         });
         waitForOpponentThread.setDaemon(true);
         waitForOpponentThread.start();
     }
 
-    private void showChessBoard() {
+    private void showChessBoard(ConnectingStage connectingStage) {
+        connectingStage.close();
         final String CHESSBOARD_FOR_WHITE_SCENE_URL = "/scenes/ChessBoardSceneWhite.fxml";
         final String CHESSBOARD_FOR_BLACK_SCENE_URL = "/scenes/ChessBoardSceneBlack.fxml";
 

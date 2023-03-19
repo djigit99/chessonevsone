@@ -63,5 +63,15 @@ public class GameCreatorSocket {
             return Messages.WHITE_COLOR_RESPONSE;
     }
 
+    public void close() {
+        System.out.println("Yo");
+        try {
+            if (!socket.isClosed())
+                socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot close server socket.", e);
+        }
+    }
+
 
 }
