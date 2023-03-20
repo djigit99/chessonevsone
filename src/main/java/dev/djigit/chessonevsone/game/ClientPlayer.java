@@ -13,20 +13,20 @@ import java.net.URL;
 
 public class ClientPlayer {
     private GameClientSocket clientSocket;
-
     private Stage primaryStage;
+    private Player.Color color;
 
     public ClientPlayer(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
-    public void init() {
+    void init() {
         connectWithServer();
     }
 
     private void connectWithServer() {
         Thread connectThread = new Thread(() -> {
-            clientSocket = new GameClientSocket();
+            clientSocket = new GameClientSocket(c -> color = c);
             clientSocket.connect();
             Platform.runLater(this::showChessBoard);
         });
@@ -40,7 +40,7 @@ public class ClientPlayer {
 
         Parent chessBoardRootNode;
         URL url;
-        if (clientSocket.getColor().isWhite()) {
+        if (color.isWhite()) {
             url = getClass().getResource(CHESSBOARD_FOR_WHITE_SCENE_URL);
         } else {
             url = getClass().getResource(CHESSBOARD_FOR_BLACK_SCENE_URL);

@@ -1,13 +1,21 @@
 package dev.djigit.chessonevsone.sockets;
 
+import dev.djigit.chessonevsone.game.ClientPlayer;
 import dev.djigit.chessonevsone.game.Player;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.function.Consumer;
 
 public class GameClientSocket {
     private Socket socket;
-    private Player.Color color;
+    private final Consumer<Player.Color> setColorConsumer;
+
+    public GameClientSocket(Consumer<Player.Color> setColorConsumer) {
+        this.setColorConsumer = setColorConsumer;
+    }
 
     public void connect() {
         try {
@@ -34,21 +42,17 @@ public class GameClientSocket {
         reader = new ObjectInputStream(socket.getInputStream());
         System.out.println("Client: Wait for the color response...");
         Messages colorResponse = (Messages) reader.readObject();
-        setColor(colorResponse);
+        setColorForClient(colorResponse);
 
         writer = new ObjectOutputStream(socket.getOutputStream());
         System.out.println("Client: Send 'color receive' response to server.");
         writer.writeObject(Messages.COLOR_RECEIVE);
     }
 
-    private void setColor(Messages colorMsg) {
+    private void setColorForClient(Messages colorMsg) {
         if (colorMsg.equals(Messages.WHITE_COLOR_RESPONSE))
-            color = Player.Color.WHITE;
+            setColorConsumer.accept(Player.Color.WHITE);
         else if (colorMsg.equals(Messages.BLACK_COLOR_RESPONSE))
-            color = Player.Color.BLACK;
-    }
-
-    public Player.Color getColor() {
-        return color;
+            setColorConsumer.accept(Player.Color.BLACK);
     }
 }
