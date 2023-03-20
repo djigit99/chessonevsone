@@ -2,6 +2,8 @@ package dev.djigit.chessonevsone.game;
 
 import dev.djigit.chessonevsone.factories.FXMLLoaderFactory;
 import dev.djigit.chessonevsone.game.popup.ConnectingStage;
+import dev.djigit.chessonevsone.game.popup.ErrorMessageStage;
+import dev.djigit.chessonevsone.sockets.CantCreateServerException;
 import dev.djigit.chessonevsone.sockets.GameCreatorSocket;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -60,18 +62,25 @@ public class AdminPlayer {
     }
 
     private void lookForAnOpponent() {
+        try {
+            adminSocket = new GameCreatorSocket();
 
-        ConnectingStage connectingStage = new ConnectingStage();
-        connectingStage.setOnCloseRequest(we -> adminSocket.close());
-        connectingStage.show();
+            ConnectingStage connectingStage = new ConnectingStage();
+            connectingStage.setOnCloseRequest(we -> adminSocket.close());
 
-        adminSocket = new GameCreatorSocket();
-        Thread waitForOpponentThread = new Thread(() -> {
-            adminSocket.startServer(color);
-            Platform.runLater(() -> showChessBoard(connectingStage));
-        });
-        waitForOpponentThread.setDaemon(true);
-        waitForOpponentThread.start();
+            Thread waitForOpponentThread = new Thread(() -> {
+                adminSocket.startServer(color);
+                Platform.runLater(() -> showChessBoard(connectingStage));
+            });
+            waitForOpponentThread.setDaemon(true);
+            waitForOpponentThread.start();
+
+            connectingStage.show();
+        } catch (CantCreateServerException ex) {
+            ErrorMessageStage error = new ErrorMessageStage(ex.getMessage());
+            error.show();
+            throw new RuntimeException(ex);
+        }
     }
 
     private void showChessBoard(ConnectingStage connectingStage) {

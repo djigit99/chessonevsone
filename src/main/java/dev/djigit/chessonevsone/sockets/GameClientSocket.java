@@ -1,6 +1,5 @@
 package dev.djigit.chessonevsone.sockets;
 
-import dev.djigit.chessonevsone.game.ClientPlayer;
 import dev.djigit.chessonevsone.game.Player;
 
 import java.io.IOException;

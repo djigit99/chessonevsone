@@ -16,7 +16,7 @@ public class GameCreatorSocket {
         try {
             this.socket = new ServerSocket(5678);
         } catch (IOException e) {
-            throw new RuntimeException("Can't create server socket.", e);
+            throw new CantCreateServerException(e);
         }
     }
 
