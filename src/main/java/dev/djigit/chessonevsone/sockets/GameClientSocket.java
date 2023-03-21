@@ -9,10 +9,20 @@ import java.net.Socket;
 import java.util.function.Consumer;
 
 public class GameClientSocket {
+    private static GameClientSocket CLIENT_SOCKET_INSTANCE = null;
     private Socket socket;
-    private final Consumer<Player.Color> setColorConsumer;
+    private Consumer<Player.Color> setColorConsumer;
 
-    public GameClientSocket(Consumer<Player.Color> setColorConsumer) {
+    private GameClientSocket() {}
+
+    public static GameClientSocket getInstance() {
+        if (CLIENT_SOCKET_INSTANCE == null) {
+            CLIENT_SOCKET_INSTANCE = new GameClientSocket();
+        }
+        return CLIENT_SOCKET_INSTANCE;
+    }
+
+    public void setSetColorConsumer(Consumer<Player.Color> setColorConsumer) {
         this.setColorConsumer = setColorConsumer;
     }
 
@@ -31,21 +41,20 @@ public class GameClientSocket {
     }
 
     private void requestColorFromServer() throws IOException, ClassNotFoundException {
-        ObjectOutputStream writer;
-        ObjectInputStream reader;
+        ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 
-        writer = new ObjectOutputStream(socket.getOutputStream());
         System.out.println("Client: Request a color from the server.");
         writer.writeObject(Messages.COLOR_REQUEST);
+        writer.flush();
 
-        reader = new ObjectInputStream(socket.getInputStream());
         System.out.println("Client: Wait for the color response...");
         Messages colorResponse = (Messages) reader.readObject();
         setColorForClient(colorResponse);
 
-        writer = new ObjectOutputStream(socket.getOutputStream());
         System.out.println("Client: Send 'color receive' response to server.");
         writer.writeObject(Messages.COLOR_RECEIVE);
+        writer.flush();
     }
 
     private void setColorForClient(Messages colorMsg) {

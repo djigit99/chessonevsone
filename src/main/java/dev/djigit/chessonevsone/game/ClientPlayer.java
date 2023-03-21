@@ -26,7 +26,8 @@ public class ClientPlayer {
 
     private void connectWithServer() {
         Thread connectThread = new Thread(() -> {
-            clientSocket = new GameClientSocket(c -> color = c);
+            clientSocket = GameClientSocket.getInstance();
+            clientSocket.setSetColorConsumer(c -> color = c);
             clientSocket.connect();
             Platform.runLater(this::showChessBoard);
         });

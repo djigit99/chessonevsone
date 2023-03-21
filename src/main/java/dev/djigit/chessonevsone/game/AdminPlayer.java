@@ -63,7 +63,7 @@ public class AdminPlayer {
 
     private void lookForAnOpponent() {
         try {
-            adminSocket = new GameCreatorSocket();
+            adminSocket = GameCreatorSocket.getInstance();
 
             ConnectingStage connectingStage = new ConnectingStage();
             connectingStage.setOnCloseRequest(we -> adminSocket.close());
