@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
 
@@ -58,7 +59,7 @@ public class GameClientSocket {
     }
 
     private void requestColorFromServer() throws IOException, ClassNotFoundException {
-        socket.setSoTimeout(1_000);
+        socket.setSoTimeout(100_000);
         objectWriter = new ObjectOutputStream(socket.getOutputStream());
         objectReader = new ObjectInputStream(socket.getInputStream());
 
@@ -107,7 +108,9 @@ public class GameClientSocket {
                     Messages msg = (Messages) objectReader.readObject();
                     messagesQueue.add(msg);
 
-                } catch (IOException | ClassNotFoundException e) {
+                }
+                catch (SocketTimeoutException ignored) {}
+                catch (IOException | ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
             }

@@ -129,9 +129,7 @@ public class GameCreatorSocket {
                     Messages msg = (Messages) objectReader.readObject();
                     messagesQueue.add(msg);
                 }
-                catch (SocketTimeoutException ignored) {
-
-                }
+                catch (SocketTimeoutException ignored) {}
                 catch (IOException | ClassNotFoundException e) {
                     System.out.println("The creator socket stopped receiving messages from the client because of an error");
                     throw new RuntimeException(e);
