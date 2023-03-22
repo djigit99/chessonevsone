@@ -13,7 +13,7 @@ import java.net.URL;
 
 public class ClientPlayer {
     private GameClientSocket clientSocket;
-    private Stage primaryStage;
+    private final Stage primaryStage;
     private Player.Color color;
 
     public ClientPlayer(Stage primaryStage) {
@@ -21,6 +21,7 @@ public class ClientPlayer {
     }
 
     void init() {
+        primaryStage.setOnCloseRequest(null);
         connectWithServer();
     }
 
@@ -50,6 +51,7 @@ public class ClientPlayer {
         primaryStage.setScene(new Scene(chessBoardRootNode));
         primaryStage.setX(getCenterXForChessBoard());
         primaryStage.setY(getCenterYForChessBoard());
+        primaryStage.setOnCloseRequest(we -> clientSocket.close());
         primaryStage.show();
     }
 

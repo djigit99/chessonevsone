@@ -36,6 +36,7 @@ public class AdminPlayer {
         String CHOOSE_COLOR_SCENE_URL = "/scenes/ChooseColor.fxml";
         Parent chooseColorNode = FXMLLoaderFactory.getRootNode(getClass().getResource(CHOOSE_COLOR_SCENE_URL));
         primaryStage.setScene(new Scene(chooseColorNode));
+        primaryStage.setOnCloseRequest(null);
         primaryStage.show();
 
         addListenersForChooseColorButtons(chooseColorNode);
@@ -100,6 +101,7 @@ public class AdminPlayer {
         primaryStage.setScene(new Scene(chessBoardRootNode));
         primaryStage.setX(getCenterXForChessBoard());
         primaryStage.setY(getCenterYForChessBoard());
+        primaryStage.setOnCloseRequest(we -> adminSocket.close());
         primaryStage.show();
     }
 
