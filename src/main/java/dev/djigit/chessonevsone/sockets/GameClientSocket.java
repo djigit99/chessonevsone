@@ -6,10 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.function.Consumer;
 
 public class GameClientSocket {
@@ -22,6 +19,7 @@ public class GameClientSocket {
     private volatile boolean connectionAlive = false;
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(1);
+    private Future<?> readMessagesFuture;
 
     private GameClientSocket() {
     }
@@ -76,7 +74,7 @@ public class GameClientSocket {
         objectWriter.writeObject(Messages.COLOR_RECEIVE);
         objectWriter.flush();
 
-        executorService.submit(getMessageQueueRunnable());
+        readMessagesFuture = executorService.submit(getMessageQueueRunnable());
     }
 
     private void setColorForClient(Messages colorMsg) {
@@ -93,6 +91,8 @@ public class GameClientSocket {
                     socket.close();
                     socket = null;
                 }
+                readMessagesFuture.cancel(true);
+                executorService.shutdown();
                 connectionAlive = false;
             } catch (IOException e) {
                 throw new RuntimeException("Cannot close a client socket.", e);
