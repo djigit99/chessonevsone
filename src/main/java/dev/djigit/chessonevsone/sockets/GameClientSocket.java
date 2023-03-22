@@ -18,7 +18,7 @@ public class GameClientSocket {
     private ConcurrentLinkedQueue<Messages> messagesQueue;
     private volatile boolean connectionAlive = false;
 
-    private final ExecutorService executorService = Executors.newFixedThreadPool(1);
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Future<?> readMessagesFuture;
 
     private GameClientSocket() {
