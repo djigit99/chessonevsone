@@ -18,12 +18,14 @@ public class GameClientSocket {
     private Consumer<Player.Color> setColorConsumer;
     private ConcurrentLinkedQueue<Messages> messagesQueue;
     private volatile boolean connectionAlive = false;
-
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private ExecutorService executorService;
     private Future<?> readMessagesFuture;
 
-    private GameClientSocket() {
-    }
+    // Use Singleton to avoid the socket is closing the connection because
+    // AbstractPlainSocketImpl:finalize method is executed when the garbage collector
+    // executes stop-the-world. So, we need it to keep the connection open.
+    // Memory must be free and connections are closed explicitly.
+    private GameClientSocket() {}
 
     public static GameClientSocket getInstance() {
         if (CLIENT_SOCKET_INSTANCE == null) {
@@ -42,6 +44,7 @@ public class GameClientSocket {
         objectReader = null;
         objectWriter = null;
         if (messagesQueue != null) messagesQueue.clear();
+        executorService = Executors.newSingleThreadExecutor();
     }
 
     public void connect() {
@@ -92,11 +95,16 @@ public class GameClientSocket {
                     socket.close();
                     socket = null;
                 }
-                readMessagesFuture.cancel(true);
+                if (readMessagesFuture != null)
+                    readMessagesFuture.cancel(true);
                 executorService.shutdown();
+                executorService.awaitTermination(10, TimeUnit.SECONDS);
                 connectionAlive = false;
             } catch (IOException e) {
                 throw new RuntimeException("Cannot close a client socket.", e);
+            } catch (InterruptedException ex) {
+                if (!executorService.isTerminated())
+                    executorService.shutdownNow();
             }
         }
     }
@@ -107,9 +115,10 @@ public class GameClientSocket {
                 try {
                     Messages msg = (Messages) objectReader.readObject();
                     messagesQueue.add(msg);
-
                 }
-                catch (SocketTimeoutException ignored) {}
+                catch (SocketTimeoutException ignored) {
+                    // readObject() timeout occurred
+                }
                 catch (IOException | ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }

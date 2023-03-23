@@ -19,8 +19,7 @@ public class GameCreatorSocket {
     private ObjectOutputStream objectWriter;
     private ConcurrentLinkedQueue<Messages> messagesQueue;
     private volatile boolean connectionAlive = false;
-
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private ExecutorService executorService;
     private Future<?> readMessagesFuture;
 
     // Use Singleton to avoid the socket is closing the connection because
@@ -42,6 +41,7 @@ public class GameCreatorSocket {
         objectReader = null;
         objectWriter = null;
         if (messagesQueue != null) messagesQueue.clear();
+        executorService = Executors.newSingleThreadExecutor();
     }
 
     public void startServer(Player.Color creatorColor) {
@@ -113,11 +113,16 @@ public class GameCreatorSocket {
                     socket.close();
                     socket = null;
                 }
-                readMessagesFuture.cancel(true);
+                if (readMessagesFuture != null)
+                    readMessagesFuture.cancel(true);
                 executorService.shutdown();
+                executorService.awaitTermination(10, TimeUnit.SECONDS);
                 connectionAlive = false;
             } catch (IOException e) {
                 throw new RuntimeException("Cannot close server socket.", e);
+            } catch (InterruptedException e) {
+                if (!executorService.isTerminated())
+                    executorService.shutdownNow();
             }
         }
     }
@@ -129,7 +134,9 @@ public class GameCreatorSocket {
                     Messages msg = (Messages) objectReader.readObject();
                     messagesQueue.add(msg);
                 }
-                catch (SocketTimeoutException ignored) {}
+                catch (SocketTimeoutException ignored) {
+                    // readObject() timeout occurred
+                }
                 catch (IOException | ClassNotFoundException e) {
                     System.out.println("The creator socket stopped receiving messages from the client because of an error");
                     throw new RuntimeException(e);
