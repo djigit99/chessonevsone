@@ -1,9 +1,7 @@
 package dev.djigit.chessonevsone.game;
 
-import dev.djigit.chessonevsone.chessboard.Board;
+import dev.djigit.chessonevsone.chessboard.ChessBoard;
 import dev.djigit.chessonevsone.factories.FXMLLoaderFactory;
-import dev.djigit.chessonevsone.sockets.GameClientSocket;
-import dev.djigit.chessonevsone.sockets.GameCreatorSocket;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,16 +10,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.net.URL;
-
 public class Game {
 
     private final String INTRO_SCENE_URL = "/scenes/IntroScene.fxml";
     private String playerRole;
-
     private Stage primaryStage;
 
-    public Game(Stage primaryStage, Board board) {
+    public Game(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 

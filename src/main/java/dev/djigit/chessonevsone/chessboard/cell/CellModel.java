@@ -1,15 +1,23 @@
-package dev.djigit.chessonevsone.chessboard;
+package dev.djigit.chessonevsone.chessboard.cell;
 
-import javafx.scene.layout.Pane;
+public class CellModel {
+    private Coords coords;
+    private State state;
 
-public class Cell {
+    public Coords getCoords() {
+        return coords;
+    }
 
-    public static final int CELL_SIZE = 100;
-    private Pane cellPane;
-    private Coords cords;
+    public void setCoords(Coords coords) {
+        this.coords = coords;
+    }
 
-    public Cell(Pane cellPane) {
-        this.cellPane = cellPane;
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 
     public enum Coords {
@@ -48,12 +56,36 @@ public class Cell {
             this.yPositionRelative = yPositionRelative;
         }
 
-        Coords getCordsByValue(char x, short y) {
+        public static Coords getCordsByValue(char x, short y) {
             for (Coords cords : values()) {
                 if(cords.x == x && cords.y == y)
                     return cords;
             }
             throw new IllegalStateException("Can't find piece coordinates by coordinates value");
         }
+
+        public Coords getByCoords(short x, short y) {
+            return getCordsByValue((char)(this.x + x), (short)(this.y + y));
+        }
+
+        public char getX() {
+            return x;
+        }
+
+        public short getY() {
+            return y;
+        }
+
+        @Override
+        public String toString() {
+            return "Coords{" +
+                    "x=" + x +
+                    ", y=" + y +
+                    '}';
+        }
+    }
+
+    public enum State {
+        RELEASED, ACQUIRED
     }
 }

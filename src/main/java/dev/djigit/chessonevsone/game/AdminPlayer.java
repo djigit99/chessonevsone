@@ -18,11 +18,10 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 
-public class AdminPlayer {
-
+public class AdminPlayer extends Player {
     private GameCreatorSocket adminSocket;
     private final Stage primaryStage;
-    private Player.Color color;
+    private Color color;
 
     public AdminPlayer(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -48,13 +47,13 @@ public class AdminPlayer {
 
         EventHandler<MouseEvent> setToWhiteHandler = me -> {
             System.out.println("Server: server picked up a white side");
-            color = Player.Color.WHITE;
+            color = Color.WHITE;
             lookForAnOpponent();
         };
 
         EventHandler<MouseEvent> setToBlackHandler = me -> {
             System.out.println("Server: server picked up a black side");
-            color = Player.Color.BLACK;
+            color = Color.BLACK;
             lookForAnOpponent();
         };
 
@@ -71,7 +70,10 @@ public class AdminPlayer {
 
             Thread waitForOpponentThread = new Thread(() -> {
                 adminSocket.startServer(color);
-                Platform.runLater(() -> showChessBoard(connectingStage));
+                Platform.runLater(() -> {
+                    connectingStage.close();
+                    showChessBoard();
+                });
             });
             waitForOpponentThread.setDaemon(true);
             waitForOpponentThread.start();
@@ -84,8 +86,7 @@ public class AdminPlayer {
         }
     }
 
-    private void showChessBoard(ConnectingStage connectingStage) {
-        connectingStage.close();
+    private void showChessBoard() {
         final String CHESSBOARD_FOR_WHITE_SCENE_URL = "/scenes/ChessBoardSceneWhite.fxml";
         final String CHESSBOARD_FOR_BLACK_SCENE_URL = "/scenes/ChessBoardSceneBlack.fxml";
 

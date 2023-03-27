@@ -9,7 +9,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Game game = new Game(primaryStage, null);
+        Game game = new Game(primaryStage);
         game.start();
     }
 }
