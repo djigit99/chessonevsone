@@ -4,8 +4,6 @@ import dev.djigit.chessonevsone.chessboard.ChessBoard;
 import dev.djigit.chessonevsone.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.chessboard.cell.CellListener;
 import dev.djigit.chessonevsone.chessboard.cell.CellModel;
-import dev.djigit.chessonevsone.chessboard.state.ChessBoardState;
-import dev.djigit.chessonevsone.chessboard.state.WaitForSelectedPieceState;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.Map;
@@ -34,7 +32,7 @@ public class WaitToMakeMoveState extends ChessBoardState {
     }
 
     @Override
-    void doOnUpdate(CellModel.Coords coords) {
+    public void doOnUpdate(CellModel.Coords coords) {
         Cell acquiredCell = coordsToCellListeners.get(pieceToMove).getLeft();
         CellListener acquiredCellListener = coordsToCellListeners.get(pieceToMove).getRight();
 

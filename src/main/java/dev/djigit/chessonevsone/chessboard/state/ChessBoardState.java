@@ -15,7 +15,7 @@ public abstract class ChessBoardState {
         this.board = board;
     }
 
-    abstract void doOnUpdate(CellModel.Coords coords);
+    public abstract void doOnUpdate(CellModel.Coords coords);
 
     ChessBoard getBoard() {
         return board;

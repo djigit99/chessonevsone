@@ -27,7 +27,7 @@ public class WaitForSelectedPieceState extends ChessBoardState {
     }
 
     @Override
-    void doOnUpdate(CellModel.Coords coords) {
+    public void doOnUpdate(CellModel.Coords coords) {
         ImmutablePair<Cell, CellListener> cellCellListener = coordsToCellListeners.get(coords);
         Cell cell = cellCellListener.getLeft();
         CellListener cellListener = cellCellListener.getRight();
