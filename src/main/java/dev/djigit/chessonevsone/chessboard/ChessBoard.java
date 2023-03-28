@@ -4,6 +4,8 @@ import dev.djigit.chessonevsone.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.chessboard.cell.CellListener;
 import dev.djigit.chessonevsone.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.chessboard.piece.*;
+import dev.djigit.chessonevsone.chessboard.state.ChessBoardState;
+import dev.djigit.chessonevsone.chessboard.state.WaitForSelectedPieceState;
 import dev.djigit.chessonevsone.factories.FXMLLoaderFactory;
 import dev.djigit.chessonevsone.game.Player;
 import javafx.fxml.FXMLLoader;
@@ -125,5 +127,9 @@ public class ChessBoard {
 
     public ChessBoardState getBoardState() {
         return boardState;
+    }
+
+    public void changeState(ChessBoardState state) {
+        this.boardState = state;
     }
 }
