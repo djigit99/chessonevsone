@@ -12,15 +12,13 @@ import static dev.djigit.chessonevsone.chessboard.cell.CellModel.Coords.getCords
 
 public class Cell {
     private Pane cellPane;
-    private final ChessBoard board;
     private CellViewModel cellViewModel;
     private final String initialStyle;
     private CellListener cellListener;
     private Piece piece;
 
-    public Cell(Pane cellPane, ChessBoard board) {
+    public Cell(Pane cellPane) {
         this.cellPane = cellPane;
-        this.board = board;
 
         initialStyle = cellPane.getStyle();
         initWithData();

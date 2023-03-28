@@ -22,5 +22,4 @@ public abstract class ChessBoardState {
     }
 
     public abstract void setCoordsToCellListeners(Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners);
-    public abstract void setCellState(CellModel.State cellState);
 }

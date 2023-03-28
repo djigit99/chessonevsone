@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class WaitForSelectedPieceState extends ChessBoardState {
     private Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners;
-    private CellModel.State cellState;
     private CellModel.Coords pieceToMove;
 
     public WaitForSelectedPieceState(ChessBoard board) {
@@ -21,16 +20,14 @@ public class WaitForSelectedPieceState extends ChessBoardState {
     public void setCoordsToCellListeners(Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners) {
         this.coordsToCellListeners = coordsToCellListeners;
     }
-    @Override
-    public void setCellState(CellModel.State cellState) {
-        this.cellState = cellState;
-    }
 
     @Override
     public void doOnUpdate(CellModel.Coords coords) {
         ImmutablePair<Cell, CellListener> cellCellListener = coordsToCellListeners.get(coords);
         Cell cell = cellCellListener.getLeft();
         CellListener cellListener = cellCellListener.getRight();
+        CellModel.State cellState = cell.getCellViewModel().getModel().getState();
+
         if (cellState.equals(CellModel.State.RELEASED)) {
             if (!(cell.hasPiece() && cell.isFriendPiece(getBoard().getPlayerColor()))) // not possible first click
                 return;

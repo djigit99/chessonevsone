@@ -73,7 +73,7 @@ public class ChessBoard {
 
 
             chessBoardController.getCellPanesAndCoords().forEach(paneAndCoords -> {
-                Cell newCell = new Cell(paneAndCoords.getCellPane(), this);
+                Cell newCell = new Cell(paneAndCoords.getCellPane());
                 newCell.setPiece(coordsToPiece.getOrDefault(paneAndCoords.getCoords(),null));
                 CellListener cellListener = newCell.getCellListener();
                 coordsToCell.put(newCell.getCellViewModel().getModel().getCoords(), ImmutablePair.of(newCell, cellListener));

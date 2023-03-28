@@ -18,9 +18,8 @@ public class ChessBoardListener {
         this.board = board;
     }
 
-    public void onUpdateReceived(State cellState, CellModel.Coords coords) {
+    public void onUpdateReceived(CellModel.Coords coords) {
         ChessBoardState chessBoardState = board.getBoardState();
-        chessBoardState.setCellState(cellState);
         chessBoardState.setCoordsToCellListeners(coordsToCellListeners);
 
         chessBoardState.doOnUpdate(coords);

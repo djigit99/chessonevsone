@@ -20,7 +20,7 @@ public class CellListener {
 
     public void onUpdateFromPane() {
         CellModel model = cellViewModel.getModel();
-        chessBoardListener.onUpdateReceived(model.getState(), model.getCoords());
+        chessBoardListener.onUpdateReceived(model.getCoords());
     }
 
 
