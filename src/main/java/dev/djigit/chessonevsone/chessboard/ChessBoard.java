@@ -30,12 +30,14 @@ public class ChessBoard {
     private Parent chessBoardRootNode;
     private Player.Color playerColor;
     private ChessBoardState boardState;
+    private GameLogic gameLogic;
 
     public ChessBoard(Stage primaryStage, URL url, Player.Color playerColor) {
         this.primaryStage = primaryStage;
         this.url = url;
         this.playerColor = playerColor;
         this.boardState = new WaitForSelectedPieceState(this);
+        this.gameLogic = new GameLogic(this);
 
         initData();
     }
@@ -111,8 +113,7 @@ public class ChessBoard {
     public boolean isMovePossible(Piece piece, CellModel.Coords from, CellModel.Coords to) {
         List<CellModel.Coords> moves = piece.getMoves(from);
         if (moves.contains(to)) {
-            // todo: check if the move is correct by chess rules
-            return true;
+            return gameLogic.isMovePossible(piece, from, to);
         }
         return false;
     }
@@ -131,5 +132,17 @@ public class ChessBoard {
 
     public void changeState(ChessBoardState state) {
         this.boardState = state;
+    }
+
+    public Cell[] getCellsOnPath(CellModel.Coords[] coords) {
+        final int pathLength = coords.length;
+        Cell[] cellsOnPath = new Cell[pathLength];
+
+        for (int i = 0; i < pathLength; i++) {
+            Cell cell = coordsToCell.get(coords[i]).getLeft();
+            cellsOnPath[i] = cell;
+        }
+
+        return cellsOnPath;
     }
 }

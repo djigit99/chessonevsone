@@ -1,5 +1,6 @@
 package dev.djigit.chessonevsone.chessboard.piece;
 
+import dev.djigit.chessonevsone.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
 import javafx.scene.image.ImageView;
@@ -43,5 +44,6 @@ public abstract class Piece {
     }
 
     public abstract List<CellModel.Coords> getMoves(CellModel.Coords from);
-
+    public abstract CellModel.Coords[] getPath(CellModel.Coords from, CellModel.Coords to);
+    public abstract boolean isMovePossible(Cell[] cells);
 }

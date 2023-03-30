@@ -8,13 +8,11 @@ import dev.djigit.chessonevsone.sockets.CantCreateServerException;
 import dev.djigit.chessonevsone.sockets.GameCreatorSocket;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.net.URL;

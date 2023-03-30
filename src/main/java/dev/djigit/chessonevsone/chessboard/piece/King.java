@@ -1,5 +1,6 @@
 package dev.djigit.chessonevsone.chessboard.piece;
 
+import dev.djigit.chessonevsone.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
 import javafx.scene.image.ImageView;
@@ -44,5 +45,15 @@ public class King extends Piece {
             toCoords.add(from.getByCoords((short) 0, (short) -1));
 
         return toCoords;
+    }
+
+    @Override
+    public CellModel.Coords[] getPath(CellModel.Coords from, CellModel.Coords to) {
+        return new CellModel.Coords[]{from, to};
+    }
+
+    @Override
+    public boolean isMovePossible(Cell[] cells) {
+        return true;
     }
 }
