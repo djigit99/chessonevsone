@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class King extends Piece {
-    public King(Player.Color pieceColor, ImageView imageView, CellModel.Coords initialCoords) {
-        super(pieceColor, imageView, initialCoords);
+    public King(Player.Color pieceColor, ImageView imageView) {
+        super(pieceColor, imageView);
     }
 
     @Override

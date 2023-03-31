@@ -11,12 +11,10 @@ import java.util.List;
 public abstract class Piece {
     private Player.Color pieceColor;
     private ImageView imageView;
-    private CellModel.Coords initialCoords;
 
-    public Piece(Player.Color pieceColor, ImageView imageView, CellModel.Coords initialCoords) {
+    public Piece(Player.Color pieceColor, ImageView imageView) {
         this.pieceColor = pieceColor;
         this.imageView = imageView;
-        this.initialCoords = initialCoords;
     }
 
     public Player.Color getPieceColor() {
@@ -33,14 +31,6 @@ public abstract class Piece {
 
     public void setImageView(ImageView imageView) {
         this.imageView = imageView;
-    }
-
-    public CellModel.Coords getInitialCoords() {
-        return initialCoords;
-    }
-
-    public void setInitialCoords(CellModel.Coords initialCoords) {
-        this.initialCoords = initialCoords;
     }
 
     public abstract List<CellModel.Coords> getMoves(CellModel.Coords from);

@@ -58,17 +58,17 @@ public class ChessBoard {
                 Player.Color pColor = pInfo[1].equals("w") ? Player.Color.WHITE : Player.Color.BLACK;
 
                 if ("pawn".equals(pName))
-                    coordsToPiece.put(pCoords, new Pawn(pColor, imgVAN.getImageView(), pCoords));
+                    coordsToPiece.put(pCoords, new Pawn(pColor, imgVAN.getImageView()));
                 else if ("rook".equals(pName))
-                    coordsToPiece.put(pCoords, new Rook(pColor, imgVAN.getImageView(), pCoords));
+                    coordsToPiece.put(pCoords, new Rook(pColor, imgVAN.getImageView()));
                 else if ("knight".equals(pName))
-                    coordsToPiece.put(pCoords, new Knight(pColor, imgVAN.getImageView(), pCoords));
+                    coordsToPiece.put(pCoords, new Knight(pColor, imgVAN.getImageView()));
                 else if ("bishop".equals(pName))
-                    coordsToPiece.put(pCoords, new Bishop(pColor, imgVAN.getImageView(), pCoords));
+                    coordsToPiece.put(pCoords, new Bishop(pColor, imgVAN.getImageView()));
                 else if ("queen".equals(pName))
-                    coordsToPiece.put(pCoords, new Queen(pColor, imgVAN.getImageView(), pCoords));
+                    coordsToPiece.put(pCoords, new Queen(pColor, imgVAN.getImageView()));
                 else if ("king".equals(pName))
-                    coordsToPiece.put(pCoords, new King(pColor, imgVAN.getImageView(), pCoords));
+                    coordsToPiece.put(pCoords, new King(pColor, imgVAN.getImageView()));
                 else throw new RuntimeException("Unknown piece name");
             });
 

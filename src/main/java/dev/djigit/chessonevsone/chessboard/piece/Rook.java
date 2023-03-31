@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rook extends Piece {
-    public Rook(Player.Color pieceColor, ImageView imageView, CellModel.Coords initialCoords) {
-        super(pieceColor, imageView, initialCoords);
+    public Rook(Player.Color pieceColor, ImageView imageView) {
+        super(pieceColor, imageView);
     }
 
     @Override
