@@ -19,11 +19,10 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ChessBoard {
-    private Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCell = new HashMap<>();
+    private final Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCell = new HashMap<>();
     private URL url;
     private Stage primaryStage;
     private ChessBoardListener chessBoardListener;
@@ -45,13 +44,13 @@ public class ChessBoard {
     private void initData() {
 
         try {
+            Map<CellModel.Coords, Piece> coordsToPiece = new HashMap<>();
             ChessBoardController chessBoardController;
             FXMLLoader loader = FXMLLoaderFactory.getFXMLLoader(url);
 
-            chessBoardRootNode = loader.load();
+            this.chessBoardRootNode = loader.load();
             chessBoardController = loader.getController();
 
-            Map<CellModel.Coords, Piece> coordsToPiece = new HashMap<>();
             chessBoardController.getImageViewsAndNames().forEach(imgVAN -> {
                 CellModel.Coords pCoords = imgVAN.getPieceCoords();
                 String[] pInfo = imgVAN.getName().split("_");
@@ -111,11 +110,7 @@ public class ChessBoard {
     }
 
     public boolean isMovePossible(Piece piece, CellModel.Coords from, CellModel.Coords to) {
-        List<CellModel.Coords> moves = piece.getMoves(from);
-        if (moves.contains(to)) {
-            return gameLogic.isMovePossible(piece, from, to);
-        }
-        return false;
+        return gameLogic.isMovePossible(piece, from, to);
     }
 
     public void makeMove(CellModel.Coords from, CellModel.Coords to) {
