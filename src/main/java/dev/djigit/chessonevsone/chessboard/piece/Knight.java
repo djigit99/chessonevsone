@@ -4,7 +4,6 @@ import dev.djigit.chessonevsone.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
 import javafx.scene.image.ImageView;
-import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,11 +54,12 @@ public class Knight extends Piece {
 
     @Override
     public CellModel.Coords[] getPath(CellModel.Coords from, CellModel.Coords to) {
-        throw new NotImplementedException();
+        return new CellModel.Coords[]{from, to};
     }
 
     @Override
     public boolean isMovePossible(Cell[] cells) {
-        throw new NotImplementedException();
+        return !cells[cells.length-1].hasPiece() ||
+                !cells[cells.length-1].isFriendPiece(getPieceColor());
     }
 }
