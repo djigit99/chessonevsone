@@ -54,6 +54,7 @@ public class King extends Piece {
 
     @Override
     public boolean isMovePossible(Cell[] cells) {
-        return true;
+        return !cells[cells.length-1].hasPiece() ||
+                !cells[cells.length-1].isFriendPiece(getPieceColor());
     }
 }
