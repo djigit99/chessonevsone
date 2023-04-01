@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class PawnTest {
+public class PawnTest extends PieceTest {
     private static Pawn pawn;
 
     @BeforeAll
@@ -91,22 +91,12 @@ public class PawnTest {
 
     @Test
     void isMovePossible_Test() {
-        Cell cell1 = mock(Cell.class);
-        CellViewModel cellViewModel1 = mock();
-        CellModel cellModel1 = new CellModel();
-        cellModel1.setCoords(CellModel.Coords.B2);
+        String paneId1 = "panel_b2";
+        Cell cell1 = generateCell(paneId1, true);
+        cell1.setPiece(pawn);
 
-        Cell cell2 = mock(Cell.class);
-        CellViewModel cellViewModel2 = mock();
-        CellModel cellModel2 = new CellModel();
-        cellModel2.setCoords(CellModel.Coords.B3);
-
-        when(cell1.getCellViewModel()).thenReturn(cellViewModel1);
-        when(cellViewModel1.getModel()).thenReturn(cellModel1);
-
-        when(cell2.getCellViewModel()).thenReturn(cellViewModel2);
-        when(cellViewModel2.getModel()).thenReturn(cellModel2);
-        when(cell2.hasPiece()).thenReturn(false);
+        String paneId2 = "panel_b3";
+        Cell cell2 = generateCell(paneId2, false);
 
         boolean movePossible = pawn.isMovePossible(new Cell[]{cell1, cell2});
 
