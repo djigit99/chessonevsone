@@ -4,7 +4,6 @@ import dev.djigit.chessonevsone.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
 import javafx.scene.image.ImageView;
-import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +56,77 @@ public class Queen extends Piece {
 
     @Override
     public CellModel.Coords[] getPath(CellModel.Coords from, CellModel.Coords to) {
-        throw new NotImplementedException();
+        if (from.getX() == to.getX()) { // the same as Rook
+            short minY = (short) Math.min(from.getY(), to.getY());
+            short maxY = (short) Math.max(from.getY(), to.getY());
+
+            final int length = maxY - minY + 1;
+            CellModel.Coords[] coords = new CellModel.Coords[length];
+
+            if (from.getY() < to.getY()) {
+                for (short y = from.getY(), i = 0; y <= to.getY(); y++, i++) {
+                    coords[i] = CellModel.Coords.getCordsByValue(from.getX(), y);
+                }
+            } else {
+                for (short y = from.getY(), i = 0; y >= to.getY(); y--, i++) {
+                    coords[i] = CellModel.Coords.getCordsByValue(from.getX(), y);
+                }
+            }
+
+            return coords;
+        } else if (from.getY() == to.getY()){
+            char minX = (char) Math.min(from.getX(), to.getX());
+            char maxX = (char) Math.max(from.getX(), to.getX());
+
+            final int length = maxX - minX + 1;
+            CellModel.Coords[] coords = new CellModel.Coords[length];
+
+            if (from.getX() < to.getX()) {
+                for (char x = from.getX(), i = 0; x <= to.getX(); x++, i++) {
+                    coords[i] = CellModel.Coords.getCordsByValue(x, from.getY());
+                }
+            } else {
+                for (char x = from.getX(), i = 0; x >= to.getX(); x--, i++) {
+                    coords[i] = CellModel.Coords.getCordsByValue(x, from.getY());
+                }
+            }
+
+            return coords;
+        } else { // the same as Bishop
+            char x;
+            short y;
+            int i;
+            final int length = Math.abs(from.getY() - to.getY()) + 1;
+            CellModel.Coords[] coords = new CellModel.Coords[length];
+
+            if (from.getX() < to.getX()) {
+                if (from.getY() < to.getY()) { // ↗
+                    for (i = 0, x = from.getX(), y = from.getY(); i < length; i++, x++, y++)
+                        coords[i] = CellModel.Coords.getCordsByValue(x, y);
+                } else { // ↘
+                    for (i = 0, x = from.getX(), y = from.getY(); i < length; i++, x++, y--)
+                        coords[i] = CellModel.Coords.getCordsByValue(x, y);
+                }
+            } else {
+                if (from.getY() < to.getY()) { // ↖
+                    for (i = 0, x = from.getX(), y = from.getY(); i < length; i++, x--, y++)
+                        coords[i] = CellModel.Coords.getCordsByValue(x, y);
+                } else { // ↙
+                    for (i = 0, x = from.getX(), y = from.getY(); i < length; i++, x--, y--)
+                        coords[i] = CellModel.Coords.getCordsByValue(x, y);
+                }
+            }
+            return coords;
+        }
     }
 
     @Override
     public boolean isMovePossible(Cell[] cells) {
-        throw new NotImplementedException();
+        for (int i = 1; i < cells.length - 1; i++) {
+            if (cells[i].hasPiece())
+                return false;
+        }
+
+        return !cells[cells.length-1].hasPiece() || !cells[cells.length-1].isFriendPiece(getPieceColor());
     }
 }
