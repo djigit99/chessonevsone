@@ -2,7 +2,6 @@ package dev.djigit.chessonevsone.chessboard.piece;
 
 import dev.djigit.chessonevsone.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.chessboard.cell.CellModel;
-import dev.djigit.chessonevsone.chessboard.cell.CellViewModel;
 import dev.djigit.chessonevsone.game.Player;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,8 +11,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class PawnTest extends PieceTest {
     private static Pawn pawn;
