@@ -9,11 +9,8 @@ import dev.djigit.chessonevsone.chessboard.state.WaitForSelectedPieceState;
 import dev.djigit.chessonevsone.factories.FXMLLoaderFactory;
 import dev.djigit.chessonevsone.game.Player;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
+import javafx.scene.layout.BorderPane;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.io.IOException;
@@ -24,15 +21,15 @@ import java.util.Map;
 public class ChessBoard {
     private final Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCell = new HashMap<>();
     private URL url;
-    private Stage primaryStage;
+    private BorderPane parentNode;
     private ChessBoardListener chessBoardListener;
     private Parent chessBoardRootNode;
     private Player.Color playerColor;
     private ChessBoardState boardState;
     private GameLogic gameLogic;
 
-    public ChessBoard(Stage primaryStage, URL url, Player.Color playerColor) {
-        this.primaryStage = primaryStage;
+    public ChessBoard(BorderPane parentNode, URL url, Player.Color playerColor) {
+        this.parentNode = parentNode;
         this.url = url;
         this.playerColor = playerColor;
         this.boardState = new WaitForSelectedPieceState(this);
@@ -89,20 +86,7 @@ public class ChessBoard {
     }
 
     public void showChessBoard() {
-        primaryStage.setScene(new Scene(chessBoardRootNode));
-        primaryStage.setX(getCenterXForChessBoard());
-        primaryStage.setY(getCenterYForChessBoard());
-        primaryStage.show();
-    }
-
-    private double getCenterXForChessBoard() {
-        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        return screenBounds.getWidth() / 2 - primaryStage.getWidth() / 2;
-    }
-
-    private double getCenterYForChessBoard() {
-        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        return screenBounds.getHeight() / 2 - primaryStage.getHeight() / 2;
+        parentNode.setCenter(chessBoardRootNode);
     }
 
     public Player.Color getPlayerColor() {

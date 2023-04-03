@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.*;
 
-public class GameCreatorSocket {
+public class GameCreatorSocket extends PlayerSocket {
 
     private static GameCreatorSocket CREATOR_SOCKET_INSTANCE = null;
     private ServerSocket socket;
@@ -71,7 +71,7 @@ public class GameCreatorSocket {
             objectWriter = new ObjectOutputStream(clientSocket.getOutputStream());
 
             Messages colorRequest = (Messages) objectReader.readObject();
-            if(colorRequest.equals(Messages.COLOR_REQUEST))
+            if (colorRequest.equals(Messages.COLOR_REQUEST))
                 System.out.println("Server: Color request received.");
 
             System.out.println("Server: Send the color for the client.");
@@ -84,24 +84,23 @@ public class GameCreatorSocket {
             if (confirmResponse.equals(Messages.COLOR_RECEIVE))
                 System.out.println("Server: Client received the color.");
 
-             readMessagesFuture = executorService.submit(getMessageQueueRunnable());
+            readMessagesFuture = executorService.submit(getMessageQueueRunnable());
 
-        }
-        catch (SocketTimeoutException stx) {
+        } catch (SocketTimeoutException stx) {
             // todo: handle this probably as forcing reconnection with a client
-        }
-        catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
     private Messages getColorResponse(Player.Color createColor) {
-        if(createColor.isWhite())
+        if (createColor.isWhite())
             return Messages.BLACK_COLOR_RESPONSE;
         else
             return Messages.WHITE_COLOR_RESPONSE;
     }
 
+    @Override
     public void close() {
         while (connectionAlive) {
             try {
@@ -133,17 +132,13 @@ public class GameCreatorSocket {
                 try {
                     Messages msg = (Messages) objectReader.readObject();
                     messagesQueue.add(msg);
-                }
-                catch (SocketTimeoutException ignored) {
+                } catch (SocketTimeoutException ignored) {
                     // readObject() timeout occurred
-                }
-                catch (IOException | ClassNotFoundException e) {
+                } catch (IOException | ClassNotFoundException e) {
                     System.out.println("The creator socket stopped receiving messages from the client because of an error");
                     throw new RuntimeException(e);
                 }
             }
         };
     }
-
-
 }

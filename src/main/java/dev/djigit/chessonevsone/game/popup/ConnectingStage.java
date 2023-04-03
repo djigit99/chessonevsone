@@ -19,5 +19,6 @@ public class ConnectingStage extends Stage {
         URL url = getClass().getResource("/scenes/ConnectingPopUp.fxml");
         Scene scene = new Scene(FXMLLoaderFactory.getRootNode(url));
         setScene(scene);
+        setResizable(false);
     }
 }

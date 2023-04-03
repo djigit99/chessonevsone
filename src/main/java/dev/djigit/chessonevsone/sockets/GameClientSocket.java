@@ -10,7 +10,7 @@ import java.net.SocketTimeoutException;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
 
-public class GameClientSocket {
+public class GameClientSocket extends PlayerSocket {
     private static GameClientSocket CLIENT_SOCKET_INSTANCE = null;
     private Socket socket;
     private ObjectOutputStream objectWriter;
@@ -88,6 +88,7 @@ public class GameClientSocket {
             setColorConsumer.accept(Player.Color.BLACK);
     }
 
+    @Override
     public void close() {
         while (connectionAlive) {
             try {

@@ -1,58 +1,79 @@
 package dev.djigit.chessonevsone.game;
 
-import dev.djigit.chessonevsone.chessboard.ChessBoard;
 import dev.djigit.chessonevsone.factories.FXMLLoaderFactory;
 import dev.djigit.chessonevsone.game.popup.ConnectingStage;
 import dev.djigit.chessonevsone.game.popup.ErrorMessageStage;
 import dev.djigit.chessonevsone.sockets.CantCreateServerException;
 import dev.djigit.chessonevsone.sockets.GameCreatorSocket;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.net.URL;
-
 public class AdminPlayer extends Player {
-    private GameCreatorSocket adminSocket;
-    private final Stage primaryStage;
-    private Color color;
 
     public AdminPlayer(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+        super(primaryStage);
     }
 
     public void init() {
+        super.init();
+
         showChooseColorScene();
     }
 
     private void showChooseColorScene() {
-        String CHOOSE_COLOR_SCENE_URL = "/scenes/ChooseColor.fxml";
-        Parent chooseColorNode = FXMLLoaderFactory.getRootNode(getClass().getResource(CHOOSE_COLOR_SCENE_URL));
-        primaryStage.setScene(new Scene(chooseColorNode));
-        primaryStage.setOnCloseRequest(null);
-        primaryStage.show();
+        final String CHOOSE_COLOR_SCENE_URL = "/scenes/ChooseColor.fxml";
 
-        addListenersForChooseColorButtons(chooseColorNode);
+        VBox chooseColorNode = (VBox) FXMLLoaderFactory.getRootNode(getClass().getResource(CHOOSE_COLOR_SCENE_URL));
+        Stage chooseColorStage = new Stage();
+
+        chooseColorStage.setScene(new Scene(chooseColorNode));
+        chooseColorStage.initModality(Modality.APPLICATION_MODAL);
+        chooseColorStage.setResizable(false);
+        chooseColorStage.setOnCloseRequest(null);
+        chooseColorStage.show();
+        chooseColorStage.setX(getPrimaryStage().getX() + getPrimaryStage().getWidth() / 2 - chooseColorStage.getWidth() / 2);
+        chooseColorStage.setY(getPrimaryStage().getY() + getPrimaryStage().getHeight() / 2 - chooseColorStage.getHeight() / 2);
+
+        getPrimaryStage().xProperty().addListener(getStageWidthChangedListener(chooseColorStage));
+        getPrimaryStage().yProperty().addListener(getStageHeightChangedListener(chooseColorStage));
+
+        addListenersForChooseColorButtons(chooseColorStage);
     }
 
-    private void addListenersForChooseColorButtons(Parent chooseColorNode) {
+    private ChangeListener<Number> getStageWidthChangedListener(Stage chooseColorStage) {
+        return (observable, oldValue, newValue) ->
+                chooseColorStage.setX(getPrimaryStage().getX() + getPrimaryStage().getWidth() / 2 - chooseColorStage.getWidth() / 2);
+    }
+
+    private ChangeListener<Number> getStageHeightChangedListener(Stage chooseColorStage) {
+        return (observable, oldValue, newValue) ->
+                chooseColorStage.setY(getPrimaryStage().getY() + getPrimaryStage().getHeight() / 2 - chooseColorStage.getHeight() / 2);
+    }
+
+    private void addListenersForChooseColorButtons(Stage chooseColorStage) {
+        Parent chooseColorNode = chooseColorStage.getScene().getRoot();
         Button whiteColorBtn = (Button) ((VBox) chooseColorNode).getChildren().get(0);
         Button blackColorBtn = (Button) ((VBox) chooseColorNode).getChildren().get(1);
 
         EventHandler<MouseEvent> setToWhiteHandler = me -> {
             System.out.println("Server: server picked up a white side");
-            color = Color.WHITE;
+            setColor(Color.WHITE);
+            chooseColorStage.close();
             lookForAnOpponent();
         };
 
         EventHandler<MouseEvent> setToBlackHandler = me -> {
             System.out.println("Server: server picked up a black side");
-            color = Color.BLACK;
+            setColor(Color.BLACK);
+            chooseColorStage.close();
             lookForAnOpponent();
         };
 
@@ -62,13 +83,13 @@ public class AdminPlayer extends Player {
 
     private void lookForAnOpponent() {
         try {
-            adminSocket = GameCreatorSocket.getInstance();
+            socket = GameCreatorSocket.getInstance();
 
             ConnectingStage connectingStage = new ConnectingStage();
-            connectingStage.setOnCloseRequest(we -> adminSocket.close());
+            connectingStage.setOnCloseRequest(we -> socket.close());
 
             Thread waitForOpponentThread = new Thread(() -> {
-                adminSocket.startServer(color);
+                serverSocket().startServer(getColor());
                 Platform.runLater(() -> {
                     connectingStage.close();
                     showChessBoard();
@@ -78,6 +99,9 @@ public class AdminPlayer extends Player {
             waitForOpponentThread.start();
 
             connectingStage.show();
+
+            connectingStage.setX(getCenterXForChessBoard() + getPrimaryStage().getWidth() / 2 - connectingStage.getWidth() / 2);
+            connectingStage.setY(getCenterYForChessBoard() + getPrimaryStage().getHeight() / 2 - connectingStage.getHeight() / 2);
         } catch (CantCreateServerException ex) {
             ErrorMessageStage error = new ErrorMessageStage(ex.getMessage());
             error.show();
@@ -85,19 +109,7 @@ public class AdminPlayer extends Player {
         }
     }
 
-    private void showChessBoard() {
-        final String CHESSBOARD_FOR_WHITE_SCENE_URL = "/scenes/ChessBoardSceneWhite.fxml";
-        final String CHESSBOARD_FOR_BLACK_SCENE_URL = "/scenes/ChessBoardSceneBlack.fxml";
-
-        URL url;
-        if (color.isWhite()) {
-            url = getClass().getResource(CHESSBOARD_FOR_WHITE_SCENE_URL);
-        } else {
-            url = getClass().getResource(CHESSBOARD_FOR_BLACK_SCENE_URL);
-        }
-        ChessBoard board = new ChessBoard(primaryStage, url, color);
-        board.showChessBoard();
-
-        primaryStage.setOnCloseRequest(we -> adminSocket.close());
+    private GameCreatorSocket serverSocket() {
+        return (GameCreatorSocket) socket;
     }
 }
