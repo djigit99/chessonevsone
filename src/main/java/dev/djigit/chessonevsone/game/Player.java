@@ -1,11 +1,9 @@
 package dev.djigit.chessonevsone.game;
 
-import dev.djigit.chessonevsone.chessboard.ChessBoard;
-import dev.djigit.chessonevsone.factories.FXMLLoaderFactory;
+import dev.djigit.chessonevsone.game.chessboard.ChessBoard;
 import dev.djigit.chessonevsone.sockets.PlayerSocket;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -14,19 +12,18 @@ import java.net.URL;
 public abstract class Player {
     private final Stage primaryStage;
     private Color color;
-    private BorderPane parentNode;
     protected PlayerSocket socket;
+    protected GameBackView gameBackView;
 
     public Player(Stage stage) {
         this.primaryStage = stage;
     }
 
     void init() {
-        final String DEFAULT_CHESSBOARD_URL = "/scenes/GameScene.fxml";
-        URL url = getClass().getResource(DEFAULT_CHESSBOARD_URL);
+        gameBackView = new GameBackView();
+        gameBackView.init();
 
-        parentNode = (BorderPane) FXMLLoaderFactory.getRootNode(url);
-        primaryStage.setScene(new Scene(parentNode));
+        primaryStage.setScene(new Scene(gameBackView.getRootPane()));
         primaryStage.setX(getCenterXForChessBoard());
         primaryStage.setY(getCenterYForChessBoard());
     }
@@ -56,7 +53,7 @@ public abstract class Player {
         }
     }
 
-    void showChessBoard() {
+    void initChessBoard() {
         final String CHESSBOARD_FOR_WHITE_SCENE_URL = "/scenes/ChessBoardSceneWhite.fxml";
         final String CHESSBOARD_FOR_BLACK_SCENE_URL = "/scenes/ChessBoardSceneBlack.fxml";
 
@@ -67,8 +64,9 @@ public abstract class Player {
             url = getClass().getResource(CHESSBOARD_FOR_BLACK_SCENE_URL);
         }
 
-        ChessBoard board = new ChessBoard(getParentNode(), url, getColor());
-        board.showChessBoard();
+        ChessBoard board = new ChessBoard(url, getColor());
+        gameBackView.setChessBoard(board);
+
         getPrimaryStage().setOnCloseRequest(we -> socket.close());
     }
 
@@ -82,9 +80,5 @@ public abstract class Player {
 
     Color getColor() {
         return color;
-    }
-
-    BorderPane getParentNode() {
-        return parentNode;
     }
 }

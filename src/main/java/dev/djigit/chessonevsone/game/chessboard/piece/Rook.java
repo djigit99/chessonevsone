@@ -1,10 +1,9 @@
-package dev.djigit.chessonevsone.chessboard.piece;
+package dev.djigit.chessonevsone.game.chessboard.piece;
 
-import dev.djigit.chessonevsone.chessboard.cell.Cell;
-import dev.djigit.chessonevsone.chessboard.cell.CellModel;
+import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
 import javafx.scene.image.ImageView;
-import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;

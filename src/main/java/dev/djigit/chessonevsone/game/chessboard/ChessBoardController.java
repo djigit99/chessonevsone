@@ -1,6 +1,6 @@
-package dev.djigit.chessonevsone.chessboard;
+package dev.djigit.chessonevsone.game.chessboard;
 
-import dev.djigit.chessonevsone.chessboard.cell.CellModel;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;

@@ -92,7 +92,7 @@ public class AdminPlayer extends Player {
                 serverSocket().startServer(getColor());
                 Platform.runLater(() -> {
                     connectingStage.close();
-                    showChessBoard();
+                    initChessBoard();
                 });
             });
             waitForOpponentThread.setDaemon(true);

@@ -1,4 +1,4 @@
-package dev.djigit.chessonevsone.chessboard.cell;
+package dev.djigit.chessonevsone.game.chessboard.cell;
 
 public class CellModel {
     private Coords coords;

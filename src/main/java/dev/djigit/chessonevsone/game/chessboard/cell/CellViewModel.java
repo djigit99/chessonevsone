@@ -1,6 +1,6 @@
-package dev.djigit.chessonevsone.chessboard.cell;
+package dev.djigit.chessonevsone.game.chessboard.cell;
 
-import dev.djigit.chessonevsone.chessboard.cell.CellModel.State;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel.State;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;

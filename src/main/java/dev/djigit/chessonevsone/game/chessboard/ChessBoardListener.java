@@ -1,10 +1,9 @@
-package dev.djigit.chessonevsone.chessboard;
+package dev.djigit.chessonevsone.game.chessboard;
 
-import dev.djigit.chessonevsone.chessboard.cell.Cell;
-import dev.djigit.chessonevsone.chessboard.cell.CellListener;
-import dev.djigit.chessonevsone.chessboard.cell.CellModel;
-import dev.djigit.chessonevsone.chessboard.cell.CellModel.State;
-import dev.djigit.chessonevsone.chessboard.state.ChessBoardState;
+import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellListener;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
+import dev.djigit.chessonevsone.game.chessboard.state.ChessBoardState;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.Map;

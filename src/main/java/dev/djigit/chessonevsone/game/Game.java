@@ -1,6 +1,5 @@
 package dev.djigit.chessonevsone.game;
 
-import dev.djigit.chessonevsone.chessboard.ChessBoard;
 import dev.djigit.chessonevsone.factories.FXMLLoaderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,7 +12,6 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class Game {
 
     private final String INTRO_SCENE_URL = "/scenes/IntroScene.fxml";
-    private String playerRole;
     private Stage primaryStage;
 
     public Game(Stage primaryStage) {
@@ -37,22 +35,12 @@ public class Game {
         Button loadExistingGameBtn = (Button) ((VBox) introRootNode).getChildren().get(1);
 
         newGameBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvt ->
-        {
-            setPlayerRole("ADMIN");
-            new AdminPlayer(primaryStage).init();
-        });
+                new AdminPlayer(primaryStage).init());
         loadExistingGameBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvt ->
-        {
-            setPlayerRole("CLIENT");
-            new ClientPlayer(primaryStage).init();
-        });
+                new ClientPlayer(primaryStage).init());
     }
 
     public void close() {
         throw new NotImplementedException();
-    }
-
-    private void setPlayerRole(String playerRole) {
-        this.playerRole = playerRole;
     }
 }

@@ -1,7 +1,9 @@
 package dev.djigit.chessonevsone.chessboard;
 
-import dev.djigit.chessonevsone.chessboard.cell.CellModel;
-import dev.djigit.chessonevsone.chessboard.piece.Piece;
+import dev.djigit.chessonevsone.game.chessboard.ChessBoard;
+import dev.djigit.chessonevsone.game.chessboard.GameLogic;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
+import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

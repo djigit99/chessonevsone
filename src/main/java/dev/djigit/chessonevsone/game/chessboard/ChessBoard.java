@@ -1,15 +1,16 @@
-package dev.djigit.chessonevsone.chessboard;
+package dev.djigit.chessonevsone.game.chessboard;
 
-import dev.djigit.chessonevsone.chessboard.cell.Cell;
-import dev.djigit.chessonevsone.chessboard.cell.CellListener;
-import dev.djigit.chessonevsone.chessboard.cell.CellModel;
-import dev.djigit.chessonevsone.chessboard.piece.*;
-import dev.djigit.chessonevsone.chessboard.state.ChessBoardState;
-import dev.djigit.chessonevsone.chessboard.state.WaitForSelectedPieceState;
 import dev.djigit.chessonevsone.factories.FXMLLoaderFactory;
 import dev.djigit.chessonevsone.game.Player;
+import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellListener;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
+import dev.djigit.chessonevsone.game.chessboard.history.ChessBoardSnapshot;
+import dev.djigit.chessonevsone.game.chessboard.history.GameHistory;
+import dev.djigit.chessonevsone.game.chessboard.piece.*;
+import dev.djigit.chessonevsone.game.chessboard.state.ChessBoardState;
+import dev.djigit.chessonevsone.game.chessboard.state.WaitForSelectedPieceState;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
@@ -21,15 +22,14 @@ import java.util.Map;
 public class ChessBoard {
     private final Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCell = new HashMap<>();
     private URL url;
-    private BorderPane parentNode;
     private ChessBoardListener chessBoardListener;
-    private Parent chessBoardRootNode;
+    private BorderPane chessBoardRootPane;
     private Player.Color playerColor;
     private ChessBoardState boardState;
     private GameLogic gameLogic;
+    private GameHistory gameHistory;
 
-    public ChessBoard(BorderPane parentNode, URL url, Player.Color playerColor) {
-        this.parentNode = parentNode;
+    public ChessBoard(URL url, Player.Color playerColor) {
         this.url = url;
         this.playerColor = playerColor;
         this.boardState = new WaitForSelectedPieceState(this);
@@ -45,7 +45,7 @@ public class ChessBoard {
             ChessBoardController chessBoardController;
             FXMLLoader loader = FXMLLoaderFactory.getFXMLLoader(url);
 
-            this.chessBoardRootNode = loader.load();
+            this.chessBoardRootPane = loader.load();
             chessBoardController = loader.getController();
 
             chessBoardController.getImageViewsAndNames().forEach(imgVAN -> {
@@ -85,10 +85,6 @@ public class ChessBoard {
         }
     }
 
-    public void showChessBoard() {
-        parentNode.setCenter(chessBoardRootNode);
-    }
-
     public Player.Color getPlayerColor() {
         return playerColor;
     }
@@ -103,6 +99,9 @@ public class ChessBoard {
 
         Piece movingPiece = fromCell.cleanPiece();
         toCell.setPiece(movingPiece);
+
+        ChessBoardSnapshot snapshot = createSnapshot();
+        gameHistory.addMove(snapshot);
     }
 
     public ChessBoardState getBoardState() {
@@ -123,5 +122,24 @@ public class ChessBoard {
         }
 
         return cellsOnPath;
+    }
+
+    public BorderPane getRootPane() {
+        return chessBoardRootPane;
+    }
+
+    public void setGameHistory(GameHistory gameHistory) {
+        this.gameHistory = gameHistory;
+    }
+
+    public ChessBoardSnapshot createSnapshot() {
+        Map<CellModel.Coords, Piece> coordsPieceMap = new HashMap<>();
+        coordsToCell.forEach((coords, cCl) -> coordsPieceMap.put(coords, cCl.getLeft().getPiece()));
+        return new ChessBoardSnapshot(coordsPieceMap);
+    }
+
+    public void restoreState(ChessBoardSnapshot snapshot) {
+        Map<CellModel.Coords, Piece> state = snapshot.getState();
+        state.forEach((coords, piece) -> coordsToCell.get(coords).getLeft().setPiece(piece));
     }
 }

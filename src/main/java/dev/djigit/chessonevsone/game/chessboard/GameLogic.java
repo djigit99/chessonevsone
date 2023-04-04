@@ -1,8 +1,8 @@
-package dev.djigit.chessonevsone.chessboard;
+package dev.djigit.chessonevsone.game.chessboard;
 
-import dev.djigit.chessonevsone.chessboard.cell.Cell;
-import dev.djigit.chessonevsone.chessboard.cell.CellModel;
-import dev.djigit.chessonevsone.chessboard.piece.Piece;
+import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
+import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
 
 import java.util.List;
 

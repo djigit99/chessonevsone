@@ -22,7 +22,7 @@ public class ClientPlayer extends Player {
             socket = GameClientSocket.getInstance();
             clientSocket().setSetColorConsumer(this::setColor);
             clientSocket().connect();
-            Platform.runLater(this::showChessBoard);
+            Platform.runLater(this::initChessBoard);
         });
         connectThread.setDaemon(true);
         connectThread.start();

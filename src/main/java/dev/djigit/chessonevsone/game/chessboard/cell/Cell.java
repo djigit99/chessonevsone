@@ -1,14 +1,13 @@
-package dev.djigit.chessonevsone.chessboard.cell;
+package dev.djigit.chessonevsone.game.chessboard.cell;
 
-import dev.djigit.chessonevsone.chessboard.ChessBoard;
-import dev.djigit.chessonevsone.chessboard.cell.CellModel.State;
-import dev.djigit.chessonevsone.chessboard.piece.Piece;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel.State;
+import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
 import dev.djigit.chessonevsone.game.Player;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
-import static dev.djigit.chessonevsone.chessboard.cell.CellModel.Coords.getCordsByValue;
+import static dev.djigit.chessonevsone.game.chessboard.cell.CellModel.Coords.getCordsByValue;
 
 public class Cell {
     private Pane cellPane;

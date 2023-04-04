@@ -1,6 +1,6 @@
-package dev.djigit.chessonevsone.chessboard.cell;
+package dev.djigit.chessonevsone.game.chessboard.cell;
 
-import dev.djigit.chessonevsone.chessboard.ChessBoardListener;
+import dev.djigit.chessonevsone.game.chessboard.ChessBoardListener;
 
 public class CellListener {
     private CellViewModel cellViewModel;
