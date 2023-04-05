@@ -22,6 +22,9 @@ public class ClientPlayer extends Player {
             socket = GameClientSocket.getInstance();
             clientSocket().setSetColorConsumer(this::setColor);
             clientSocket().connect();
+
+            listenForMessages(); // listen for and process the messages which have been got in the message queue
+
             Platform.runLater(this::initChessBoard);
         });
         connectThread.setDaemon(true);

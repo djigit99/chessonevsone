@@ -1,6 +1,7 @@
 package dev.djigit.chessonevsone.sockets;
 
 import dev.djigit.chessonevsone.game.Player;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,8 +17,6 @@ public class GameClientSocket extends PlayerSocket {
     private ObjectOutputStream objectWriter;
     private ObjectInputStream objectReader;
     private Consumer<Player.Color> setColorConsumer;
-    private ConcurrentLinkedQueue<Messages> messagesQueue;
-    private volatile boolean connectionAlive = false;
     private ExecutorService executorService;
     private Future<?> readMessagesFuture;
 
@@ -43,7 +42,7 @@ public class GameClientSocket extends PlayerSocket {
         close();
         objectReader = null;
         objectWriter = null;
-        if (messagesQueue != null) messagesQueue.clear();
+        messagesQueue.clear();
         executorService = Executors.newSingleThreadExecutor();
     }
 
@@ -115,7 +114,7 @@ public class GameClientSocket extends PlayerSocket {
             while (connectionAlive) {
                 try {
                     Messages msg = (Messages) objectReader.readObject();
-                    messagesQueue.add(msg);
+                    messagesQueue.add(ImmutablePair.of(msg, null));
                 }
                 catch (SocketTimeoutException ignored) {
                     // readObject() timeout occurred

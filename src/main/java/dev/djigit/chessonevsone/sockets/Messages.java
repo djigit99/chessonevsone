@@ -4,5 +4,6 @@ public enum Messages {
     COLOR_REQUEST,
     WHITE_COLOR_RESPONSE,
     BLACK_COLOR_RESPONSE,
-    COLOR_RECEIVE
+    COLOR_RECEIVE,
+    OPP_MOVE
 }

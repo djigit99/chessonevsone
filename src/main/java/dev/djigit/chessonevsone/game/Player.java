@@ -1,22 +1,32 @@
 package dev.djigit.chessonevsone.game;
 
 import dev.djigit.chessonevsone.game.chessboard.ChessBoard;
+import dev.djigit.chessonevsone.game.chessboard.ChessBoardListener;
+import dev.djigit.chessonevsone.sockets.Messages;
 import dev.djigit.chessonevsone.sockets.PlayerSocket;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.net.URL;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public abstract class Player {
     private final Stage primaryStage;
     private Color color;
     protected PlayerSocket socket;
     protected GameBackView gameBackView;
+    private final ExecutorService listenForMessagesService;
+    private ChessBoardListener chessBoardListener;
+    private Future<?> listenForMessagesFuture;
 
     public Player(Stage stage) {
         this.primaryStage = stage;
+        this.listenForMessagesService = Executors.newSingleThreadExecutor();
     }
 
     void init() {
@@ -67,7 +77,16 @@ public abstract class Player {
         ChessBoard board = new ChessBoard(url, getColor());
         gameBackView.setChessBoard(board);
 
-        getPrimaryStage().setOnCloseRequest(we -> socket.close());
+        chessBoardListener = board.getChessBoardListener();
+
+        getPrimaryStage().setOnCloseRequest(we -> {
+            boolean isFinished = listenForMessagesFuture.cancel(true);
+            if (!isFinished)
+                System.out.println("ListenForMessages task has not been finished.");
+            listenForMessagesService.shutdownNow();
+
+            socket.close();
+        });
     }
 
     Stage getPrimaryStage() {
@@ -80,5 +99,20 @@ public abstract class Player {
 
     Color getColor() {
         return color;
+    }
+
+    protected void listenForMessages() {
+        listenForMessagesFuture = listenForMessagesService.submit(() -> {
+            while (socket.isConnectionAlive()) {
+                ImmutablePair<Messages, String> msg = socket.getMessagesQueue().poll();
+                if (msg != null) {
+                    processMessageFromQueue(msg);
+                }
+            }
+        });
+    }
+
+    private void processMessageFromQueue(ImmutablePair<Messages, String> msg) {
+        chessBoardListener.onUpdateFromPlayerReceived(msg);
     }
 }

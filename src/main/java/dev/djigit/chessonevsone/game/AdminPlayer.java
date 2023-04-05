@@ -90,6 +90,9 @@ public class AdminPlayer extends Player {
 
             Thread waitForOpponentThread = new Thread(() -> {
                 serverSocket().startServer(getColor());
+
+                listenForMessages();
+
                 Platform.runLater(() -> {
                     connectingStage.close();
                     initChessBoard();

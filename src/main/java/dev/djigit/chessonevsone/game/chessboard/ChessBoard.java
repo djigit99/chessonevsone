@@ -24,9 +24,9 @@ public class ChessBoard {
     private URL url;
     private ChessBoardListener chessBoardListener;
     private BorderPane chessBoardRootPane;
-    private Player.Color playerColor;
+    private final Player.Color playerColor;
     private ChessBoardState boardState;
-    private GameLogic gameLogic;
+    private final GameLogic gameLogic;
     private GameHistory gameHistory;
 
     public ChessBoard(URL url, Player.Color playerColor) {
@@ -141,5 +141,9 @@ public class ChessBoard {
     public void restoreState(ChessBoardSnapshot snapshot) {
         Map<CellModel.Coords, Piece> state = snapshot.getState();
         state.forEach((coords, piece) -> coordsToCell.get(coords).getLeft().setPiece(piece));
+    }
+
+    public ChessBoardListener getChessBoardListener() {
+        return chessBoardListener;
     }
 }

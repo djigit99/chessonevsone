@@ -1,6 +1,7 @@
 package dev.djigit.chessonevsone.sockets;
 
 import dev.djigit.chessonevsone.game.Player;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,8 +18,6 @@ public class GameCreatorSocket extends PlayerSocket {
     private Socket clientSocket;
     private ObjectInputStream objectReader;
     private ObjectOutputStream objectWriter;
-    private ConcurrentLinkedQueue<Messages> messagesQueue;
-    private volatile boolean connectionAlive = false;
     private ExecutorService executorService;
     private Future<?> readMessagesFuture;
 
@@ -40,7 +39,7 @@ public class GameCreatorSocket extends PlayerSocket {
         close();
         objectReader = null;
         objectWriter = null;
-        if (messagesQueue != null) messagesQueue.clear();
+        messagesQueue.clear();
         executorService = Executors.newSingleThreadExecutor();
     }
 
@@ -131,11 +130,24 @@ public class GameCreatorSocket extends PlayerSocket {
             while (connectionAlive) {
                 try {
                     Messages msg = (Messages) objectReader.readObject();
-                    messagesQueue.add(msg);
+                    if (msg.equals(Messages.OPP_MOVE)) {
+                        String move = (String) objectReader.readObject();
+                        messagesQueue.add(ImmutablePair.of(msg, move));
+                    } else {
+                        messagesQueue.add(ImmutablePair.of(msg, null));
+                    }
                 } catch (SocketTimeoutException ignored) {
-                    // readObject() timeout occurred
-                } catch (IOException | ClassNotFoundException e) {
-                    System.out.println("The creator socket stopped receiving messages from the client because of an error");
+                    System.out.println("Socket's read timeout occurred.");
+                }
+                catch (IOException e) {
+                    System.out.println("Can't read opponent's message.");
+                    throw new RuntimeException(e);
+                }
+                catch (ClassNotFoundException e) {
+                    System.out.println("Can't read opponent's message type.");
+                    throw new RuntimeException(e);
+                } catch (NullPointerException e) {
+                    System.out.println("NPE occurred.");
                     throw new RuntimeException(e);
                 }
             }

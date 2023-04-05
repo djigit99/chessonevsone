@@ -2,8 +2,8 @@ package dev.djigit.chessonevsone.game;
 
 import dev.djigit.chessonevsone.factories.FXMLLoaderFactory;
 import dev.djigit.chessonevsone.game.chessboard.ChessBoard;
-import dev.djigit.chessonevsone.game.chessboard.history.GameHistory;
 import dev.djigit.chessonevsone.game.chessboard.history.ChessBoardSnapshot;
+import dev.djigit.chessonevsone.game.chessboard.history.GameHistory;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -33,12 +33,12 @@ public class GameBackView {
         BorderPane parentNode = chessBoard.getRootPane();
         rootPane.setCenter(parentNode);
 
-        loadHistory();
+        createGameHistory();
 
         chessBoard.setGameHistory(history);
     }
 
-    private void loadHistory() {
+    private void createGameHistory() {
         history = new GameHistory(chessBoard.createSnapshot());
     }
 
