@@ -41,4 +41,9 @@ public class WaitForSelectedPieceState extends ChessBoardState {
             throw new IllegalStateException("Illegal cell state");
         }
     }
+
+    @Override
+    public void doOnUpdateFromPlayer() {
+        // do nothing
+    }
 }

@@ -15,11 +15,12 @@ public abstract class ChessBoardState {
         this.board = board;
     }
 
-    public abstract void doOnUpdate(CellModel.Coords coords);
-
     ChessBoard getBoard() {
         return board;
     }
+
+    public abstract void doOnUpdate(CellModel.Coords coords);
+    public abstract void doOnUpdateFromPlayer();
 
     public abstract void setCoordsToCellListeners(Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners);
 }

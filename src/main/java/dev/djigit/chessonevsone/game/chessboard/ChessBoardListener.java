@@ -34,7 +34,10 @@ public class ChessBoardListener {
             CellModel.Coords from = CellModel.Coords.valueOf(coords[0]);
             CellModel.Coords to = CellModel.Coords.valueOf(coords[1]);
 
-            Platform.runLater(() -> board.makeMove(from, to));
+            Platform.runLater(() -> {
+                board.makeMove(from, to);
+                board.getBoardState().doOnUpdateFromPlayer();
+            });
         }
     }
 }

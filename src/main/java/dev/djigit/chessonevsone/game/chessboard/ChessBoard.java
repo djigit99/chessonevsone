@@ -9,6 +9,7 @@ import dev.djigit.chessonevsone.game.chessboard.history.ChessBoardSnapshot;
 import dev.djigit.chessonevsone.game.chessboard.history.GameHistory;
 import dev.djigit.chessonevsone.game.chessboard.piece.*;
 import dev.djigit.chessonevsone.game.chessboard.state.ChessBoardState;
+import dev.djigit.chessonevsone.game.chessboard.state.WaitForOpponentMove;
 import dev.djigit.chessonevsone.game.chessboard.state.WaitForSelectedPieceState;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
@@ -32,7 +33,11 @@ public class ChessBoard {
     public ChessBoard(URL url, Player.Color playerColor) {
         this.url = url;
         this.playerColor = playerColor;
-        this.boardState = new WaitForSelectedPieceState(this);
+        if (playerColor.isWhite()) {
+            this.boardState = new WaitForSelectedPieceState(this);
+        } else {
+            this.boardState = new WaitForOpponentMove(this);
+        }
         this.gameLogic = new GameLogic(this);
 
         initData();
@@ -72,7 +77,7 @@ public class ChessBoard {
 
             chessBoardController.getCellPanesAndCoords().forEach(paneAndCoords -> {
                 Cell newCell = new Cell(paneAndCoords.getCellPane());
-                newCell.setPiece(coordsToPiece.getOrDefault(paneAndCoords.getCoords(),null));
+                newCell.setPiece(coordsToPiece.getOrDefault(paneAndCoords.getCoords(), null));
                 CellListener cellListener = newCell.getCellListener();
                 coordsToCell.put(newCell.getCellViewModel().getModel().getCoords(), ImmutablePair.of(newCell, cellListener));
             });
