@@ -4,7 +4,7 @@ import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellListener;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.chessboard.state.ChessBoardState;
-import dev.djigit.chessonevsone.sockets.Messages;
+import dev.djigit.chessonevsone.sockets.MessageType;
 import javafx.application.Platform;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
@@ -26,10 +26,10 @@ public class ChessBoardListener {
         chessBoardState.doOnUpdate(coords);
     }
 
-    public void onUpdateFromPlayerReceived(ImmutablePair<Messages, String> msg) {
-        Messages msgType = msg.getLeft();
+    public void onUpdateFromPlayerReceived(ImmutablePair<MessageType, String> msg) {
+        MessageType msgType = msg.getLeft();
 
-        if (msgType.equals(Messages.OPP_MOVE)) {
+        if (msgType.equals(MessageType.OPP_MOVE)) {
             String[] coords = msg.getRight().split(" ");
             CellModel.Coords from = CellModel.Coords.valueOf(coords[0]);
             CellModel.Coords to = CellModel.Coords.valueOf(coords[1]);

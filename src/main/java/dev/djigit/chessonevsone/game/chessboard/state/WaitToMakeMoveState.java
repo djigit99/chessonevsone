@@ -36,6 +36,9 @@ public class WaitToMakeMoveState extends ChessBoardState {
             boolean isMovePossible = getBoard().isMovePossible(acquiredCell.getPiece(), pieceToMove, coords);
             if (isMovePossible) {
                 getBoard().makeMove(pieceToMove, coords);
+                getBoard().getPlayerListener().onMakeMove(
+                        acquiredCell.getCellViewModel().getModel().getCoords(),
+                        cell.getCellViewModel().getModel().getCoords());
                 getBoard().changeState(new WaitForOpponentMove(getBoard()));
             }
         } else {

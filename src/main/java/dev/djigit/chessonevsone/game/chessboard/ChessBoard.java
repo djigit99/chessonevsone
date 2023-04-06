@@ -2,6 +2,7 @@ package dev.djigit.chessonevsone.game.chessboard;
 
 import dev.djigit.chessonevsone.factories.FXMLLoaderFactory;
 import dev.djigit.chessonevsone.game.Player;
+import dev.djigit.chessonevsone.game.PlayerListener;
 import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellListener;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
@@ -26,19 +27,21 @@ public class ChessBoard {
     private ChessBoardListener chessBoardListener;
     private BorderPane chessBoardRootPane;
     private final Player.Color playerColor;
+    private final PlayerListener playerListener;
     private ChessBoardState boardState;
     private final GameLogic gameLogic;
     private GameHistory gameHistory;
 
-    public ChessBoard(URL url, Player.Color playerColor) {
+    public ChessBoard(URL url, Player player) {
         this.url = url;
-        this.playerColor = playerColor;
+        this.playerColor = player.getColor();
         if (playerColor.isWhite()) {
             this.boardState = new WaitForSelectedPieceState(this);
         } else {
             this.boardState = new WaitForOpponentMove(this);
         }
         this.gameLogic = new GameLogic(this);
+        this.playerListener = player.getListener();
 
         initData();
     }
@@ -150,5 +153,9 @@ public class ChessBoard {
 
     public ChessBoardListener getChessBoardListener() {
         return chessBoardListener;
+    }
+
+    public PlayerListener getPlayerListener() {
+        return playerListener;
     }
 }

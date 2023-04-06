@@ -1,6 +1,6 @@
 package dev.djigit.chessonevsone.sockets;
 
-public enum Messages {
+public enum MessageType {
     COLOR_REQUEST,
     WHITE_COLOR_RESPONSE,
     BLACK_COLOR_RESPONSE,

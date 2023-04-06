@@ -1,23 +1,19 @@
 package dev.djigit.chessonevsone.sockets;
 
 import dev.djigit.chessonevsone.game.Player;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
-import java.util.concurrent.*;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class GameClientSocket extends PlayerSocket {
     private static GameClientSocket CLIENT_SOCKET_INSTANCE = null;
     private Socket socket;
-    private ObjectOutputStream objectWriter;
-    private ObjectInputStream objectReader;
     private Consumer<Player.Color> setColorConsumer;
-    private ExecutorService executorService;
     private Future<?> readMessagesFuture;
 
     // Use Singleton to avoid the socket is closing the connection because
@@ -36,14 +32,6 @@ public class GameClientSocket extends PlayerSocket {
 
     public void setSetColorConsumer(Consumer<Player.Color> setColorConsumer) {
         this.setColorConsumer = setColorConsumer;
-    }
-
-    private void cleanUp() {
-        close();
-        objectReader = null;
-        objectWriter = null;
-        messagesQueue.clear();
-        executorService = Executors.newSingleThreadExecutor();
     }
 
     public void connect() {
@@ -66,24 +54,24 @@ public class GameClientSocket extends PlayerSocket {
         objectReader = new ObjectInputStream(socket.getInputStream());
 
         System.out.println("Client: Request a color from the server.");
-        objectWriter.writeObject(Messages.COLOR_REQUEST);
+        objectWriter.writeObject(MessageType.COLOR_REQUEST);
         objectWriter.flush();
 
         System.out.println("Client: Wait for the color response...");
-        Messages colorResponse = (Messages) objectReader.readObject();
+        MessageType colorResponse = (MessageType) objectReader.readObject();
         setColorForClient(colorResponse);
 
         System.out.println("Client: Send 'color receive' response to server.");
-        objectWriter.writeObject(Messages.COLOR_RECEIVE);
+        objectWriter.writeObject(MessageType.COLOR_RECEIVE);
         objectWriter.flush();
 
         readMessagesFuture = executorService.submit(getMessageQueueRunnable());
     }
 
-    private void setColorForClient(Messages colorMsg) {
-        if (colorMsg.equals(Messages.WHITE_COLOR_RESPONSE))
+    private void setColorForClient(MessageType colorMsg) {
+        if (colorMsg.equals(MessageType.WHITE_COLOR_RESPONSE))
             setColorConsumer.accept(Player.Color.WHITE);
-        else if (colorMsg.equals(Messages.BLACK_COLOR_RESPONSE))
+        else if (colorMsg.equals(MessageType.BLACK_COLOR_RESPONSE))
             setColorConsumer.accept(Player.Color.BLACK);
     }
 
@@ -109,20 +97,14 @@ public class GameClientSocket extends PlayerSocket {
         }
     }
 
-    private Runnable getMessageQueueRunnable() {
-        return () -> {
-            while (connectionAlive) {
-                try {
-                    Messages msg = (Messages) objectReader.readObject();
-                    messagesQueue.add(ImmutablePair.of(msg, null));
-                }
-                catch (SocketTimeoutException ignored) {
-                    // readObject() timeout occurred
-                }
-                catch (IOException | ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        };
+    @Override
+    public void sendMessage(MessageType msgType, String msg) {
+        try {
+            objectWriter.writeObject(msgType);
+            objectWriter.writeObject(msg);
+        } catch (IOException e) {
+            System.out.println("Unable to send message via client socket.");
+            throw new RuntimeException(e);
+        }
     }
 }

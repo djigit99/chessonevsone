@@ -1,7 +1,7 @@
 package dev.djigit.chessonevsone;
 
 import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
-import dev.djigit.chessonevsone.sockets.Messages;
+import dev.djigit.chessonevsone.sockets.MessageType;
 
 import java.io.*;
 import java.net.Socket;
@@ -15,15 +15,15 @@ public class TestChessClient {
 
     private static void connect() throws IOException, ClassNotFoundException {
         System.out.println("Client: Request a color from the server.");
-        out.writeObject(Messages.COLOR_REQUEST);
+        out.writeObject(MessageType.COLOR_REQUEST);
         out.flush();
 
         System.out.println("Client: Wait for the color response...");
-        Messages colorResponse = (Messages) in.readObject();
+        MessageType colorResponse = (MessageType) in.readObject();
         System.out.println("We are: " + colorResponse);
 
         System.out.println("Client: Send 'color receive' response to server.");
-        out.writeObject(Messages.COLOR_RECEIVE);
+        out.writeObject(MessageType.COLOR_RECEIVE);
         out.flush();
     }
 
@@ -42,7 +42,7 @@ public class TestChessClient {
             CellModel.Coords from = CellModel.Coords.valueOf(coords[0]);
             CellModel.Coords to = CellModel.Coords.valueOf(coords[1]);
 
-            out.writeObject(Messages.OPP_MOVE);
+            out.writeObject(MessageType.OPP_MOVE);
             out.writeObject(line);
 
             System.out.printf("You entered from: %s%n", from);

@@ -2,7 +2,8 @@ package dev.djigit.chessonevsone.game;
 
 import dev.djigit.chessonevsone.game.chessboard.ChessBoard;
 import dev.djigit.chessonevsone.game.chessboard.ChessBoardListener;
-import dev.djigit.chessonevsone.sockets.Messages;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
+import dev.djigit.chessonevsone.sockets.MessageType;
 import dev.djigit.chessonevsone.sockets.PlayerSocket;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -23,10 +24,12 @@ public abstract class Player {
     private final ExecutorService listenForMessagesService;
     private ChessBoardListener chessBoardListener;
     private Future<?> listenForMessagesFuture;
+    private final PlayerListener playerListener;
 
     public Player(Stage stage) {
         this.primaryStage = stage;
         this.listenForMessagesService = Executors.newSingleThreadExecutor();
+        this.playerListener = new PlayerListener(this);
     }
 
     void init() {
@@ -74,7 +77,7 @@ public abstract class Player {
             url = getClass().getResource(CHESSBOARD_FOR_BLACK_SCENE_URL);
         }
 
-        ChessBoard board = new ChessBoard(url, getColor());
+        ChessBoard board = new ChessBoard(url, this);
         gameBackView.setChessBoard(board);
 
         chessBoardListener = board.getChessBoardListener();
@@ -97,14 +100,18 @@ public abstract class Player {
         this.color = color;
     }
 
-    Color getColor() {
+    public Color getColor() {
         return color;
+    }
+
+    void sendMove(CellModel.Coords from, CellModel.Coords to) {
+        socket.sendMessage(MessageType.OPP_MOVE, from.name() + " " + to.name());
     }
 
     protected void listenForMessages() {
         listenForMessagesFuture = listenForMessagesService.submit(() -> {
             while (socket.isConnectionAlive()) {
-                ImmutablePair<Messages, String> msg = socket.getMessagesQueue().poll();
+                ImmutablePair<MessageType, String> msg = socket.getMessagesQueue().poll();
                 if (msg != null) {
                     processMessageFromQueue(msg);
                 }
@@ -112,7 +119,13 @@ public abstract class Player {
         });
     }
 
-    private void processMessageFromQueue(ImmutablePair<Messages, String> msg) {
+    private void processMessageFromQueue(ImmutablePair<MessageType, String> msg) {
         chessBoardListener.onUpdateFromPlayerReceived(msg);
+    }
+
+
+
+    public PlayerListener getListener() {
+        return playerListener;
     }
 }

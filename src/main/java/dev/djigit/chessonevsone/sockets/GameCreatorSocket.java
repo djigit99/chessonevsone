@@ -1,7 +1,6 @@
 package dev.djigit.chessonevsone.sockets;
 
 import dev.djigit.chessonevsone.game.Player;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,16 +8,14 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.concurrent.*;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class GameCreatorSocket extends PlayerSocket {
 
     private static GameCreatorSocket CREATOR_SOCKET_INSTANCE = null;
     private ServerSocket socket;
     private Socket clientSocket;
-    private ObjectInputStream objectReader;
-    private ObjectOutputStream objectWriter;
-    private ExecutorService executorService;
     private Future<?> readMessagesFuture;
 
     // Use Singleton to avoid the socket is closing the connection because
@@ -33,14 +30,6 @@ public class GameCreatorSocket extends PlayerSocket {
         }
         CREATOR_SOCKET_INSTANCE.cleanUp();
         return CREATOR_SOCKET_INSTANCE;
-    }
-
-    private void cleanUp() {
-        close();
-        objectReader = null;
-        objectWriter = null;
-        messagesQueue.clear();
-        executorService = Executors.newSingleThreadExecutor();
     }
 
     public void startServer(Player.Color creatorColor) {
@@ -69,8 +58,8 @@ public class GameCreatorSocket extends PlayerSocket {
             objectReader = new ObjectInputStream(clientSocket.getInputStream());
             objectWriter = new ObjectOutputStream(clientSocket.getOutputStream());
 
-            Messages colorRequest = (Messages) objectReader.readObject();
-            if (colorRequest.equals(Messages.COLOR_REQUEST))
+            MessageType colorRequest = (MessageType) objectReader.readObject();
+            if (colorRequest.equals(MessageType.COLOR_REQUEST))
                 System.out.println("Server: Color request received.");
 
             System.out.println("Server: Send the color for the client.");
@@ -79,8 +68,8 @@ public class GameCreatorSocket extends PlayerSocket {
 
             System.out.println("Server: Waiting for a client's confirmation message response.");
 
-            Messages confirmResponse = (Messages) objectReader.readObject();
-            if (confirmResponse.equals(Messages.COLOR_RECEIVE))
+            MessageType confirmResponse = (MessageType) objectReader.readObject();
+            if (confirmResponse.equals(MessageType.COLOR_RECEIVE))
                 System.out.println("Server: Client received the color.");
 
             readMessagesFuture = executorService.submit(getMessageQueueRunnable());
@@ -92,11 +81,11 @@ public class GameCreatorSocket extends PlayerSocket {
         }
     }
 
-    private Messages getColorResponse(Player.Color createColor) {
+    private MessageType getColorResponse(Player.Color createColor) {
         if (createColor.isWhite())
-            return Messages.BLACK_COLOR_RESPONSE;
+            return MessageType.BLACK_COLOR_RESPONSE;
         else
-            return Messages.WHITE_COLOR_RESPONSE;
+            return MessageType.WHITE_COLOR_RESPONSE;
     }
 
     @Override
@@ -125,32 +114,14 @@ public class GameCreatorSocket extends PlayerSocket {
         }
     }
 
-    private Runnable getMessageQueueRunnable() {
-        return () -> {
-            while (connectionAlive) {
-                try {
-                    Messages msg = (Messages) objectReader.readObject();
-                    if (msg.equals(Messages.OPP_MOVE)) {
-                        String move = (String) objectReader.readObject();
-                        messagesQueue.add(ImmutablePair.of(msg, move));
-                    } else {
-                        messagesQueue.add(ImmutablePair.of(msg, null));
-                    }
-                } catch (SocketTimeoutException ignored) {
-                    System.out.println("Socket's read timeout occurred.");
-                }
-                catch (IOException e) {
-                    System.out.println("Can't read opponent's message.");
-                    throw new RuntimeException(e);
-                }
-                catch (ClassNotFoundException e) {
-                    System.out.println("Can't read opponent's message type.");
-                    throw new RuntimeException(e);
-                } catch (NullPointerException e) {
-                    System.out.println("NPE occurred.");
-                    throw new RuntimeException(e);
-                }
-            }
-        };
+    @Override
+    public void sendMessage(MessageType msgType, String msg) {
+        try {
+            objectWriter.writeObject(msgType);
+            objectWriter.writeObject(msg);
+        } catch (IOException e) {
+            System.out.println("Unable to send message via client socket.");
+            throw new RuntimeException(e);
+        }
     }
 }
