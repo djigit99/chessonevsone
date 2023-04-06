@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class WaitForSelectedPieceState extends ChessBoardState {
     private Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners;
-    private CellModel.Coords pieceToMove;
 
     public WaitForSelectedPieceState(ChessBoard board) {
         super(board);
@@ -32,10 +31,9 @@ public class WaitForSelectedPieceState extends ChessBoardState {
             if (!(cell.hasPiece() && cell.isFriendPiece(getBoard().getPlayerColor()))) // not possible first click
                 return;
             cellListener.onUpdateFromBoard(CellModel.State.ACQUIRED);
-            pieceToMove = coords;
 
             WaitToMakeMoveState waitToMakeMoveState = new WaitToMakeMoveState(getBoard());
-            waitToMakeMoveState.setPieceToMove(pieceToMove);
+            waitToMakeMoveState.setPieceToMove(coords);
             getBoard().changeState(waitToMakeMoveState);
         } else {
             throw new IllegalStateException("Illegal cell state");

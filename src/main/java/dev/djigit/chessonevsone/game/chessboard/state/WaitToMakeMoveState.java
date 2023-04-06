@@ -40,6 +40,8 @@ public class WaitToMakeMoveState extends ChessBoardState {
                         acquiredCell.getCellViewModel().getModel().getCoords(),
                         cell.getCellViewModel().getModel().getCoords());
                 getBoard().changeState(new WaitForOpponentMove(getBoard()));
+            } else {
+                getBoard().changeState(new WaitForSelectedPieceState(getBoard()));
             }
         } else {
             getBoard().changeState(new WaitForSelectedPieceState(getBoard()));
