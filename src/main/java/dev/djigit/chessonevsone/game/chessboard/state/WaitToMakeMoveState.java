@@ -4,20 +4,21 @@ import dev.djigit.chessonevsone.game.chessboard.ChessBoard;
 import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellListener;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
+import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.Map;
 
 public class WaitToMakeMoveState extends ChessBoard.ChessBoardState {
-    private CellModel.Coords pieceToMove;
+    private CellModel.Coords pieceToMoveCoords;
     private Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners;
 
     public WaitToMakeMoveState(ChessBoard board) {
         super(board);
     }
 
-    public void setPieceToMove(CellModel.Coords pieceToMove) {
-        this.pieceToMove = pieceToMove;
+    public void setPieceToMoveCoords(CellModel.Coords pieceToMoveCoords) {
+        this.pieceToMoveCoords = pieceToMoveCoords;
     }
 
     @Override
@@ -27,15 +28,15 @@ public class WaitToMakeMoveState extends ChessBoard.ChessBoardState {
 
     @Override
     public void doOnUpdate(CellModel.Coords coords) {
-        Cell acquiredCell = coordsToCellListeners.get(pieceToMove).getLeft();
-        CellListener acquiredCellListener = coordsToCellListeners.get(pieceToMove).getRight();
+        Cell acquiredCell = coordsToCellListeners.get(pieceToMoveCoords).getLeft();
+        CellListener acquiredCellListener = coordsToCellListeners.get(pieceToMoveCoords).getRight();
         Cell cell = coordsToCellListeners.get(coords).getLeft();
         CellModel.State cellState = cell.getCellViewModel().getModel().getState();
 
         if (cellState.equals(CellModel.State.RELEASED)) {
-            boolean isMovePossible = getBoard().isMovePossible(acquiredCell.getPiece(), pieceToMove, coords);
+            boolean isMovePossible = getBoard().isMovePossible(acquiredCell.getPiece(), pieceToMoveCoords, coords);
             if (isMovePossible) {
-                getBoard().makeMove(pieceToMove, coords);
+                getBoard().makeMove(pieceToMoveCoords, coords);
                 getBoard().getPlayerListener().onMakeMove(
                         acquiredCell.getCellViewModel().getModel().getCoords(),
                         cell.getCellViewModel().getModel().getCoords());

@@ -1,18 +1,24 @@
 package dev.djigit.chessonevsone.game.chessboard.history;
 
+import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
+
 public class SnapshotLinkedList {
-    private ChessBoardSnapshot snapshot;
+    private final ChessBoardSnapshot snapshot;
+    private final Piece lastMovePiece;
     private SnapshotLinkedList next;
     private SnapshotLinkedList prev;
-    private SnapshotLinkedList start;
 
-    public SnapshotLinkedList(ChessBoardSnapshot snapshot) {
+    public SnapshotLinkedList(ChessBoardSnapshot snapshot, Piece lastMovePiece) {
         this.snapshot = snapshot;
-        next = prev = start = null;
+        this.lastMovePiece = lastMovePiece;
+        next = prev  = null;
     }
 
-    public ChessBoardSnapshot value() {
+    public ChessBoardSnapshot snapshot() {
         return snapshot;
+    }
+    public Piece lastMovePiece() {
+        return lastMovePiece;
     }
 
     public SnapshotLinkedList getNext() {
@@ -23,19 +29,14 @@ public class SnapshotLinkedList {
         return prev;
     }
 
-    public SnapshotLinkedList getStart() {
-        return start;
-    }
-
-    public SnapshotLinkedList addToLast(ChessBoardSnapshot snapshot) throws IllegalStateException {
+    public SnapshotLinkedList addToLast(ChessBoardSnapshot snapshot, Piece lastMovePiece) throws IllegalStateException {
         if(next != null) {
             throw new IllegalStateException("Adding new snapshot inside the list is not permitted");
         }
 
-        SnapshotLinkedList tail = new SnapshotLinkedList(snapshot);
+        SnapshotLinkedList tail = new SnapshotLinkedList(snapshot, lastMovePiece);
         next = tail;
         tail.prev = this;
-        tail.start = start;
         return tail;
     }
 

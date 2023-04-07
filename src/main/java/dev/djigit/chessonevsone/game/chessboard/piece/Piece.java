@@ -7,10 +7,12 @@ import javafx.scene.image.ImageView;
 
 
 import java.util.List;
+import java.util.Optional;
 
 public abstract class Piece {
     private Player.Color pieceColor;
     private ImageView imageView;
+    private LastMove lastMove;
 
     public Piece(Player.Color pieceColor, ImageView imageView) {
         this.pieceColor = pieceColor;
@@ -29,8 +31,32 @@ public abstract class Piece {
         return imageView;
     }
 
-    public void setImageView(ImageView imageView) {
-        this.imageView = imageView;
+    public void setLastMove(LastMove lastMove) {
+        this.lastMove = lastMove;
+    }
+
+    public Optional<LastMove> getLastMove() {
+        if (lastMove == null)
+            return Optional.empty();
+        return Optional.of(lastMove);
+    }
+
+    public static class LastMove {
+        private CellModel.Coords from;
+        private CellModel.Coords to;
+
+        public LastMove(CellModel.Coords from, CellModel.Coords to) {
+            this.from = from;
+            this.to = to;
+        }
+
+        public CellModel.Coords getFrom() {
+            return from;
+        }
+
+        public CellModel.Coords getTo() {
+            return to;
+        }
     }
 
     public abstract List<CellModel.Coords> getMoves(CellModel.Coords from);

@@ -10,12 +10,16 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import java.util.Map;
 
 public class ChessBoardListener {
-    private Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners;
-    private ChessBoard board;
+    private final Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners;
+    private final ChessBoard board;
+    private final GameLogic gameLogic;
 
-    public ChessBoardListener(Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners, ChessBoard board) {
+    public ChessBoardListener(Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners,
+                              ChessBoard board,
+                              GameLogic gameLogic) {
         this.coordsToCellListeners = coordsToCellListeners;
         this.board = board;
+        this.gameLogic = gameLogic;
     }
 
     public void onUpdateFromCellReceived(CellModel.Coords coords) {
@@ -34,6 +38,7 @@ public class ChessBoardListener {
             CellModel.Coords to = CellModel.Coords.valueOf(coords[1]);
 
             Platform.runLater(() -> {
+                gameLogic.isMoveEnPassant(from, to);
                 board.makeMove(from, to);
                 board.getBoardState().setCoordsToCellListeners(coordsToCellListeners);
                 board.getBoardState().doOnUpdateFromPlayer();

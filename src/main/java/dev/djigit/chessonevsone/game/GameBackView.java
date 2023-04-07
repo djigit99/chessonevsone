@@ -37,6 +37,8 @@ public class GameBackView {
         createGameHistory();
 
         chessBoard.setGameHistory(history);
+
+        chessBoard.postInitData();
     }
 
     private void createGameHistory() {

@@ -87,12 +87,23 @@ public class ChessBoard {
                 coordsToCell.put(paneAndCoords.getCoords(), ImmutablePair.of(newCell, cellListener));
             });
 
-            this.chessBoardListener = new ChessBoardListener(coordsToCell, this);
-            coordsToCell.values().forEach(
-                    pair -> pair.getLeft().getCellListener().setChessBoardListener(chessBoardListener));
+            this.chessBoardListener = new ChessBoardListener(coordsToCell, this, gameLogic);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void postInitData() {
+
+        // set chessboard listener for all cell listeners
+        coordsToCell.values().forEach(
+                pair -> pair.getLeft().getCellListener().setChessBoardListener(chessBoardListener));
+
+        // set history for all pawns to detect en passant in the game
+        coordsToActualPiece.values().forEach(p -> {
+            if (p instanceof Pawn)
+                ((Pawn) p).setGameHistory(gameHistory);
+        });
     }
 
     public Player.Color getPlayerColor() {
@@ -111,9 +122,25 @@ public class ChessBoard {
         coordsToActualPiece.put(from, null);
         toCell.setPiece(movingPiece);
         coordsToActualPiece.put(to, movingPiece);
+        movingPiece.setLastMove(new Piece.LastMove(from, to));
+
+        // moves needed to clean opponent's piece after
+        if (movingPiece instanceof Pawn && ((Pawn) movingPiece).isLastMoveEnPassant()) {
+            Cell cellToClean = getOpponentsPawnToDelete(movingPiece);
+            cellToClean.cleanPiece();
+            coordsToActualPiece.put(cellToClean.getCellViewModel().getModel().getCoords(), null);
+        }
 
         ChessBoardSnapshot snapshot = createSnapshot();
-        gameHistory.addMove(snapshot);
+        gameHistory.addMove(snapshot, movingPiece);
+    }
+
+    private Cell getOpponentsPawnToDelete(Piece piece) {
+        if (piece.getPieceColor().isWhite()) {
+            return coordsToCell.get(piece.getLastMove().get().getTo().getByCoords((short) 0, (short) -1)).getLeft();
+        } else {
+            return coordsToCell.get(piece.getLastMove().get().getTo().getByCoords((short) 0, (short) 1)).getLeft();
+        }
     }
 
     public ChessBoardState getBoardState() {

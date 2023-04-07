@@ -33,7 +33,7 @@ public class WaitForSelectedPieceState extends ChessBoard.ChessBoardState {
             cellListener.onUpdateFromBoard(CellModel.State.ACQUIRED);
 
             WaitToMakeMoveState waitToMakeMoveState = new WaitToMakeMoveState(getBoard());
-            waitToMakeMoveState.setPieceToMove(coords);
+            waitToMakeMoveState.setPieceToMoveCoords(coords);
             changeState(waitToMakeMoveState);
         } else {
             throw new IllegalStateException("Illegal cell state");

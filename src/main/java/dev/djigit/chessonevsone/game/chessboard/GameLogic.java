@@ -2,6 +2,7 @@ package dev.djigit.chessonevsone.game.chessboard;
 
 import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
+import dev.djigit.chessonevsone.game.chessboard.piece.Pawn;
 import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
 
 import java.util.List;
@@ -28,5 +29,19 @@ public class GameLogic {
         Cell[] cellsOnPath = chessBoard.getCellsOnPath(path);
 
         return piece.isMovePossible(cellsOnPath);
+    }
+
+    public boolean isMoveEnPassant(CellModel.Coords from, CellModel.Coords to) {
+        Cell[] cellsOnPath = chessBoard.getCellsOnPath(new CellModel.Coords[] {from, to});
+        Cell pieceCell = cellsOnPath[0];
+        Cell toCell = cellsOnPath[1];
+        Piece piece = pieceCell.getPiece();
+
+        if (piece instanceof Pawn && from.getX() != to.getX() && !toCell.hasPiece()) {
+            ((Pawn) piece).markLastMoveEnPassant();
+            return true;
+        }
+
+        return false;
     }
 }
