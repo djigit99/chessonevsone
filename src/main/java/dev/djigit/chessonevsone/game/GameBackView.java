@@ -5,7 +5,6 @@ import dev.djigit.chessonevsone.game.chessboard.ChessBoard;
 import dev.djigit.chessonevsone.game.chessboard.history.ChessBoardSnapshot;
 import dev.djigit.chessonevsone.game.chessboard.history.GameHistory;
 import dev.djigit.chessonevsone.game.chessboard.state.LookInHistoryState;
-import dev.djigit.chessonevsone.game.chessboard.state.WaitForSelectedPieceState;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -62,7 +61,7 @@ public class GameBackView {
             nextState.ifPresent(chessBoard::restoreSnapshot);
             if (chessBoard.getBoardState() instanceof LookInHistoryState
                 && history.isLastMove()) {
-                chessBoard.getBoardState().changeState(new WaitForSelectedPieceState(chessBoard));
+                chessBoard.getBoardState().changeToPreviousState();
             }
         });
     }
