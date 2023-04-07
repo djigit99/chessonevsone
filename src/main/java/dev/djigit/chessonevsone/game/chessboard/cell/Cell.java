@@ -10,7 +10,7 @@ import javafx.scene.layout.Pane;
 import static dev.djigit.chessonevsone.game.chessboard.cell.CellModel.Coords.getCordsByValue;
 
 public class Cell {
-    private Pane cellPane;
+    private final Pane cellPane;
     private CellViewModel cellViewModel;
     private final String initialStyle;
     private CellListener cellListener;
@@ -71,7 +71,9 @@ public class Cell {
     }
 
     public Piece cleanPiece() {
-        cellPane.getChildren().remove(0);
+        if (cellPane.getChildren().size() > 0) {
+            cellPane.getChildren().remove(0);
+        }
         Piece removedPiece = piece;
         piece = null;
         return removedPiece;

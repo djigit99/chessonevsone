@@ -8,12 +8,12 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.Map;
 
-public class WaitToMakeMoveState extends ChessBoardState {
+public class WaitToMakeMoveState extends ChessBoard.ChessBoardState {
     private CellModel.Coords pieceToMove;
     private Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners;
 
-    public WaitToMakeMoveState(ChessBoard chessBoard) {
-        super(chessBoard);
+    public WaitToMakeMoveState(ChessBoard board) {
+        super(board);
     }
 
     public void setPieceToMove(CellModel.Coords pieceToMove) {
@@ -39,12 +39,12 @@ public class WaitToMakeMoveState extends ChessBoardState {
                 getBoard().getPlayerListener().onMakeMove(
                         acquiredCell.getCellViewModel().getModel().getCoords(),
                         cell.getCellViewModel().getModel().getCoords());
-                getBoard().changeState(new WaitForOpponentMove(getBoard()));
+                changeState(new WaitForOpponentMoveState(getBoard()));
             } else {
-                getBoard().changeState(new WaitForSelectedPieceState(getBoard()));
+                changeState(new WaitForSelectedPieceState(getBoard()));
             }
         } else {
-            getBoard().changeState(new WaitForSelectedPieceState(getBoard()));
+            changeState(new WaitForSelectedPieceState(getBoard()));
         }
 
         // common for both cell states

@@ -3,7 +3,6 @@ package dev.djigit.chessonevsone.game.chessboard;
 import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellListener;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
-import dev.djigit.chessonevsone.game.chessboard.state.ChessBoardState;
 import dev.djigit.chessonevsone.sockets.MessageType;
 import javafx.application.Platform;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -20,7 +19,7 @@ public class ChessBoardListener {
     }
 
     public void onUpdateFromCellReceived(CellModel.Coords coords) {
-        ChessBoardState chessBoardState = board.getBoardState();
+        ChessBoard.ChessBoardState chessBoardState = board.getBoardState();
         chessBoardState.setCoordsToCellListeners(coordsToCellListeners);
 
         chessBoardState.doOnUpdate(coords);
@@ -36,6 +35,7 @@ public class ChessBoardListener {
 
             Platform.runLater(() -> {
                 board.makeMove(from, to);
+                board.getBoardState().setCoordsToCellListeners(coordsToCellListeners);
                 board.getBoardState().doOnUpdateFromPlayer();
             });
         }

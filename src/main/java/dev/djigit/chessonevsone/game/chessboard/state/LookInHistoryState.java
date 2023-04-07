@@ -4,13 +4,16 @@ import dev.djigit.chessonevsone.game.chessboard.ChessBoard;
 import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellListener;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
+import dev.djigit.chessonevsone.game.chessboard.history.GameHistory;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.Map;
 
-public class WaitForOpponentMove extends ChessBoardState {
+public class LookInHistoryState extends ChessBoard.ChessBoardState {
 
-    public WaitForOpponentMove(ChessBoard board) {
+    private Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners;
+
+    public LookInHistoryState(ChessBoard board) {
         super(board);
     }
 
@@ -21,11 +24,16 @@ public class WaitForOpponentMove extends ChessBoardState {
 
     @Override
     public void doOnUpdateFromPlayer() {
-        getBoard().changeState(new WaitForSelectedPieceState(getBoard()));
+        GameHistory history = getBoard().getGameHistory();
+        getBoard().restoreSnapshot(history.changeToLatest());
+        changeState(new WaitForSelectedPieceState(getBoard()));
+
+        coordsToCellListeners.values()
+                .forEach(ccL -> ccL.getRight().onUpdateFromBoard(CellModel.State.RELEASED));
     }
 
     @Override
     public void setCoordsToCellListeners(Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners) {
-        // do nothing
+        this.coordsToCellListeners = coordsToCellListeners;
     }
 }

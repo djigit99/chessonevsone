@@ -30,4 +30,13 @@ public class GameHistory {
         }
         return Optional.empty();
     }
+
+    public ChessBoardSnapshot changeToLatest() {
+        curStateIt = history;
+        return history.value();
+    }
+
+    public boolean isLastMove() {
+        return history == curStateIt;
+    }
 }

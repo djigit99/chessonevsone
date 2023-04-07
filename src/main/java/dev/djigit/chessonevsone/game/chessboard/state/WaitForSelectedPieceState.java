@@ -8,7 +8,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.Map;
 
-public class WaitForSelectedPieceState extends ChessBoardState {
+public class WaitForSelectedPieceState extends ChessBoard.ChessBoardState {
     private Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners;
 
     public WaitForSelectedPieceState(ChessBoard board) {
@@ -34,7 +34,7 @@ public class WaitForSelectedPieceState extends ChessBoardState {
 
             WaitToMakeMoveState waitToMakeMoveState = new WaitToMakeMoveState(getBoard());
             waitToMakeMoveState.setPieceToMove(coords);
-            getBoard().changeState(waitToMakeMoveState);
+            changeState(waitToMakeMoveState);
         } else {
             throw new IllegalStateException("Illegal cell state");
         }

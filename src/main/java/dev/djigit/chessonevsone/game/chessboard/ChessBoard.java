@@ -9,8 +9,7 @@ import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.chessboard.history.ChessBoardSnapshot;
 import dev.djigit.chessonevsone.game.chessboard.history.GameHistory;
 import dev.djigit.chessonevsone.game.chessboard.piece.*;
-import dev.djigit.chessonevsone.game.chessboard.state.ChessBoardState;
-import dev.djigit.chessonevsone.game.chessboard.state.WaitForOpponentMove;
+import dev.djigit.chessonevsone.game.chessboard.state.WaitForOpponentMoveState;
 import dev.djigit.chessonevsone.game.chessboard.state.WaitForSelectedPieceState;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
@@ -23,6 +22,7 @@ import java.util.Map;
 
 public class ChessBoard {
     private final Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCell = new HashMap<>();
+    private Map<CellModel.Coords, Piece> coordsToActualPiece;
     private URL url;
     private ChessBoardListener chessBoardListener;
     private BorderPane chessBoardRootPane;
@@ -38,7 +38,7 @@ public class ChessBoard {
         if (playerColor.isWhite()) {
             this.boardState = new WaitForSelectedPieceState(this);
         } else {
-            this.boardState = new WaitForOpponentMove(this);
+            this.boardState = new WaitForOpponentMoveState(this);
         }
         this.gameLogic = new GameLogic(this);
         this.playerListener = player.getListener();
@@ -49,7 +49,7 @@ public class ChessBoard {
     private void initData() {
 
         try {
-            Map<CellModel.Coords, Piece> coordsToPiece = new HashMap<>();
+            coordsToActualPiece = new HashMap<>();
             ChessBoardController chessBoardController;
             FXMLLoader loader = FXMLLoaderFactory.getFXMLLoader(url);
 
@@ -63,26 +63,28 @@ public class ChessBoard {
                 Player.Color pColor = pInfo[1].equals("w") ? Player.Color.WHITE : Player.Color.BLACK;
 
                 if ("pawn".equals(pName))
-                    coordsToPiece.put(pCoords, new Pawn(pColor, imgVAN.getImageView()));
+                    coordsToActualPiece.put(pCoords, new Pawn(pColor, imgVAN.getImageView()));
                 else if ("rook".equals(pName))
-                    coordsToPiece.put(pCoords, new Rook(pColor, imgVAN.getImageView()));
+                    coordsToActualPiece.put(pCoords, new Rook(pColor, imgVAN.getImageView()));
                 else if ("knight".equals(pName))
-                    coordsToPiece.put(pCoords, new Knight(pColor, imgVAN.getImageView()));
+                    coordsToActualPiece.put(pCoords, new Knight(pColor, imgVAN.getImageView()));
                 else if ("bishop".equals(pName))
-                    coordsToPiece.put(pCoords, new Bishop(pColor, imgVAN.getImageView()));
+                    coordsToActualPiece.put(pCoords, new Bishop(pColor, imgVAN.getImageView()));
                 else if ("queen".equals(pName))
-                    coordsToPiece.put(pCoords, new Queen(pColor, imgVAN.getImageView()));
+                    coordsToActualPiece.put(pCoords, new Queen(pColor, imgVAN.getImageView()));
                 else if ("king".equals(pName))
-                    coordsToPiece.put(pCoords, new King(pColor, imgVAN.getImageView()));
+                    coordsToActualPiece.put(pCoords, new King(pColor, imgVAN.getImageView()));
                 else throw new RuntimeException("Unknown piece name");
             });
 
 
             chessBoardController.getCellPanesAndCoords().forEach(paneAndCoords -> {
                 Cell newCell = new Cell(paneAndCoords.getCellPane());
-                newCell.setPiece(coordsToPiece.getOrDefault(paneAndCoords.getCoords(), null));
                 CellListener cellListener = newCell.getCellListener();
-                coordsToCell.put(newCell.getCellViewModel().getModel().getCoords(), ImmutablePair.of(newCell, cellListener));
+                Piece pieceToSet = coordsToActualPiece.getOrDefault(paneAndCoords.getCoords(), null);
+
+                newCell.setPiece(pieceToSet);
+                coordsToCell.put(paneAndCoords.getCoords(), ImmutablePair.of(newCell, cellListener));
             });
 
             this.chessBoardListener = new ChessBoardListener(coordsToCell, this);
@@ -106,7 +108,9 @@ public class ChessBoard {
         Cell toCell = coordsToCell.get(to).getLeft();
 
         Piece movingPiece = fromCell.cleanPiece();
+        coordsToActualPiece.put(from, null);
         toCell.setPiece(movingPiece);
+        coordsToActualPiece.put(to, movingPiece);
 
         ChessBoardSnapshot snapshot = createSnapshot();
         gameHistory.addMove(snapshot);
@@ -116,7 +120,7 @@ public class ChessBoard {
         return boardState;
     }
 
-    public void changeState(ChessBoardState state) {
+    private void changeState(ChessBoardState state) {
         this.boardState = state;
     }
 
@@ -141,12 +145,11 @@ public class ChessBoard {
     }
 
     public ChessBoardSnapshot createSnapshot() {
-        Map<CellModel.Coords, Piece> coordsPieceMap = new HashMap<>();
-        coordsToCell.forEach((coords, cCl) -> coordsPieceMap.put(coords, cCl.getLeft().getPiece()));
+        Map<CellModel.Coords, Piece> coordsPieceMap = new HashMap<>(coordsToActualPiece);
         return new ChessBoardSnapshot(coordsPieceMap);
     }
 
-    public void restoreState(ChessBoardSnapshot snapshot) {
+    public void restoreSnapshot(ChessBoardSnapshot snapshot) {
         Map<CellModel.Coords, Piece> state = snapshot.getState();
         state.forEach((coords, piece) -> coordsToCell.get(coords).getLeft().setPiece(piece));
     }
@@ -157,5 +160,35 @@ public class ChessBoard {
 
     public PlayerListener getPlayerListener() {
         return playerListener;
+    }
+
+    public GameHistory getGameHistory() {
+        return gameHistory;
+    }
+
+    public static abstract class ChessBoardState {
+        private final ChessBoard board;
+        private ChessBoardState prevState;
+
+        public ChessBoardState(ChessBoard board) {
+            this.board = board;
+        }
+        protected ChessBoard getBoard() {
+            return board;
+        }
+
+        public abstract void doOnUpdate(CellModel.Coords coords);
+        public abstract void doOnUpdateFromPlayer();
+
+        public abstract void setCoordsToCellListeners(Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners);
+        public void changeToPreviousState() {
+            if (prevState != null) {
+                getBoard().changeState(prevState);
+            }
+        }
+        public void changeState(ChessBoardState newState) {
+            newState.prevState = this;
+            getBoard().changeState(newState);
+        }
     }
 }
