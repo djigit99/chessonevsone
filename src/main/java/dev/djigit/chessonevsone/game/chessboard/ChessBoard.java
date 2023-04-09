@@ -131,6 +131,18 @@ public class ChessBoard {
             coordsToActualPiece.put(cellToClean.getCellViewModel().getModel().getCoords(), null);
         }
 
+        if (movingPiece instanceof King && King.isCastling(from, to)) {
+            Cell rookCell = getOwnRookToReplaceWhenCastling(from, to);
+            Rook movingRook = (Rook) rookCell.cleanPiece();
+            coordsToActualPiece.put(rookCell.getCellViewModel().getModel().getCoords(), null);
+
+            Cell rooksNewCell = coordsToCell
+                    .get(from.getByCoords(to.getX() > from.getX() ? (short) 1 : (short) -1, (short) 0))
+                    .getLeft();
+            rooksNewCell.setPiece(movingRook);
+            coordsToActualPiece.put(rooksNewCell.getCellViewModel().getModel().getCoords(), movingRook);
+        }
+
         ChessBoardSnapshot snapshot = createSnapshot();
         gameHistory.addMove(snapshot, movingPiece);
     }
@@ -140,6 +152,14 @@ public class ChessBoard {
             return coordsToCell.get(piece.getLastMove().get().getTo().getByCoords((short) 0, (short) -1)).getLeft();
         } else {
             return coordsToCell.get(piece.getLastMove().get().getTo().getByCoords((short) 0, (short) 1)).getLeft();
+        }
+    }
+
+    private Cell getOwnRookToReplaceWhenCastling(CellModel.Coords from, CellModel.Coords to) {
+        if (to.getX() > from.getX()) { // short castling
+            return coordsToCell.get(to.getByCoords((short) 1, (short) 0)).getLeft();
+        } else {
+            return coordsToCell.get(to.getByCoords((short) -2, (short) 0)).getLeft();
         }
     }
 
