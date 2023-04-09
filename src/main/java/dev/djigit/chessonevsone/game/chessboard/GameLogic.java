@@ -31,6 +31,17 @@ public class GameLogic {
         return piece.isMovePossible(cellsOnPath);
     }
 
+    /**
+     * Check if the piece making the move is a pawn, and if yes then
+     * check if the current move is the 'en passant' move.
+     * <p>
+     * This method marks the last move as 'en passant' for Pawn object.
+     *
+     * @param from from position.
+     * @param to to position.
+     *
+     * @return true - if the move is 'en passant'.
+    * */
     public boolean isMoveEnPassant(CellModel.Coords from, CellModel.Coords to) {
         Cell[] cellsOnPath = chessBoard.getCellsOnPath(new CellModel.Coords[] {from, to});
         Cell pieceCell = cellsOnPath[0];
