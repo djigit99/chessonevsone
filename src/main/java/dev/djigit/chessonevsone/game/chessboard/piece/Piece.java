@@ -42,8 +42,8 @@ public abstract class Piece {
     }
 
     public static class LastMove {
-        private CellModel.Coords from;
-        private CellModel.Coords to;
+        private final CellModel.Coords from;
+        private final CellModel.Coords to;
 
         public LastMove(CellModel.Coords from, CellModel.Coords to) {
             this.from = from;
