@@ -23,7 +23,7 @@ import java.util.Map;
 public class ChessBoard {
     private final Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCell = new HashMap<>();
     private Map<CellModel.Coords, Piece> coordsToActualPiece;
-    private URL url;
+    private final URL url;
     private ChessBoardListener chessBoardListener;
     private BorderPane chessBoardRootPane;
     private final Player.Color playerColor;
