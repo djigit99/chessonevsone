@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="88.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.djigit.chessonevsone.game.chessboard.popup.ChoosePieceWhitePopupController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="105.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.djigit.chessonevsone.game.chessboard.popup.ChoosePieceWhitePopupController">
    <children>
-      <Pane onMouseEntered="#onHover" onMouseExited="#onHoverOut" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #ccffcc; -fx-opacity: 0.8;">
+      <Pane fx:id="queen_w" onMouseEntered="#onHover" onMouseExited="#onHoverOut" prefHeight="105.0" prefWidth="100.0" style="-fx-background-color: #ccffcc; -fx-opacity: 0.8;">
          <children>
-            <ImageView fx:id="queen_w" fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="2.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../pieces/queen_w.png" />
                </image>
@@ -21,9 +21,9 @@
             </ImageView>
          </children>
       </Pane>
-      <Pane onMouseEntered="#onHover" onMouseExited="#onHoverOut" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #ccffcc; -fx-opacity: 0.8;">
+      <Pane fx:id="bishop_w" onMouseEntered="#onHover" onMouseExited="#onHoverOut" prefHeight="105.0" prefWidth="100.0" style="-fx-background-color: #ccffcc; -fx-opacity: 0.8;">
          <children>
-            <ImageView fx:id="bishop_w" fitHeight="85.0" fitWidth="85.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="4.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../pieces/bishop_w.png" />
                </image>
@@ -36,9 +36,9 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </Pane>
-      <Pane onMouseEntered="#onHover" onMouseExited="#onHoverOut" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #ccffcc; -fx-opacity: 0.8;">
+      <Pane fx:id="knight_w" onMouseEntered="#onHover" onMouseExited="#onHoverOut" prefHeight="110.0" prefWidth="100.0" style="-fx-background-color: #ccffcc; -fx-opacity: 0.8;">
          <children>
-            <ImageView fx:id="knight_w" fitHeight="82.0" fitWidth="82.0" layoutX="1.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="1.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../pieces/knight_w.png" />
                </image>
@@ -51,9 +51,9 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </Pane>
-      <Pane onMouseEntered="#onHover" onMouseExited="#onHoverOut" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #ccffcc; -fx-opacity: 0.8;">
+      <Pane fx:id="rook_w" onMouseEntered="#onHover" onMouseExited="#onHoverOut" prefHeight="110.0" prefWidth="100.0" style="-fx-background-color: #ccffcc; -fx-opacity: 0.8;">
          <children>
-            <ImageView fx:id="rook_w" fitHeight="80.0" fitWidth="80.0" layoutX="4.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="4.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../pieces/rook_w.png" />
                </image>

@@ -91,8 +91,8 @@ public class Bishop extends Piece {
     }
 
     public static Bishop createBrandNewBishop(Player.Color pieceColor) {
-        final String WHITE_BISHOP_URL = "/pieces/queen_w.png";
-        final String BLACK_BISHOP_URL = "/pieces/queen_b.png";
+        final String WHITE_BISHOP_URL = "/pieces/bishop_w.png";
+        final String BLACK_BISHOP_URL = "/pieces/bishop_b.png";
         final double BISHOP_FIT_WIDTH = 82;
         final double BISHOP_FIT_HEIGHT = 82;
         final double BISHOP_X_LAYOUT = 1;

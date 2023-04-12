@@ -1,7 +1,6 @@
 package dev.djigit.chessonevsone.game.chessboard.popup;
 
 import javafx.fxml.FXML;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
@@ -9,8 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class ChoosePiecePoputAbstractController {
-    protected final List<ImageViewAndName> pieces;
-
+    protected final List<PaneAndName> pieces;
 
     public ChoosePiecePoputAbstractController() {
         pieces = new LinkedList<>();
@@ -28,17 +26,17 @@ public abstract class ChoosePiecePoputAbstractController {
         pane.setStyle("-fx-background-color: #ccffcc; -fx-opacity: 0.8");
     }
 
-    static class ImageViewAndName {
-        private final ImageView imageView;
+    static class PaneAndName {
+        private final Pane pane;
         private final String name;
 
-        public ImageViewAndName(ImageView imageView, String name) {
-            this.imageView = imageView;
+        public PaneAndName(Pane pane, String name) {
+            this.pane = pane;
             this.name = name;
         }
 
-        public ImageView getImageView() {
-            return imageView;
+        public Pane getPane() {
+            return pane;
         }
 
         public String getName() {
@@ -46,7 +44,7 @@ public abstract class ChoosePiecePoputAbstractController {
         }
     }
 
-    public List<ImageViewAndName> getPieces() {
+    public List<PaneAndName> getPieces() {
         return pieces;
     }
 }

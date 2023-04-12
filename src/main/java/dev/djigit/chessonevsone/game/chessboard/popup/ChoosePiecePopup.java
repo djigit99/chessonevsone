@@ -4,12 +4,13 @@ import dev.djigit.chessonevsone.factories.FXMLLoaderFactory;
 import dev.djigit.chessonevsone.game.Player;
 import dev.djigit.chessonevsone.game.chessboard.ChessBoardListener;
 import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
-import dev.djigit.chessonevsone.game.chessboard.piece.*;
-import javafx.event.EventHandler;
+import dev.djigit.chessonevsone.game.chessboard.piece.Bishop;
+import dev.djigit.chessonevsone.game.chessboard.piece.Knight;
+import dev.djigit.chessonevsone.game.chessboard.piece.Queen;
+import dev.djigit.chessonevsone.game.chessboard.piece.Rook;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.Parent;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
@@ -23,15 +24,6 @@ public class ChoosePiecePopup {
     private final ChessBoardListener chessBoardListener;
     private Cell ownerCell;
     private ChoosePiecePoputAbstractController choosePiecePopupController;
-
-    private Queen queen;
-    private Bishop bishop;
-    private Knight knight;
-    private Rook rook;
-    private EventHandler<MouseEvent> queenEventHandler;
-    private EventHandler<MouseEvent> bishopEventHandler;
-    private EventHandler<MouseEvent> knightEventHandler;
-    private EventHandler<MouseEvent> rookEventHandler;
 
     public ChoosePiecePopup(ChessBoardListener chessBoardListener) {
         this.chessBoardListener = chessBoardListener;
@@ -59,24 +51,6 @@ public class ChoosePiecePopup {
         }
 
         Popup chooseColorPopup = new Popup();
-        chooseColorPopup.setOnHidden(we -> {
-            if (queen != null) {
-                queen.getImageView().removeEventHandler(MouseEvent.MOUSE_CLICKED, queenEventHandler);
-            }
-
-            if (bishop != null) {
-                bishop.getImageView().removeEventHandler(MouseEvent.MOUSE_CLICKED, bishopEventHandler);
-            }
-
-            if (knight != null) {
-                knight.getImageView().removeEventHandler(MouseEvent.MOUSE_CLICKED, knightEventHandler);
-            }
-
-            if (rook != null) {
-                rook.getImageView().removeEventHandler(MouseEvent.MOUSE_CLICKED, rookEventHandler);
-            }
-
-        });
         chooseColorPopup.getContent().add(choosePieceParent);
 
         Pane cellPane = ownerCell.getPane();
@@ -95,58 +69,45 @@ public class ChoosePiecePopup {
 
     private void initPieces() {
 
-        List<ChoosePieceWhitePopupController.ImageViewAndName> paneAndNames = choosePiecePopupController.getPieces();
+        List<ChoosePiecePoputAbstractController.PaneAndName> paneAndNames = choosePiecePopupController.getPieces();
         paneAndNames.forEach(pan -> {
-            ImageView pieceImageView = pan.getImageView();
+            Pane piecePane = pan.getPane();
             String[] pieceNameAndColor = pan.getName().split("_");
             String pieceName = pieceNameAndColor[0];
             Player.Color pieceColor = pieceNameAndColor[1].equals("w") ? Player.Color.WHITE : Player.Color.BLACK;
 
-            if ("queen".equals(pieceName)) {
-                queen = new Queen(pieceColor, pieceImageView);
-                queenEventHandler = eh -> {
-                    chessBoardListener.onUpdateFromPawnTransformToPiecePopup(queen);
-                    eh.consume();
-                    hide();
-                };
-
-                pieceImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, queenEventHandler);
-            }
-            else if ("bishop".equals(pieceName)) {
-                bishop = new Bishop(pieceColor, pieceImageView);
-                bishopEventHandler = eh -> {
-                    chessBoardListener.onUpdateFromPawnTransformToPiecePopup(bishop);
-                    eh.consume();
-                    hide();
-                };
-
-                pieceImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, bishopEventHandler);
-            }
-            else if ("knight".equals(pieceName)) {
-                knight = new Knight(pieceColor, pieceImageView);
-                knightEventHandler = eh -> {
-                    chessBoardListener.onUpdateFromPawnTransformToPiecePopup(knight);
-                    eh.consume();
-                    hide();
-                };
-
-                pieceImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, knightEventHandler);
-            }
-            else if ("rook".equals(pieceName)) {
-                rook = new Rook(pieceColor, pieceImageView);
-                rookEventHandler = eh -> {
-                    chessBoardListener.onUpdateFromPawnTransformToPiecePopup(rook);
-                    eh.consume();
-                    hide();
-                };
-
-                pieceImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, rookEventHandler);
-            }
-            else
-                System.out.println("Unknown piece to be loaded");
-
+            setHandlerForPiecePane(piecePane, pieceName, pieceColor);
         });
 
+    }
+
+    private void setHandlerForPiecePane(Pane piecePane, String pieceName, Player.Color pieceColor) {
+        if ("queen".equals(pieceName)) {
+            piecePane.addEventHandler(MouseEvent.MOUSE_CLICKED, eh -> {
+                chessBoardListener.onUpdateFromPawnTransformToPiecePopup(Queen.createBrandNewQueen(pieceColor));
+                hide();
+            });
+        }
+        else if ("bishop".equals(pieceName)) {
+            piecePane.addEventHandler(MouseEvent.MOUSE_CLICKED, eh -> {
+                chessBoardListener.onUpdateFromPawnTransformToPiecePopup(Bishop.createBrandNewBishop(pieceColor));
+                hide();
+            });
+        }
+        else if ("knight".equals(pieceName)) {
+            piecePane.addEventHandler(MouseEvent.MOUSE_CLICKED, eh -> {
+                chessBoardListener.onUpdateFromPawnTransformToPiecePopup(Knight.createBrandNewKnight(pieceColor));
+                hide();
+            });
+        }
+        else if ("rook".equals(pieceName)) {
+            piecePane.addEventHandler(MouseEvent.MOUSE_CLICKED, eh -> {
+                chessBoardListener.onUpdateFromPawnTransformToPiecePopup(Rook.createBrandNewRook(pieceColor));
+                hide();
+            });
+        }
+        else
+            System.out.println("Unknown piece to be loaded");
     }
 
     private void hide() {
