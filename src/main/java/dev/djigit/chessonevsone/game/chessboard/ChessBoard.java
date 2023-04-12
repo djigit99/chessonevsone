@@ -9,10 +9,15 @@ import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.chessboard.history.ChessBoardSnapshot;
 import dev.djigit.chessonevsone.game.chessboard.history.GameHistory;
 import dev.djigit.chessonevsone.game.chessboard.piece.*;
+import dev.djigit.chessonevsone.game.chessboard.popup.ChoosePiecePopup;
 import dev.djigit.chessonevsone.game.chessboard.state.WaitForOpponentMoveState;
 import dev.djigit.chessonevsone.game.chessboard.state.WaitForSelectedPieceState;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Popup;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.io.IOException;
@@ -114,7 +119,9 @@ public class ChessBoard {
         return gameLogic.isMovePossible(piece, from, to);
     }
 
-    public void makeMove(CellModel.Coords from, CellModel.Coords to) {
+    public boolean makeMove(CellModel.Coords from, CellModel.Coords to) {
+        final int WHITE_LAST_ROW = 8;
+        final int BLACK_LAST_ROW = 1;
         Cell fromCell = coordsToCell.get(from).getLeft();
         Cell toCell = coordsToCell.get(to).getLeft();
 
@@ -143,8 +150,31 @@ public class ChessBoard {
             coordsToActualPiece.put(rooksNewCell.getCellViewModel().getModel().getCoords(), movingRook);
         }
 
+        if (movingPiece instanceof Pawn && (to.getY() == BLACK_LAST_ROW || to.getY() == WHITE_LAST_ROW)) {
+
+            if (playerColor.equals(movingPiece.getPieceColor())) {
+                new ChoosePiecePopup(chessBoardListener).buildPopup(playerColor, toCell).showPopup();
+            }
+
+            return true;
+        }
+
         ChessBoardSnapshot snapshot = createSnapshot();
         gameHistory.addMove(snapshot, movingPiece);
+        return false;
+    }
+
+    public void doPostMakeMove(Piece piece, CellModel.Coords coords) {
+
+        Cell pieceToInsertCell = coordsToCell.get(coords).getLeft();
+
+        Piece pieceToClean = pieceToInsertCell.cleanPiece();
+
+        pieceToInsertCell.setPiece(piece);
+        coordsToActualPiece.put(coords, piece);
+
+        ChessBoardSnapshot snapshot = createSnapshot();
+        gameHistory.addMove(snapshot, pieceToClean);
     }
 
     private Cell getOpponentsPawnToDelete(Piece piece) {
@@ -161,6 +191,33 @@ public class ChessBoard {
         } else {
             return coordsToCell.get(to.getByCoords((short) -2, (short) 0)).getLeft();
         }
+    }
+
+    private void showChoosePiecePopup(Player.Color pieceColor, Cell toCell) {
+        final String CHOOSE_PIECE_WHITE_URL = "/scenes/ChoosePieceWhite.fxml";
+        final String CHOOSE_PIECE_BLACK_URL = "/scenes/ChoosePieceBlack.fxml";
+        URL choosePieceUrl;
+
+        if (pieceColor.isWhite()) {
+            choosePieceUrl = getClass().getResource(CHOOSE_PIECE_WHITE_URL);
+        } else {
+            choosePieceUrl = getClass().getResource(CHOOSE_PIECE_BLACK_URL);
+        }
+
+        Parent choosePieceParent = FXMLLoaderFactory.getRootNode(choosePieceUrl);
+
+        Popup chooseColorPopup = new Popup();
+        chooseColorPopup.getContent().add(choosePieceParent);
+
+        Pane cellPane = toCell.getPane();
+        Bounds boundsInLocal = cellPane.getBoundsInLocal();
+        Bounds bounds = cellPane.localToScreen(boundsInLocal);
+        chooseColorPopup.setX(bounds.getMinX() + cellPane.getWidth());
+        chooseColorPopup.setY(bounds.getMinY());
+
+        chooseColorPopup.show(cellPane.getScene().getWindow());
+        chooseColorPopup.setX(Double.NaN); // not to update X-cord when the style of ChoosePiece popup's elements changed
+        chooseColorPopup.setY(Double.NaN); // not to update Y-cord when the style of ChoosePiece popup's elements changed
     }
 
     public ChessBoardState getBoardState() {
@@ -226,6 +283,7 @@ public class ChessBoard {
 
         public abstract void doOnUpdate(CellModel.Coords coords);
         public abstract void doOnUpdateFromPlayer();
+        public abstract void doOnUpdateFromChoosePiecePopup(Piece piece);
 
         public abstract void setCoordsToCellListeners(Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners);
         public void changeToPreviousState() {

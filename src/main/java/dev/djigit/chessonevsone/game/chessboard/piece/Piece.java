@@ -59,6 +59,7 @@ public abstract class Piece {
         }
     }
 
+    public abstract String getName();
     public abstract List<CellModel.Coords> getMoves(CellModel.Coords from);
     public abstract CellModel.Coords[] getPath(CellModel.Coords from, CellModel.Coords to);
     public abstract boolean isMovePossible(Cell[] cells);

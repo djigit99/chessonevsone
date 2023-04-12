@@ -112,6 +112,11 @@ public class King extends Piece {
         }
     }
 
+    @Override
+    public String getName() {
+        return "king";
+    }
+
     public static boolean isCastling(CellModel.Coords from, CellModel.Coords to) {
         return Math.abs(from.getX() - to.getX()) > 1;
     }

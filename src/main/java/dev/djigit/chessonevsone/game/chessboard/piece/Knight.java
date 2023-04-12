@@ -3,6 +3,7 @@ package dev.djigit.chessonevsone.game.chessboard.piece;
 import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
@@ -61,5 +62,28 @@ public class Knight extends Piece {
     public boolean isMovePossible(Cell[] cells) {
         return !cells[cells.length-1].hasPiece() ||
                 !cells[cells.length-1].isFriendPiece(getPieceColor());
+    }
+
+    @Override
+    public String getName() {
+        return "knight";
+    }
+
+    public static Knight createBrandNewKnight(Player.Color pieceColor) {
+        final String WHITE_KNIGHT_URL = "/pieces/knight_w.png";
+        final String BLACK_KNIGHT_URL = "/pieces/knight_b.png";
+        final double KNIGHT_FIT_WIDTH = 82;
+        final double KNIGHT_FIT_HEIGHT = 82;
+        final double KNIGHT_X_LAYOUT = 1;
+        final double KNIGHT_Y_LAYOUT = 3;
+
+        Image pieceImage = new Image(pieceColor.isWhite() ? WHITE_KNIGHT_URL : BLACK_KNIGHT_URL);
+        ImageView imageView = new ImageView(pieceImage);
+        imageView.setFitWidth(KNIGHT_FIT_WIDTH);
+        imageView.setFitHeight(KNIGHT_FIT_HEIGHT);
+        imageView.setLayoutX(KNIGHT_X_LAYOUT);
+        imageView.setLayoutY(KNIGHT_Y_LAYOUT);
+
+        return new Knight(pieceColor, imageView);
     }
 }

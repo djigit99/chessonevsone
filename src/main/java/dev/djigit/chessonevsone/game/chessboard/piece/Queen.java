@@ -3,6 +3,7 @@ package dev.djigit.chessonevsone.game.chessboard.piece;
 import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
@@ -128,5 +129,28 @@ public class Queen extends Piece {
         }
 
         return !cells[cells.length-1].hasPiece() || !cells[cells.length-1].isFriendPiece(getPieceColor());
+    }
+
+    @Override
+    public String getName() {
+        return "queen";
+    }
+
+    public static Queen createBrandNewQueen(Player.Color pieceColor) {
+        final String WHITE_QUEEN_URL = "/pieces/queen_w.png";
+        final String BLACK_QUEEN_URL = "/pieces/queen_b.png";
+        final double QUEEN_FIT_WIDTH = 90;
+        final double QUEEN_FIT_HEIGHT = 90;
+        final double QUEEN_X_LAYOUT = 0;
+        final double QUEEN_Y_LAYOUT = 0;
+
+        Image pieceImage = new Image(pieceColor.isWhite() ? WHITE_QUEEN_URL : BLACK_QUEEN_URL);
+        ImageView imageView = new ImageView(pieceImage);
+        imageView.setFitWidth(QUEEN_FIT_WIDTH);
+        imageView.setFitHeight(QUEEN_FIT_HEIGHT);
+        imageView.setLayoutX(QUEEN_X_LAYOUT);
+        imageView.setLayoutY(QUEEN_Y_LAYOUT);
+
+        return new Queen(pieceColor, imageView);
     }
 }

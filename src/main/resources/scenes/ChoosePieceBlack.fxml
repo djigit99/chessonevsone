@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="88.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.djigit.chessonevsone.game.chessboard.popup.ChoosePieceBlackPopupController">
+   <children>
+      <Pane onMouseEntered="#onHover" onMouseExited="#onHoverOut" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #ccffcc; -fx-opacity: 0.8;">
+         <children>
+            <ImageView fx:id="queen_b" fitHeight="85.0" fitWidth="85.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../pieces/queen_b.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane onMouseEntered="#onHover" onMouseExited="#onHoverOut" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #ccffcc; -fx-opacity: 0.8;">
+         <children>
+            <ImageView fx:id="bishop_b" fitHeight="82.0" fitWidth="82.0" layoutX="3.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../pieces/bishop_b.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </Pane>
+      <Pane onMouseEntered="#onHover" onMouseExited="#onHoverOut" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #ccffcc; -fx-opacity: 0.8;">
+         <children>
+            <ImageView fx:id="knight_b" fitHeight="82.0" fitWidth="82.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../pieces/knight_b.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </Pane>
+      <Pane onMouseEntered="#onHover" onMouseExited="#onHoverOut" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #ccffcc; -fx-opacity: 0.8;">
+         <children>
+            <ImageView fx:id="rook_b" fitHeight="80.0" fitWidth="80.0" layoutX="3.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../pieces/rook_b.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </Pane>
+   </children>
+</VBox>

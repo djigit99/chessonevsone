@@ -5,6 +5,7 @@ import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellListener;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.chessboard.history.GameHistory;
+import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.Map;
@@ -35,5 +36,10 @@ public class LookInHistoryState extends ChessBoard.ChessBoardState {
     @Override
     public void setCoordsToCellListeners(Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners) {
         this.coordsToCellListeners = coordsToCellListeners;
+    }
+
+    @Override
+    public void doOnUpdateFromChoosePiecePopup(Piece piece) {
+        // do nothing
     }
 }

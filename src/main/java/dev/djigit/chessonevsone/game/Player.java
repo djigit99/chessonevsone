@@ -3,6 +3,7 @@ package dev.djigit.chessonevsone.game;
 import dev.djigit.chessonevsone.game.chessboard.ChessBoard;
 import dev.djigit.chessonevsone.game.chessboard.ChessBoardListener;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
+import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
 import dev.djigit.chessonevsone.sockets.MessageType;
 import dev.djigit.chessonevsone.sockets.PlayerSocket;
 import javafx.geometry.Rectangle2D;
@@ -106,6 +107,10 @@ public abstract class Player {
 
     void sendMove(CellModel.Coords from, CellModel.Coords to) {
         socket.sendMessage(MessageType.OPP_MOVE, from.name() + " " + to.name());
+    }
+
+    void sendMove(CellModel.Coords from, CellModel.Coords to, Piece piece) {
+        socket.sendMessage(MessageType.OPP_MOVE, from.name() + " " + to.name() + " " + piece.getName());
     }
 
     protected void listenForMessages() {

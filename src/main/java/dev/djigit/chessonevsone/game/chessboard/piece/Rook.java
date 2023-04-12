@@ -3,6 +3,7 @@ package dev.djigit.chessonevsone.game.chessboard.piece;
 import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
@@ -80,5 +81,28 @@ public class Rook extends Piece {
         }
 
         return !cells[cells.length-1].hasPiece() || !cells[cells.length-1].isFriendPiece(getPieceColor());
+    }
+
+    @Override
+    public String getName() {
+        return "rook";
+    }
+
+    public static Rook createBrandNewRook(Player.Color pieceColor) {
+        final String WHITE_ROOK_URL = "/pieces/rook_w.png";
+        final String BLACK_ROOK_URL = "/pieces/rook_b.png";
+        final double ROOK_FIT_WIDTH = 80;
+        final double ROOK_FIT_HEIGHT = 80;
+        final double ROOK_X_LAYOUT = 4;
+        final double ROOK_Y_LAYOUT = 5;
+
+        Image pieceImage = new Image(pieceColor.isWhite() ? WHITE_ROOK_URL : BLACK_ROOK_URL);
+        ImageView imageView = new ImageView(pieceImage);
+        imageView.setFitWidth(ROOK_FIT_WIDTH);
+        imageView.setFitHeight(ROOK_FIT_HEIGHT);
+        imageView.setLayoutX(ROOK_X_LAYOUT);
+        imageView.setLayoutY(ROOK_Y_LAYOUT);
+
+        return new Rook(pieceColor, imageView);
     }
 }

@@ -95,4 +95,8 @@ public class Cell {
     public CellViewModel getCellViewModel() {
         return cellViewModel;
     }
+
+    public Pane getPane() {
+        return cellPane;
+    }
 }

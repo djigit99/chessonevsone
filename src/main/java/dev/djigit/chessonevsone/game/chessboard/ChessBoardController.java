@@ -12,8 +12,8 @@ import java.util.ResourceBundle;
 
 public class ChessBoardController implements Initializable {
 
-    private ArrayList<CellPaneAndCoords> cells;
-    private ArrayList<ImageViewAndName> imageViewsAndNames;
+    private final ArrayList<CellPaneAndCoords> cells;
+    private final ArrayList<ImageViewAndName> imageViewsAndNames;
     @FXML
     private Pane panel_a1;
     @FXML
@@ -335,9 +335,9 @@ public class ChessBoardController implements Initializable {
         return imageViewsAndNames;
     }
 
-    class ImageViewAndName {
-        private ImageView imageView;
-        private String name;
+    static class ImageViewAndName {
+        private final ImageView imageView;
+        private final String name;
 
         public ImageViewAndName(ImageView imageView, String name) {
             this.imageView = imageView;
@@ -360,9 +360,9 @@ public class ChessBoardController implements Initializable {
         }
     }
 
-    class CellPaneAndCoords {
-        private Pane cellPane;
-        private CellModel.Coords coords;
+    static class CellPaneAndCoords {
+        private final Pane cellPane;
+        private final CellModel.Coords coords;
 
         public CellPaneAndCoords(Pane cellPane, CellModel.Coords coords) {
             this.cellPane = cellPane;

@@ -110,6 +110,12 @@ public class Pawn extends Piece {
             return false;
         }
     }
+
+    @Override
+    public String getName() {
+        return "pawn";
+    }
+
     public void setGameHistory(GameHistory gameHistory) {
         this.gameHistory = gameHistory;
     }
