@@ -159,8 +159,7 @@ public class ChessBoard {
             return true;
         }
 
-        ChessBoardSnapshot snapshot = createSnapshot();
-        gameHistory.addMove(snapshot, movingPiece);
+        writeToHistory(movingPiece);
         return false;
     }
 
@@ -173,8 +172,7 @@ public class ChessBoard {
         pieceToInsertCell.setPiece(piece);
         coordsToActualPiece.put(coords, piece);
 
-        ChessBoardSnapshot snapshot = createSnapshot();
-        gameHistory.addMove(snapshot, pieceToClean);
+        writeToHistory(pieceToClean);
     }
 
     private Cell getOpponentsPawnToDelete(Piece piece) {
@@ -193,31 +191,9 @@ public class ChessBoard {
         }
     }
 
-    private void showChoosePiecePopup(Player.Color pieceColor, Cell toCell) {
-        final String CHOOSE_PIECE_WHITE_URL = "/scenes/ChoosePieceWhite.fxml";
-        final String CHOOSE_PIECE_BLACK_URL = "/scenes/ChoosePieceBlack.fxml";
-        URL choosePieceUrl;
-
-        if (pieceColor.isWhite()) {
-            choosePieceUrl = getClass().getResource(CHOOSE_PIECE_WHITE_URL);
-        } else {
-            choosePieceUrl = getClass().getResource(CHOOSE_PIECE_BLACK_URL);
-        }
-
-        Parent choosePieceParent = FXMLLoaderFactory.getRootNode(choosePieceUrl);
-
-        Popup chooseColorPopup = new Popup();
-        chooseColorPopup.getContent().add(choosePieceParent);
-
-        Pane cellPane = toCell.getPane();
-        Bounds boundsInLocal = cellPane.getBoundsInLocal();
-        Bounds bounds = cellPane.localToScreen(boundsInLocal);
-        chooseColorPopup.setX(bounds.getMinX() + cellPane.getWidth());
-        chooseColorPopup.setY(bounds.getMinY());
-
-        chooseColorPopup.show(cellPane.getScene().getWindow());
-        chooseColorPopup.setX(Double.NaN); // not to update X-cord when the style of ChoosePiece popup's elements changed
-        chooseColorPopup.setY(Double.NaN); // not to update Y-cord when the style of ChoosePiece popup's elements changed
+    private void writeToHistory(Piece lastMovePiece) {
+        ChessBoardSnapshot snapshot = createSnapshot();
+        gameHistory.addMove(snapshot, lastMovePiece);
     }
 
     public ChessBoardState getBoardState() {
