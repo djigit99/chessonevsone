@@ -1,0 +1,193 @@
+{
+  "shapes" : [
+    {
+      "attrs" : "{\n  \"lockAspectRatio\" : false,\n  \"shape\" : \"rect\",\n  \"position\" : \"{194.5, 90}\",\n  \"angle\" : 0,\n  \"size\" : \"{120, 100}\",\n  \"identifier\" : \"391F278C-0A95-47DF-9963-C24342E2A609\",\n  \"tag\" : 0,\n  \"connectable\" : true,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"isTemplate\" : false,\n  \"themeStyle\" : \"variant_4\",\n  \"privateStyle\" : {\n\n  },\n  \"isRelative\" : false\n}",
+      "class" : "dia-node"
+    },
+    {
+      "attrs" : "{\n  \"lockAspectRatio\" : false,\n  \"shape\" : \"text\",\n  \"position\" : \"{194.5, 130}\",\n  \"angle\" : 0,\n  \"size\" : \"{120, 20}\",\n  \"identifier\" : \"B190392F-4B96-4B19-998D-1587B6E4A8E1\",\n  \"tag\" : 0,\n  \"connectable\" : true,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"isTemplate\" : false,\n  \"themeStyle\" : \"style_11\",\n  \"value\" : \"WAIT FOR SELECTED PIECE \",\n  \"privateStyle\" : {\n    \"textColor\" : \"#283D59FF\",\n    \"textAlignment\" : 2,\n    \"textVerticalAlignment\" : 1,\n    \"font\" : \".AppleSystemUIFont,15.0\"\n  },\n  \"isRelative\" : false\n}",
+      "class" : "dia-node"
+    },
+    {
+      "attrs" : "{\n  \"isRelative\" : false,\n  \"points\" : [\n    {\n      \"point\" : \"{380.93304443359375, 154.88316345214844}\",\n      \"axis\" : 1\n    }\n  ],\n  \"shape\" : \"connector\",\n  \"targetPoint\" : \"{315.76605224609375, 154.73764038085938}\",\n  \"identifier\" : \"297EE10C-903E-4F6F-890C-8DE8D3F90148\",\n  \"tag\" : 0,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"themeStyle\" : \"edge_11\",\n  \"isTemplate\" : false,\n  \"privateStyle\" : {\n    \"crossStyle\" : \"round\",\n    \"connectorMode\" : 2,\n    \"strokeColor\" : \"#FF2600FF\"\n  },\n  \"exitPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0.5105504353841146, 0.14737640380859374}\"\n  },\n  \"sourcePoint\" : \"{446.10003662109375, 155.0286865234375}\",\n  \"entryPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0, 0}\"\n  }\n}",
+      "class" : "connector"
+    },
+    {
+      "attrs" : "{\n  \"lockAspectRatio\" : false,\n  \"shape\" : \"rect\",\n  \"position\" : \"{444.5, 100}\",\n  \"angle\" : 0,\n  \"size\" : \"{120, 100}\",\n  \"identifier\" : \"1EF65F06-2760-4BD0-8F36-D5FE105D188B\",\n  \"tag\" : 0,\n  \"connectable\" : true,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"isTemplate\" : false,\n  \"themeStyle\" : \"variant_4\",\n  \"privateStyle\" : {\n\n  },\n  \"isRelative\" : false\n}",
+      "class" : "dia-node"
+    },
+    {
+      "attrs" : "{\n  \"lockAspectRatio\" : false,\n  \"shape\" : \"text\",\n  \"position\" : \"{444.5, 140}\",\n  \"angle\" : 0,\n  \"size\" : \"{120, 20}\",\n  \"identifier\" : \"1B9BCF5B-77B1-406D-8F0D-0E4FCB538C4C\",\n  \"tag\" : 0,\n  \"connectable\" : true,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"isTemplate\" : false,\n  \"themeStyle\" : \"style_11\",\n  \"value\" : \"WAIT TO MAKE MOVE\",\n  \"privateStyle\" : {\n    \"textColor\" : \"#283D59FF\",\n    \"textAlignment\" : 2,\n    \"textVerticalAlignment\" : 1,\n    \"font\" : \".AppleSystemUIFont,15.0\"\n  },\n  \"isRelative\" : false\n}",
+      "class" : "dia-node"
+    },
+    {
+      "attrs" : "{\n  \"isRelative\" : false,\n  \"points\" : [\n    {\n      \"point\" : \"{380.37582397460938, 134.54518127441406}\",\n      \"axis\" : 1\n    }\n  ],\n  \"shape\" : \"connector\",\n  \"targetPoint\" : \"{442.822998046875, 134.57626342773438}\",\n  \"identifier\" : \"A6568C59-A2A8-4C1A-944C-7E0CE8B5635C\",\n  \"tag\" : 0,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"themeStyle\" : \"edge_11\",\n  \"isTemplate\" : false,\n  \"privateStyle\" : {\n    \"crossStyle\" : \"round\",\n    \"connectorMode\" : 2,\n    \"strokeColor\" : \"#008F00FF\"\n  },\n  \"exitPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{-0.5139750162760417, -0.15423736572265626}\"\n  },\n  \"sourcePoint\" : \"{317.92864990234375, 134.51409912109375}\",\n  \"entryPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0, 0}\"\n  }\n}",
+      "class" : "connector"
+    },
+    {
+      "attrs" : "{\n  \"lockAspectRatio\" : false,\n  \"shape\" : \"rect\",\n  \"position\" : \"{845.5, 120}\",\n  \"angle\" : 0,\n  \"size\" : \"{120, 100}\",\n  \"identifier\" : \"503F50F4-8295-4C5F-A16C-0ECBE6220D96\",\n  \"tag\" : 0,\n  \"connectable\" : true,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"isTemplate\" : false,\n  \"themeStyle\" : \"variant_4\",\n  \"privateStyle\" : {\n\n  },\n  \"isRelative\" : false\n}",
+      "class" : "dia-node"
+    },
+    {
+      "attrs" : "{\n  \"lockAspectRatio\" : false,\n  \"shape\" : \"text\",\n  \"position\" : \"{845.5, 160}\",\n  \"angle\" : 0,\n  \"size\" : \"{120, 20}\",\n  \"identifier\" : \"E3BB7F87-5EDA-4CC4-9E50-4F58C0F5168C\",\n  \"tag\" : 0,\n  \"connectable\" : true,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"isTemplate\" : false,\n  \"themeStyle\" : \"style_11\",\n  \"value\" : \"WAIT FOR OPPONENT MOVE\",\n  \"privateStyle\" : {\n    \"textColor\" : \"#283D59FF\",\n    \"textAlignment\" : 2,\n    \"textVerticalAlignment\" : 1,\n    \"font\" : \".AppleSystemUIFont,15.0\"\n  },\n  \"isRelative\" : false\n}",
+      "class" : "dia-node"
+    },
+    {
+      "attrs" : "{\n  \"lockAspectRatio\" : false,\n  \"shape\" : \"rect\",\n  \"position\" : \"{474.5, 450}\",\n  \"angle\" : 0,\n  \"size\" : \"{120, 100}\",\n  \"identifier\" : \"69D98734-9AE5-4938-92D1-7A8DF13C4C1F\",\n  \"tag\" : 0,\n  \"connectable\" : true,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"isTemplate\" : false,\n  \"themeStyle\" : \"variant_4\",\n  \"privateStyle\" : {\n\n  },\n  \"isRelative\" : false\n}",
+      "class" : "dia-node"
+    },
+    {
+      "attrs" : "{\n  \"lockAspectRatio\" : false,\n  \"shape\" : \"text\",\n  \"position\" : \"{474.5, 490}\",\n  \"angle\" : 0,\n  \"size\" : \"{120, 20}\",\n  \"identifier\" : \"7CC6ECE6-3DAA-4B81-991E-714951C6E613\",\n  \"tag\" : 0,\n  \"connectable\" : true,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"isTemplate\" : false,\n  \"themeStyle\" : \"style_11\",\n  \"value\" : \"LOOK IN HISTORY\",\n  \"privateStyle\" : {\n    \"textColor\" : \"#283D59FF\",\n    \"textAlignment\" : 2,\n    \"textVerticalAlignment\" : 1,\n    \"font\" : \".AppleSystemUIFont,15.0\"\n  },\n  \"isRelative\" : false\n}",
+      "class" : "dia-node"
+    },
+    {
+      "attrs" : "{\n  \"lockAspectRatio\" : false,\n  \"shape\" : \"rect\",\n  \"position\" : \"{624.5, 230}\",\n  \"angle\" : 0,\n  \"size\" : \"{120, 100}\",\n  \"identifier\" : \"914EBF9E-5FA3-44F3-BD56-AC8E0FACD9D6\",\n  \"tag\" : 0,\n  \"connectable\" : true,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"isTemplate\" : false,\n  \"themeStyle\" : \"variant_4\",\n  \"privateStyle\" : {\n\n  },\n  \"isRelative\" : false\n}",
+      "class" : "dia-node"
+    },
+    {
+      "attrs" : "{\n  \"lockAspectRatio\" : false,\n  \"shape\" : \"text\",\n  \"position\" : \"{624.5, 270}\",\n  \"angle\" : 0,\n  \"size\" : \"{120, 20}\",\n  \"identifier\" : \"4C0E5453-986A-4CCB-858B-156F0E07B9CE\",\n  \"tag\" : 0,\n  \"connectable\" : true,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"isTemplate\" : false,\n  \"themeStyle\" : \"style_11\",\n  \"value\" : \"WAIT TO CONFIRM THE MOVE\",\n  \"privateStyle\" : {\n    \"textColor\" : \"#283D59FF\",\n    \"textAlignment\" : 2,\n    \"textVerticalAlignment\" : 1,\n    \"font\" : \".AppleSystemUIFont,15.0\"\n  },\n  \"isRelative\" : false\n}",
+      "class" : "dia-node"
+    },
+    {
+      "attrs" : "{\n  \"layout\" : \"group\",\n  \"lockAspectRatio\" : false,\n  \"shape\" : \"rect\",\n  \"position\" : \"{190, 90}\",\n  \"angle\" : 0,\n  \"size\" : \"{149, 100}\",\n  \"identifier\" : \"5461D0C9-BDCA-4559-93CE-D7AFF3DBE44E\",\n  \"tag\" : 0,\n  \"connectable\" : true,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"isTemplate\" : false,\n  \"themeStyle\" : \"style_11\",\n  \"privateStyle\" : {\n    \"fillMode\" : 0,\n    \"strokeMode\" : 0\n  },\n  \"isRelative\" : false\n}",
+      "class" : "dia-node",
+      "children" : "[\n  \"391F278C-0A95-47DF-9963-C24342E2A609\",\n  \"B190392F-4B96-4B19-998D-1587B6E4A8E1\",\n  \"297EE10C-903E-4F6F-890C-8DE8D3F90148\"\n]"
+    },
+    {
+      "attrs" : "{\n  \"layout\" : \"group\",\n  \"lockAspectRatio\" : false,\n  \"shape\" : \"rect\",\n  \"position\" : \"{440, 100}\",\n  \"angle\" : 0,\n  \"size\" : \"{149, 100}\",\n  \"identifier\" : \"CCE1FD96-8E61-4FEA-8C80-4EBD73EF3281\",\n  \"tag\" : 0,\n  \"connectable\" : true,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"isTemplate\" : false,\n  \"themeStyle\" : \"style_11\",\n  \"privateStyle\" : {\n    \"fillMode\" : 0,\n    \"strokeMode\" : 0\n  },\n  \"isRelative\" : false\n}",
+      "class" : "dia-node",
+      "children" : "[\n  \"1EF65F06-2760-4BD0-8F36-D5FE105D188B\",\n  \"1B9BCF5B-77B1-406D-8F0D-0E4FCB538C4C\",\n  \"A6568C59-A2A8-4C1A-944C-7E0CE8B5635C\"\n]"
+    },
+    {
+      "attrs" : "{\n  \"layout\" : \"group\",\n  \"lockAspectRatio\" : false,\n  \"shape\" : \"rect\",\n  \"position\" : \"{841, 120}\",\n  \"angle\" : 0,\n  \"size\" : \"{149, 100}\",\n  \"identifier\" : \"CEF5F4F4-CECE-4542-9D35-F84CE6EAAA2E\",\n  \"tag\" : 0,\n  \"connectable\" : true,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"isTemplate\" : false,\n  \"themeStyle\" : \"style_11\",\n  \"privateStyle\" : {\n    \"strokeMode\" : 0,\n    \"fillMode\" : 0\n  },\n  \"isRelative\" : false\n}",
+      "class" : "dia-node",
+      "children" : "[\n  \"503F50F4-8295-4C5F-A16C-0ECBE6220D96\",\n  \"E3BB7F87-5EDA-4CC4-9E50-4F58C0F5168C\"\n]"
+    },
+    {
+      "attrs" : "{\n  \"layout\" : \"group\",\n  \"lockAspectRatio\" : false,\n  \"shape\" : \"rect\",\n  \"position\" : \"{470, 450}\",\n  \"angle\" : 0,\n  \"size\" : \"{149, 100}\",\n  \"identifier\" : \"B0CB52B7-06F0-4EEB-88AD-C423E3243F15\",\n  \"tag\" : 0,\n  \"connectable\" : true,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"isTemplate\" : false,\n  \"themeStyle\" : \"style_11\",\n  \"privateStyle\" : {\n    \"fillMode\" : 0,\n    \"strokeMode\" : 0\n  },\n  \"isRelative\" : false\n}",
+      "class" : "dia-node",
+      "children" : "[\n  \"69D98734-9AE5-4938-92D1-7A8DF13C4C1F\",\n  \"7CC6ECE6-3DAA-4B81-991E-714951C6E613\"\n]"
+    },
+    {
+      "attrs" : "{\n  \"layout\" : \"group\",\n  \"lockAspectRatio\" : false,\n  \"shape\" : \"rect\",\n  \"position\" : \"{620, 230}\",\n  \"angle\" : 0,\n  \"size\" : \"{149, 100}\",\n  \"identifier\" : \"3BF01F9E-D332-4947-B3E0-34D62A2F897E\",\n  \"tag\" : 0,\n  \"connectable\" : true,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"isTemplate\" : false,\n  \"themeStyle\" : \"style_11\",\n  \"privateStyle\" : {\n    \"strokeMode\" : 0,\n    \"fillMode\" : 0\n  },\n  \"isRelative\" : false\n}",
+      "class" : "dia-node",
+      "children" : "[\n  \"914EBF9E-5FA3-44F3-BD56-AC8E0FACD9D6\",\n  \"4C0E5453-986A-4CCB-858B-156F0E07B9CE\"\n]"
+    },
+    {
+      "attrs" : "{\n  \"isRelative\" : false,\n  \"points\" : [\n    {\n      \"point\" : \"{705.31582641601562, 135.97160339355469}\",\n      \"axis\" : 1\n    }\n  ],\n  \"shape\" : \"connector\",\n  \"targetPoint\" : \"{846.21112060546875, 135.43276977539062}\",\n  \"identifier\" : \"AAD782BF-3DF5-41CE-8343-0E4D97A9784B\",\n  \"tag\" : 0,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"themeStyle\" : \"edge_11\",\n  \"isTemplate\" : false,\n  \"privateStyle\" : {\n    \"connectorMode\" : 2,\n    \"strokeColor\" : \"#008F00FF\",\n    \"crossStyle\" : \"round\"\n  },\n  \"exitPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{-0.49407399495442711, -0.34567230224609374}\"\n  },\n  \"sourcePoint\" : \"{564.4205322265625, 136.51043701171875}\",\n  \"entryPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0.49933776855468748, -0.13489562988281251}\"\n  }\n}",
+      "class" : "connector"
+    },
+    {
+      "attrs" : "{\n  \"isRelative\" : false,\n  \"points\" : [\n    {\n      \"point\" : \"{806.41387939453125, 280}\",\n      \"axis\" : 1\n    },\n    {\n      \"point\" : \"{868.3277587890625, 249.69891357421875}\",\n      \"axis\" : 2\n    }\n  ],\n  \"shape\" : \"connector\",\n  \"targetPoint\" : \"{868.3277587890625, 219.3978271484375}\",\n  \"identifier\" : \"1AC00018-CB43-4C4D-A45D-E30C75194A5F\",\n  \"tag\" : 0,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"themeStyle\" : \"edge_11\",\n  \"isTemplate\" : false,\n  \"privateStyle\" : {\n    \"strokeColor\" : \"#008F00FF\",\n    \"strokeMode\" : 1,\n    \"crossStyle\" : \"round\",\n    \"connectorMode\" : 2\n  },\n  \"exitPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{-0.3097686767578125, 0.49397827148437501}\"\n  },\n  \"sourcePoint\" : \"{744.5, 280}\",\n  \"entryPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0.5, 0}\"\n  }\n}",
+      "class" : "connector"
+    },
+    {
+      "attrs" : "{\n  \"isRelative\" : false,\n  \"points\" : [\n\n  ],\n  \"shape\" : \"connector\",\n  \"targetPoint\" : \"{624.5, 280}\",\n  \"identifier\" : \"C979A97C-A0C5-40DB-800F-850B8749265D\",\n  \"tag\" : 0,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"themeStyle\" : \"edge_11\",\n  \"isTemplate\" : false,\n  \"privateStyle\" : {\n    \"crossStyle\" : \"round\",\n    \"connectorMode\" : 2,\n    \"strokeColor\" : \"#008F00FF\"\n  },\n  \"exitPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{-0.5, 0}\"\n  },\n  \"sourcePoint\" : \"{514.5, 200}\",\n  \"entryPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0, 0.5}\"\n  }\n}",
+      "class" : "connector"
+    },
+    {
+      "attrs" : "{\n  \"isRelative\" : false,\n  \"points\" : [\n    {\n      \"point\" : \"{544.5, 460.73370361328125}\",\n      \"axis\" : 2\n    },\n    {\n      \"point\" : \"{409.77317810058594, 471.4674072265625}\",\n      \"axis\" : 1\n    },\n    {\n      \"point\" : \"{275.04635620117188, 329.61306762695312}\",\n      \"axis\" : 2\n    }\n  ],\n  \"shape\" : \"connector\",\n  \"targetPoint\" : \"{275.04635620117188, 187.75872802734375}\",\n  \"identifier\" : \"A7E518CC-44C5-400D-B037-804640625775\",\n  \"tag\" : 0,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"themeStyle\" : \"edge_11\",\n  \"isTemplate\" : false,\n  \"privateStyle\" : {\n    \"crossStyle\" : \"round\",\n    \"strokeColor\" : \"#FF2600FF\",\n    \"connectorMode\" : 2\n  },\n  \"exitPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0.17121963500976561, 0.4775872802734375}\"\n  },\n  \"sourcePoint\" : \"{544.5, 450}\",\n  \"entryPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0, -0.5}\"\n  }\n}",
+      "class" : "connector"
+    },
+    {
+      "attrs" : "{\n  \"isRelative\" : false,\n  \"points\" : [\n    {\n      \"point\" : \"{254.5, 344.88571929931641}\",\n      \"axis\" : 2\n    },\n    {\n      \"point\" : \"{364.5, 499.88571929931641}\",\n      \"axis\" : 1\n    }\n  ],\n  \"shape\" : \"connector\",\n  \"targetPoint\" : \"{474.5, 500}\",\n  \"identifier\" : \"B3D5AE4B-46EA-4523-8AF0-057932BE1CC2\",\n  \"tag\" : 0,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"themeStyle\" : \"edge_11\",\n  \"isTemplate\" : false,\n  \"privateStyle\" : {\n    \"strokeColor\" : \"#008F00FF\",\n    \"shadowColor\" : \"#000000FF\",\n    \"crossStyle\" : \"round\",\n    \"connectorMode\" : 2\n  },\n  \"exitPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{-0.5, 0}\"\n  },\n  \"sourcePoint\" : \"{254.5, 190}\",\n  \"entryPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0, 0.5}\"\n  }\n}",
+      "class" : "connector"
+    },
+    {
+      "attrs" : "{\n  \"isRelative\" : false,\n  \"points\" : [\n\n  ],\n  \"shape\" : \"connector\",\n  \"targetPoint\" : \"{254.5, 90}\",\n  \"identifier\" : \"700A25FE-BC4F-4291-9E0D-0146ACAE2CEE\",\n  \"tag\" : 0,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"themeStyle\" : \"edge_11\",\n  \"isTemplate\" : false,\n  \"privateStyle\" : {\n    \"connectorMode\" : 2,\n    \"strokeColor\" : \"#008F00FF\",\n    \"crossStyle\" : \"round\"\n  },\n  \"exitPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0, -0.5}\"\n  },\n  \"sourcePoint\" : \"{905.5, 120}\",\n  \"entryPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0, -0.5}\"\n  }\n}",
+      "class" : "connector"
+    },
+    {
+      "attrs" : "{\n  \"isRelative\" : false,\n  \"points\" : [\n    {\n      \"point\" : \"{905.5, 346.5296630859375}\",\n      \"axis\" : 2\n    },\n    {\n      \"point\" : \"{749.20513916015625, 473.059326171875}\",\n      \"axis\" : 1\n    }\n  ],\n  \"shape\" : \"connector\",\n  \"targetPoint\" : \"{592.9102783203125, 473.059326171875}\",\n  \"identifier\" : \"37DDDC74-5527-4BD0-9DA1-5E71E815E349\",\n  \"tag\" : 0,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"themeStyle\" : \"edge_11\",\n  \"isTemplate\" : false,\n  \"privateStyle\" : {\n    \"crossStyle\" : \"round\",\n    \"strokeColor\" : \"#008F00FF\",\n    \"connectorMode\" : 2\n  },\n  \"exitPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0.48675231933593749, -0.26940673828125}\"\n  },\n  \"sourcePoint\" : \"{905.5, 220}\",\n  \"entryPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0, 0.5}\"\n  }\n}",
+      "class" : "connector"
+    },
+    {
+      "attrs" : "{\n  \"isRelative\" : false,\n  \"points\" : [\n\n  ],\n  \"shape\" : \"connector\",\n  \"targetPoint\" : \"{941.44921875, 217.49737548828125}\",\n  \"identifier\" : \"7E777608-A589-4199-8357-A20AD8F962B5\",\n  \"tag\" : 0,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"themeStyle\" : \"edge_11\",\n  \"isTemplate\" : false,\n  \"privateStyle\" : {\n    \"strokeColor\" : \"#FF2600FF\",\n    \"connectorMode\" : 2,\n    \"crossStyle\" : \"round\"\n  },\n  \"exitPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0.29957682291666665, 0.47497375488281252}\"\n  },\n  \"sourcePoint\" : \"{594.5, 500}\",\n  \"entryPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0.5, 0}\"\n  }\n}",
+      "class" : "connector"
+    },
+    {
+      "attrs" : "{\n  \"isRelative\" : false,\n  \"points\" : [\n\n  ],\n  \"shape\" : \"connector\",\n  \"targetPoint\" : \"{544.5, 450}\",\n  \"identifier\" : \"C52DEF40-A80C-4BDC-BE00-8D7A18F272ED\",\n  \"tag\" : 0,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"themeStyle\" : \"edge_11\",\n  \"isTemplate\" : false,\n  \"privateStyle\" : {\n    \"crossStyle\" : \"round\",\n    \"connectorMode\" : 2,\n    \"strokeColor\" : \"#008F00FF\"\n  },\n  \"exitPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0, -0.5}\"\n  },\n  \"sourcePoint\" : \"{684.5, 330}\",\n  \"entryPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0, 0.5}\"\n  }\n}",
+      "class" : "connector"
+    },
+    {
+      "attrs" : "{\n  \"isRelative\" : false,\n  \"points\" : [\n    {\n      \"point\" : \"{488.35946655273438, 200}\",\n      \"axis\" : 1\n    },\n    {\n      \"point\" : \"{472.21893310546875, 307.30303955078125}\",\n      \"axis\" : 2\n    },\n    {\n      \"point\" : \"{487.90798950195312, 414.6060791015625}\",\n      \"axis\" : 1\n    },\n    {\n      \"point\" : \"{503.5970458984375, 431.28839111328125}\",\n      \"axis\" : 2\n    }\n  ],\n  \"shape\" : \"connector\",\n  \"targetPoint\" : \"{503.5970458984375, 447.970703125}\",\n  \"identifier\" : \"4458E0BB-018F-428A-B187-B02427597AB1\",\n  \"tag\" : 0,\n  \"isLocked\" : false,\n  \"visible\" : true,\n  \"themeStyle\" : \"edge_11\",\n  \"isTemplate\" : false,\n  \"privateStyle\" : {\n    \"crossStyle\" : \"round\",\n    \"connectorMode\" : 2,\n    \"strokeColor\" : \"#008F00FF\"\n  },\n  \"exitPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{-0.25752461751302086, -0.52029296874999997}\"\n  },\n  \"sourcePoint\" : \"{504.5, 200}\",\n  \"entryPoint\" : {\n    \"offset\" : \"{0, 0}\",\n    \"direction\" : 0,\n    \"location\" : \"{0, 0.5}\"\n  }\n}",
+      "class" : "connector"
+    }
+  ],
+  "frame" : [
+    [
+      0,
+      0
+    ],
+    [
+      1169,
+      827
+    ]
+  ],
+  "terminals" : {
+    "C52DEF40-A80C-4BDC-BE00-8D7A18F272ED" : [
+      "914EBF9E-5FA3-44F3-BD56-AC8E0FACD9D6",
+      "B0CB52B7-06F0-4EEB-88AD-C423E3243F15"
+    ],
+    "C979A97C-A0C5-40DB-800F-850B8749265D" : [
+      "CCE1FD96-8E61-4FEA-8C80-4EBD73EF3281",
+      "914EBF9E-5FA3-44F3-BD56-AC8E0FACD9D6"
+    ],
+    "297EE10C-903E-4F6F-890C-8DE8D3F90148" : [
+      "null",
+      "391F278C-0A95-47DF-9963-C24342E2A609"
+    ],
+    "7E777608-A589-4199-8357-A20AD8F962B5" : [
+      "69D98734-9AE5-4938-92D1-7A8DF13C4C1F",
+      "503F50F4-8295-4C5F-A16C-0ECBE6220D96"
+    ],
+    "1AC00018-CB43-4C4D-A45D-E30C75194A5F" : [
+      "914EBF9E-5FA3-44F3-BD56-AC8E0FACD9D6",
+      "503F50F4-8295-4C5F-A16C-0ECBE6220D96"
+    ],
+    "A7E518CC-44C5-400D-B037-804640625775" : [
+      "B0CB52B7-06F0-4EEB-88AD-C423E3243F15",
+      "391F278C-0A95-47DF-9963-C24342E2A609"
+    ],
+    "B3D5AE4B-46EA-4523-8AF0-057932BE1CC2" : [
+      "391F278C-0A95-47DF-9963-C24342E2A609",
+      "69D98734-9AE5-4938-92D1-7A8DF13C4C1F"
+    ],
+    "AAD782BF-3DF5-41CE-8343-0E4D97A9784B" : [
+      "1EF65F06-2760-4BD0-8F36-D5FE105D188B",
+      "503F50F4-8295-4C5F-A16C-0ECBE6220D96"
+    ],
+    "4458E0BB-018F-428A-B187-B02427597AB1" : [
+      "1EF65F06-2760-4BD0-8F36-D5FE105D188B",
+      "69D98734-9AE5-4938-92D1-7A8DF13C4C1F"
+    ],
+    "700A25FE-BC4F-4291-9E0D-0146ACAE2CEE" : [
+      "503F50F4-8295-4C5F-A16C-0ECBE6220D96",
+      "391F278C-0A95-47DF-9963-C24342E2A609"
+    ],
+    "A6568C59-A2A8-4C1A-944C-7E0CE8B5635C" : [
+      "null",
+      "1EF65F06-2760-4BD0-8F36-D5FE105D188B"
+    ],
+    "37DDDC74-5527-4BD0-9DA1-5E71E815E349" : [
+      "503F50F4-8295-4C5F-A16C-0ECBE6220D96",
+      "69D98734-9AE5-4938-92D1-7A8DF13C4C1F"
+    ]
+  },
+  "design" : {
+    "connectorPathStyle" : "rounded",
+    "themeName" : "zen2",
+    "paper" : {
+      "rightMargin" : 20,
+      "bottomMargin" : 20,
+      "topMargin" : 20,
+      "name" : "a4",
+      "leftMargin" : 20,
+      "ori" : false
+    },
+    "autoFrame" : true,
+    "showPageMarker" : true
+  },
+  "showsGrids" : true,
+  "version" : "100"
+}
