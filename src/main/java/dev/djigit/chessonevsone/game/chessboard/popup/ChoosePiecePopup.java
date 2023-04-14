@@ -85,25 +85,21 @@ public class ChoosePiecePopup {
         if ("queen".equals(pieceName)) {
             piecePane.addEventHandler(MouseEvent.MOUSE_CLICKED, eh -> {
                 chessBoardListener.onUpdateFromPawnTransformToPiecePopup(Queen.createBrandNewQueen(pieceColor));
-                hide();
             });
         }
         else if ("bishop".equals(pieceName)) {
             piecePane.addEventHandler(MouseEvent.MOUSE_CLICKED, eh -> {
                 chessBoardListener.onUpdateFromPawnTransformToPiecePopup(Bishop.createBrandNewBishop(pieceColor));
-                hide();
             });
         }
         else if ("knight".equals(pieceName)) {
             piecePane.addEventHandler(MouseEvent.MOUSE_CLICKED, eh -> {
                 chessBoardListener.onUpdateFromPawnTransformToPiecePopup(Knight.createBrandNewKnight(pieceColor));
-                hide();
             });
         }
         else if ("rook".equals(pieceName)) {
             piecePane.addEventHandler(MouseEvent.MOUSE_CLICKED, eh -> {
                 chessBoardListener.onUpdateFromPawnTransformToPiecePopup(Rook.createBrandNewRook(pieceColor));
-                hide();
             });
         }
         else

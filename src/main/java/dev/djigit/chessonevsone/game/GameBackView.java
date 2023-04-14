@@ -52,6 +52,7 @@ public class GameBackView {
 
         prevBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             if (!(chessBoard.getBoardState() instanceof LookInHistoryState)) {
+                chessBoard.getBoardState().beforeStateChangedToHistory();
                 chessBoard.restoreActualPosition();
                 chessBoard.getBoardState().changeState(new LookInHistoryState(chessBoard));
             }

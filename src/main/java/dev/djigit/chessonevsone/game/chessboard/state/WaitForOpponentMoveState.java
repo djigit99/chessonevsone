@@ -44,4 +44,9 @@ public class WaitForOpponentMoveState extends ChessBoard.ChessBoardState {
     protected boolean isStateReturnedAfterHistory() {
         return true;
     }
+
+    @Override
+    public void beforeStateChangedToHistory() {
+
+    }
 }

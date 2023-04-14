@@ -258,6 +258,14 @@ public class ChessBoard {
             return board;
         }
 
+        /**
+         * Marks a state to be 'candidate' when it comes to decide to which
+         * state to go when leaving the history mode.
+         *
+         * @return true - if the state is the one to change the state for after
+         * leaving history mode.
+         */
+
         protected abstract boolean isStateReturnedAfterHistory();
 
         public abstract void doOnUpdateFromCell(CellModel.Coords coords);
@@ -268,8 +276,21 @@ public class ChessBoard {
 
         public abstract void setCoordsToCellListeners(Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners);
 
+        /**
+         * Do something when the state is going to be changed to another.
+         */
         public abstract void beforeStateChanged();
 
+        /**
+         * Do something when the state is going to be change to history state.
+         */
+        public abstract void beforeStateChangedToHistory();
+
+        /**
+         * If we leave history mode we need to decide for which state to go.
+         * This method helps us to decide looking for the last 'candidate'
+         * to make decision for and change the state based on the search.
+         */
         public void changeToLastPossibleStateBeforeHistory() {
             ChessBoardState possibleState = prevState;
 
@@ -291,6 +312,8 @@ public class ChessBoard {
             newState.prevState = this;
 
             getBoard().changeState(newState);
+            getBoard().getBoardState().setCoordsToCellListeners(
+                    getBoard().getChessBoardListener().getCoordsToCellListeners());
         }
     }
 }

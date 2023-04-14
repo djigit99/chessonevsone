@@ -60,4 +60,9 @@ public class WaitForSelectedPieceState extends ChessBoard.ChessBoardState {
     protected boolean isStateReturnedAfterHistory() {
         return true;
     }
+
+    @Override
+    public void beforeStateChangedToHistory() {
+
+    }
 }

@@ -81,4 +81,8 @@ public class ChessBoardListener {
     public void onUpdateFromPawnTransformToPiecePopup(Piece piece) {
         board.getBoardState().doOnUpdateFromChoosePiecePopup(piece);
     }
+
+    public Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> getCoordsToCellListeners() {
+        return coordsToCellListeners;
+    }
 }

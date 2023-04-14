@@ -82,4 +82,11 @@ public class WaitToMakeMoveState extends ChessBoard.ChessBoardState {
     protected boolean isStateReturnedAfterHistory() {
         return false;
     }
+
+    @Override
+    public void beforeStateChangedToHistory() {
+        coordsToCellListeners.values().forEach(
+                (cellAndListener) ->  cellAndListener.getRight()
+                        .onUpdateFromBoard(CellModel.State.RELEASED));
+    }
 }

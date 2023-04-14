@@ -78,4 +78,9 @@ public class WaitToConfirmMoveState extends ChessBoard.ChessBoardState {
 
         this.popup = getBoard().showChoosePiecePopup(cell);
     }
+
+    @Override
+    public void beforeStateChangedToHistory() {
+        // do nothing
+    }
 }

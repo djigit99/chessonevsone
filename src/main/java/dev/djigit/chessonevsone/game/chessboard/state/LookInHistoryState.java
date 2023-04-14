@@ -52,4 +52,9 @@ public class LookInHistoryState extends ChessBoard.ChessBoardState {
     protected boolean isStateReturnedAfterHistory() {
         return false;
     }
+
+    @Override
+    public void beforeStateChangedToHistory() {
+        throw new IllegalStateException("The history state can not be change to a history state.");
+    }
 }
