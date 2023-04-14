@@ -28,7 +28,7 @@ public class ChessBoardListener {
         ChessBoard.ChessBoardState chessBoardState = board.getBoardState();
         chessBoardState.setCoordsToCellListeners(coordsToCellListeners);
 
-        chessBoardState.doOnUpdate(coords);
+        chessBoardState.doOnUpdateFromCell(coords);
     }
 
     public void onUpdateFromPlayerReceived(ImmutablePair<MessageType, String> msg) {
@@ -36,33 +36,37 @@ public class ChessBoardListener {
 
         if (msgType.equals(MessageType.OPP_MOVE)) {
             String[] coords = msg.getRight().split(" ");
-            CellModel.Coords from = CellModel.Coords.valueOf(coords[0]);
-            CellModel.Coords to = CellModel.Coords.valueOf(coords[1]);
 
             Platform.runLater(() -> {
-                gameLogic.isMoveEnPassant(from, to);
-                boolean itNeedsPostMake = board.makeMove(from, to);
-
-                if (itNeedsPostMake && isPawnTransformationReceived(coords)) {
-                    String pieceName = coords[2];
-                    Piece piece;
-                    if ("queen".equals(pieceName))
-                        piece = Queen.createBrandNewQueen(getOpponentsColor());
-                    else if ("bishop".equals(pieceName))
-                        piece = Bishop.createBrandNewBishop(getOpponentsColor());
-                    else if ("knight".equals(pieceName))
-                        piece = Knight.createBrandNewKnight(getOpponentsColor());
-                    else if ("rook".equals(pieceName))
-                        piece = Rook.createBrandNewRook(getOpponentsColor());
-                    else
-                        throw new IllegalStateException("Unknown piece received: " + pieceName);
-
-                    board.doPostMakeMove(piece, to);
-                }
-
                 board.getBoardState().setCoordsToCellListeners(coordsToCellListeners);
                 board.getBoardState().doOnUpdateFromPlayer();
+                makeOpponentsMove(coords);
             });
+        }
+    }
+
+    private void makeOpponentsMove(String[] coords) {
+        CellModel.Coords from = CellModel.Coords.valueOf(coords[0]);
+        CellModel.Coords to = CellModel.Coords.valueOf(coords[1]);
+
+        gameLogic.isMoveEnPassant(from, to);
+        boolean itNeedsPostMake = board.makeMove(from, to);
+
+        if (itNeedsPostMake && isPawnTransformationReceived(coords)) {
+            String pieceName = coords[2];
+            Piece piece;
+            if ("queen".equals(pieceName))
+                piece = Queen.createBrandNewQueen(getOpponentsColor());
+            else if ("bishop".equals(pieceName))
+                piece = Bishop.createBrandNewBishop(getOpponentsColor());
+            else if ("knight".equals(pieceName))
+                piece = Knight.createBrandNewKnight(getOpponentsColor());
+            else if ("rook".equals(pieceName))
+                piece = Rook.createBrandNewRook(getOpponentsColor());
+            else
+                throw new IllegalStateException("Unknown piece received: " + pieceName);
+
+            board.doPostMakeMove(piece, to);
         }
     }
 

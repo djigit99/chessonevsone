@@ -12,7 +12,6 @@ import java.util.Map;
 public class WaitToMakeMoveState extends ChessBoard.ChessBoardState {
     private CellModel.Coords pieceToMoveCoords;
     private Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners;
-    private CellModel.Coords pawnToBeReplacedCoords = null;
 
     public WaitToMakeMoveState(ChessBoard board) {
         super(board);
@@ -28,9 +27,7 @@ public class WaitToMakeMoveState extends ChessBoard.ChessBoardState {
     }
 
     @Override
-    public void doOnUpdate(CellModel.Coords coords) {
-        if (pawnToBeReplacedCoords != null)
-            return;
+    public void doOnUpdateFromCell(CellModel.Coords coords) {
 
         Cell acquiredCell = coordsToCellListeners.get(pieceToMoveCoords).getLeft();
         CellListener acquiredCellListener = coordsToCellListeners.get(pieceToMoveCoords).getRight();
@@ -40,12 +37,16 @@ public class WaitToMakeMoveState extends ChessBoard.ChessBoardState {
         if (cellState.equals(CellModel.State.RELEASED)) {
             boolean isMovePossible = getBoard().isMovePossible(acquiredCell.getPiece(), pieceToMoveCoords, coords);
             if (isMovePossible) {
-                boolean needsPostMoveAction = getBoard().makeMove(pieceToMoveCoords, coords);
+                boolean doesMoveNeedConfirm = getBoard().makeMove(pieceToMoveCoords, coords);
 
-                if (needsPostMoveAction) {
-                    pawnToBeReplacedCoords = coords;
+                if (doesMoveNeedConfirm) {
+                    WaitToConfirmMoveState waitToConfirmMoveState = new WaitToConfirmMoveState(getBoard());
+                    waitToConfirmMoveState.setCoordsToCellListeners(coordsToCellListeners);
+                    waitToConfirmMoveState.setFrom(pieceToMoveCoords);
+                    waitToConfirmMoveState.initState(coords);
+
+                    getBoard().getBoardState().changeState(waitToConfirmMoveState);
                 } else {
-
                     getBoard().getPlayerListener().onMakeMove(
                             acquiredCell.getCellViewModel().getModel().getCoords(),
                             cell.getCellViewModel().getModel().getCoords());
@@ -69,13 +70,16 @@ public class WaitToMakeMoveState extends ChessBoard.ChessBoardState {
 
     @Override
     public void doOnUpdateFromChoosePiecePopup(Piece piece) {
-        getBoard().doPostMakeMove(piece, pawnToBeReplacedCoords);
+        // do nothing
+    }
 
-        getBoard().getPlayerListener().onMakeMove(
-                pieceToMoveCoords,
-                pawnToBeReplacedCoords,
-                piece);
-        pawnToBeReplacedCoords = null;
-        changeState(new WaitForOpponentMoveState(getBoard()));
+    @Override
+    public void beforeStateChanged() {
+        // do nothing
+    }
+
+    @Override
+    protected boolean isStateReturnedAfterHistory() {
+        return false;
     }
 }

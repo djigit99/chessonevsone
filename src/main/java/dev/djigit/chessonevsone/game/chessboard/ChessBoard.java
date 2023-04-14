@@ -13,11 +13,7 @@ import dev.djigit.chessonevsone.game.chessboard.popup.ChoosePiecePopup;
 import dev.djigit.chessonevsone.game.chessboard.state.WaitForOpponentMoveState;
 import dev.djigit.chessonevsone.game.chessboard.state.WaitForSelectedPieceState;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Bounds;
-import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.stage.Popup;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.io.IOException;
@@ -120,8 +116,6 @@ public class ChessBoard {
     }
 
     public boolean makeMove(CellModel.Coords from, CellModel.Coords to) {
-        final int WHITE_LAST_ROW = 8;
-        final int BLACK_LAST_ROW = 1;
         Cell fromCell = coordsToCell.get(from).getLeft();
         Cell toCell = coordsToCell.get(to).getLeft();
 
@@ -150,12 +144,7 @@ public class ChessBoard {
             coordsToActualPiece.put(rooksNewCell.getCellViewModel().getModel().getCoords(), movingRook);
         }
 
-        if (movingPiece instanceof Pawn && (to.getY() == BLACK_LAST_ROW || to.getY() == WHITE_LAST_ROW)) {
-
-            if (playerColor.equals(movingPiece.getPieceColor())) {
-                new ChoosePiecePopup(chessBoardListener).buildPopup(playerColor, toCell).showPopup();
-            }
-
+        if (GameLogic.isTheLastRawForPawn(to, movingPiece)) {
             return true;
         }
 
@@ -167,12 +156,16 @@ public class ChessBoard {
 
         Cell pieceToInsertCell = coordsToCell.get(coords).getLeft();
 
-        Piece pieceToClean = pieceToInsertCell.cleanPiece();
-
         pieceToInsertCell.setPiece(piece);
         coordsToActualPiece.put(coords, piece);
 
-        writeToHistory(pieceToClean);
+        writeToHistory(piece);
+    }
+
+    public ChoosePiecePopup showChoosePiecePopup(Cell toCell) {
+        ChoosePiecePopup choosePiecePopup = new ChoosePiecePopup(chessBoardListener).buildPopup(playerColor, toCell);
+        choosePiecePopup.showPopup();
+        return choosePiecePopup;
     }
 
     private Cell getOpponentsPawnToDelete(Piece piece) {
@@ -234,6 +227,14 @@ public class ChessBoard {
         state.forEach((coords, piece) -> coordsToCell.get(coords).getLeft().setPiece(piece));
     }
 
+    public void restoreActualPosition() {
+        ChessBoardSnapshot lastSnapshot = gameHistory.getActualPositionSnapshot();
+        Map<CellModel.Coords, Piece> coordsToPiece = lastSnapshot.getState();
+
+        coordsToActualPiece.clear();
+        coordsToActualPiece.putAll(coordsToPiece);
+    }
+
     public ChessBoardListener getChessBoardListener() {
         return chessBoardListener;
     }
@@ -257,18 +258,38 @@ public class ChessBoard {
             return board;
         }
 
-        public abstract void doOnUpdate(CellModel.Coords coords);
+        protected abstract boolean isStateReturnedAfterHistory();
+
+        public abstract void doOnUpdateFromCell(CellModel.Coords coords);
+
         public abstract void doOnUpdateFromPlayer();
+
         public abstract void doOnUpdateFromChoosePiecePopup(Piece piece);
 
         public abstract void setCoordsToCellListeners(Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCellListeners);
-        public void changeToPreviousState() {
-            if (prevState != null) {
-                getBoard().changeState(prevState);
+
+        public abstract void beforeStateChanged();
+
+        public void changeToLastPossibleStateBeforeHistory() {
+            ChessBoardState possibleState = prevState;
+
+            if (possibleState == null)
+                return;
+
+            while (!possibleState.isStateReturnedAfterHistory()) {
+                possibleState = possibleState.prevState;
+            }
+
+            if (possibleState.isStateReturnedAfterHistory()) {
+                getBoard().changeState(possibleState);
             }
         }
+
         public void changeState(ChessBoardState newState) {
+            getBoard().getBoardState().beforeStateChanged();
+
             newState.prevState = this;
+
             getBoard().changeState(newState);
         }
     }

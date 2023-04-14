@@ -22,7 +22,7 @@ public class WaitForSelectedPieceState extends ChessBoard.ChessBoardState {
     }
 
     @Override
-    public void doOnUpdate(CellModel.Coords coords) {
+    public void doOnUpdateFromCell(CellModel.Coords coords) {
         ImmutablePair<Cell, CellListener> cellCellListener = coordsToCellListeners.get(coords);
         Cell cell = cellCellListener.getLeft();
         CellListener cellListener = cellCellListener.getRight();
@@ -37,7 +37,7 @@ public class WaitForSelectedPieceState extends ChessBoard.ChessBoardState {
             waitToMakeMoveState.setPieceToMoveCoords(coords);
             changeState(waitToMakeMoveState);
         } else {
-            throw new IllegalStateException("Illegal cell state");
+            throw new IllegalStateException("Illegal cell state: all cells must be in RELEASED mode.");
         }
     }
 
@@ -49,5 +49,15 @@ public class WaitForSelectedPieceState extends ChessBoard.ChessBoardState {
     @Override
     public void doOnUpdateFromChoosePiecePopup(Piece piece) {
         // do nothing
+    }
+
+    @Override
+    public void beforeStateChanged() {
+        // do nothing
+    }
+
+    @Override
+    protected boolean isStateReturnedAfterHistory() {
+        return true;
     }
 }

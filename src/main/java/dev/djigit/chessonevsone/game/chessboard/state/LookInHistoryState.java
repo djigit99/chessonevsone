@@ -19,7 +19,7 @@ public class LookInHistoryState extends ChessBoard.ChessBoardState {
     }
 
     @Override
-    public void doOnUpdate(CellModel.Coords coords) {
+    public void doOnUpdateFromCell(CellModel.Coords coords) {
         // do nothing
     }
 
@@ -41,5 +41,15 @@ public class LookInHistoryState extends ChessBoard.ChessBoardState {
     @Override
     public void doOnUpdateFromChoosePiecePopup(Piece piece) {
         // do nothing
+    }
+
+    @Override
+    public void beforeStateChanged() {
+        // do nothing
+    }
+
+    @Override
+    protected boolean isStateReturnedAfterHistory() {
+        return false;
     }
 }

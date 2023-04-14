@@ -3,7 +3,7 @@ package dev.djigit.chessonevsone.game.chessboard.cell;
 import dev.djigit.chessonevsone.game.chessboard.ChessBoardListener;
 
 public class CellListener {
-    private CellViewModel cellViewModel;
+    private final CellViewModel cellViewModel;
     private ChessBoardListener chessBoardListener;
 
     public CellListener(CellViewModel cellViewModel) {

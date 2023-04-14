@@ -55,4 +55,15 @@ public class GameLogic {
 
         return false;
     }
+
+    public static boolean isTheLastRawForPawn(CellModel.Coords to, Piece piece) {
+        final int WHITE_LAST_ROW = 8;
+        final int BLACK_LAST_ROW = 1;
+
+        return piece instanceof Pawn &&
+                (
+                    (piece.getPieceColor().isWhite() && to.getY() == WHITE_LAST_ROW) ||
+                    (!piece.getPieceColor().isWhite() && to.getY() == BLACK_LAST_ROW)
+                );
+    }
 }

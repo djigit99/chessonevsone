@@ -110,7 +110,7 @@ public class ChoosePiecePopup {
             System.out.println("Unknown piece to be loaded");
     }
 
-    private void hide() {
+    public void hide() {
         popup.hide();
     }
 

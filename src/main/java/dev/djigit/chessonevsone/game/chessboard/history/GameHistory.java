@@ -45,4 +45,10 @@ public class GameHistory {
     public Piece getLastMovePiece() {
         return history.lastMovePiece();
     }
+
+    public ChessBoardSnapshot getActualPositionSnapshot() {
+        if (history == null)
+            return null;
+        return history.snapshot();
+    }
 }

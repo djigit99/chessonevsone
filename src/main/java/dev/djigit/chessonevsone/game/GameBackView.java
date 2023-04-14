@@ -51,11 +51,12 @@ public class GameBackView {
         Button nextBtn = (Button) historyButtonsHBox.getChildren().get(1);
 
         prevBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            Optional<ChessBoardSnapshot> prevState = history.getPrevMove();
-            prevState.ifPresent(chessBoard::restoreSnapshot);
             if (!(chessBoard.getBoardState() instanceof LookInHistoryState)) {
+                chessBoard.restoreActualPosition();
                 chessBoard.getBoardState().changeState(new LookInHistoryState(chessBoard));
             }
+            Optional<ChessBoardSnapshot> prevState = history.getPrevMove();
+            prevState.ifPresent(chessBoard::restoreSnapshot);
         });
 
         nextBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
@@ -63,7 +64,7 @@ public class GameBackView {
             nextState.ifPresent(chessBoard::restoreSnapshot);
             if (chessBoard.getBoardState() instanceof LookInHistoryState
                 && history.isLastMove()) {
-                chessBoard.getBoardState().changeToPreviousState();
+                chessBoard.getBoardState().changeToLastPossibleStateBeforeHistory();
             }
         });
     }
