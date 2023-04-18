@@ -9,8 +9,10 @@ import java.net.SocketTimeoutException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public abstract class PlayerSocket {
+    final Logger LOG = Logger.getLogger(PlayerSocket.class.getName());
     final ConcurrentLinkedQueue<ImmutablePair<MessageType, String>> messagesQueue = new ConcurrentLinkedQueue<>();
     volatile boolean connectionAlive = false;
     ObjectInputStream objectReader;
@@ -49,17 +51,17 @@ public abstract class PlayerSocket {
                         messagesQueue.add(ImmutablePair.of(msg, null));
                     }
                 } catch (SocketTimeoutException ignored) {
-                    System.out.println("Socket's read timeout occurred.");
+                    LOG.warning("Socket's read timeout occurred.");
                 }
                 catch (IOException e) {
-                    System.out.println("Can't read opponent's message.");
+                    LOG.warning("Can't read opponent's message.");
                     throw new RuntimeException(e);
                 }
                 catch (ClassNotFoundException e) {
-                    System.out.println("Can't read opponent's message type.");
+                    LOG.warning("Can't read opponent's message type.");
                     throw new RuntimeException(e);
                 } catch (NullPointerException e) {
-                    System.out.println("NPE occurred.");
+                    LOG.warning("NPE occurred while read a message from socket.");
                     throw new RuntimeException(e);
                 }
             }

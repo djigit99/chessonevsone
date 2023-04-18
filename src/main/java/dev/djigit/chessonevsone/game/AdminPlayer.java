@@ -64,14 +64,14 @@ public class AdminPlayer extends Player {
         Button blackColorBtn = (Button) ((VBox) chooseColorNode).getChildren().get(1);
 
         EventHandler<MouseEvent> setToWhiteHandler = me -> {
-            System.out.println("Server: server picked up a white side");
+            LOG.info("Server: server picked up a white side");
             setColor(Color.WHITE);
             chooseColorStage.close();
             lookForAnOpponent();
         };
 
         EventHandler<MouseEvent> setToBlackHandler = me -> {
-            System.out.println("Server: server picked up a black side");
+            LOG.info("Server: server picked up a black side");
             setColor(Color.BLACK);
             chooseColorStage.close();
             lookForAnOpponent();

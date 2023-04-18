@@ -16,8 +16,10 @@ import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.logging.Logger;
 
 public abstract class Player {
+    final Logger LOG = Logger.getLogger(Player.class.getName());
     private final Stage primaryStage;
     private Color color;
     protected PlayerSocket socket;
@@ -86,7 +88,7 @@ public abstract class Player {
         getPrimaryStage().setOnCloseRequest(we -> {
             boolean isFinished = listenForMessagesFuture.cancel(true);
             if (!isFinished)
-                System.out.println("ListenForMessages task has not been finished.");
+                LOG.warning("ListenForMessages task has not been finished.");
             listenForMessagesService.shutdownNow();
 
             socket.close();

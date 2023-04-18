@@ -18,8 +18,10 @@ import javafx.stage.Popup;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ChoosePiecePopup {
+    private final Logger LOG = Logger.getLogger(ChoosePiecePopup.class.getName());
     private Popup popup;
     private final ChessBoardListener chessBoardListener;
     private Cell ownerCell;
@@ -46,7 +48,6 @@ public class ChoosePiecePopup {
             choosePieceParent = choosePieceLoader.load();
             choosePiecePopupController = choosePieceLoader.getController();
         } catch (IOException e) {
-            System.out.println("Can't load popup");
             throw new RuntimeException(e);
         }
 
@@ -103,7 +104,7 @@ public class ChoosePiecePopup {
             });
         }
         else
-            System.out.println("Unknown piece to be loaded");
+            LOG.warning("Unknown piece to be loaded");
     }
 
     public void hide() {

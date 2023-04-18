@@ -4,7 +4,7 @@ import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
 
 public class PlayerListener {
-    private Player player;
+    private final Player player;
 
     public PlayerListener(Player player) {
         this.player = player;

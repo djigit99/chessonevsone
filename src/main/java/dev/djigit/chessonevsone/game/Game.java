@@ -10,9 +10,7 @@ import javafx.stage.Stage;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Game {
-
-    private final String INTRO_SCENE_URL = "/scenes/IntroScene.fxml";
-    private Stage primaryStage;
+    private final Stage primaryStage;
 
     public Game(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -23,6 +21,7 @@ public class Game {
     }
 
     private void showIntroScene() {
+        String INTRO_SCENE_URL = "/scenes/IntroScene.fxml";
         Parent introRootNode = FXMLLoaderFactory.getRootNode(getClass().getResource(INTRO_SCENE_URL));
         primaryStage.setScene(new Scene(introRootNode));
         primaryStage.show();

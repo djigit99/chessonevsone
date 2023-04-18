@@ -38,7 +38,7 @@ public class GameClientSocket extends PlayerSocket {
         try {
             socket = new Socket((String) null, 5678);
             connectionAlive = true;
-            System.out.println("Client: connection established.");
+            LOG.info("Client: connection established.");
 
             requestColorFromServer();
         } catch (IOException e) {
@@ -53,15 +53,15 @@ public class GameClientSocket extends PlayerSocket {
         objectWriter = new ObjectOutputStream(socket.getOutputStream());
         objectReader = new ObjectInputStream(socket.getInputStream());
 
-        System.out.println("Client: Request a color from the server.");
+        LOG.info("Client: Request a color from the server.");
         objectWriter.writeObject(MessageType.COLOR_REQUEST);
         objectWriter.flush();
 
-        System.out.println("Client: Wait for the color response...");
+        LOG.info("Client: Wait for the color response...");
         MessageType colorResponse = (MessageType) objectReader.readObject();
         setColorForClient(colorResponse);
 
-        System.out.println("Client: Send 'color receive' response to server.");
+        LOG.info("Client: Send 'color receive' response to server.");
         objectWriter.writeObject(MessageType.COLOR_RECEIVE);
         objectWriter.flush();
 
@@ -103,7 +103,7 @@ public class GameClientSocket extends PlayerSocket {
             objectWriter.writeObject(msgType);
             objectWriter.writeObject(msg);
         } catch (IOException e) {
-            System.out.println("Unable to send message via client socket.");
+            LOG.warning("Unable to send message via client socket.");
             throw new RuntimeException(e);
         }
     }

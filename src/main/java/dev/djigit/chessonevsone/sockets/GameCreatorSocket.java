@@ -41,9 +41,9 @@ public class GameCreatorSocket extends PlayerSocket {
                 throw new CantCreateServerException(e);
             }
 
-            System.out.println("Server: waiting for a client...");
+            LOG.info("Server: waiting for a client...");
             clientSocket = socket.accept();
-            System.out.println("Server: client connected. Let's choose the color.");
+            LOG.info("Server: client connected. Let's choose the color.");
             exchangeColorWithClient(creatorColor);
         } catch (IOException e) {
             throw new RuntimeException("Error occurred while waiting for a client connection.", e);
@@ -52,7 +52,7 @@ public class GameCreatorSocket extends PlayerSocket {
 
     private void exchangeColorWithClient(Player.Color creatorColor) {
         try {
-            System.out.println("Server: Waiting for a client's color request...");
+            LOG.info("Server: Waiting for a client's color request...");
 
             clientSocket.setSoTimeout(100_000);
             objectReader = new ObjectInputStream(clientSocket.getInputStream());
@@ -60,17 +60,17 @@ public class GameCreatorSocket extends PlayerSocket {
 
             MessageType colorRequest = (MessageType) objectReader.readObject();
             if (colorRequest.equals(MessageType.COLOR_REQUEST))
-                System.out.println("Server: Color request received.");
+                LOG.info("Server: Color request received.");
 
-            System.out.println("Server: Send the color for the client.");
+            LOG.info("Server: Send the color for the client.");
             objectWriter.writeObject(getColorResponse(creatorColor));
             objectWriter.flush();
 
-            System.out.println("Server: Waiting for a client's confirmation message response.");
+            LOG.info("Server: Waiting for a client's confirmation message response.");
 
             MessageType confirmResponse = (MessageType) objectReader.readObject();
             if (confirmResponse.equals(MessageType.COLOR_RECEIVE))
-                System.out.println("Server: Client received the color.");
+                LOG.info("Server: Client received the color.");
 
             readMessagesFuture = executorService.submit(getMessageQueueRunnable());
 
@@ -120,7 +120,7 @@ public class GameCreatorSocket extends PlayerSocket {
             objectWriter.writeObject(msgType);
             objectWriter.writeObject(msg);
         } catch (IOException e) {
-            System.out.println("Unable to send message via client socket.");
+            LOG.warning("Unable to send message via client socket.");
             throw new RuntimeException(e);
         }
     }
