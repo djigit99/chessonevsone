@@ -1,24 +1,25 @@
 package dev.djigit.chessonevsone.game.chessboard;
 
-import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
+import dev.djigit.chessonevsone.game.chessboard.piece.King;
 import dev.djigit.chessonevsone.game.chessboard.piece.Pawn;
 import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
+import org.apache.commons.collections4.map.LinkedMap;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.List;
+import java.util.Map;
 
 public class GameLogic {
-    private ChessBoard chessBoard;
+    private final ChessBoardModel chessBoardModel;
 
-    public GameLogic(ChessBoard chessBoard) {
-        this.chessBoard = chessBoard;
+    public GameLogic(ChessBoardModel chessBoardModel) {
+        this.chessBoardModel = chessBoardModel;
     }
 
     public boolean isMovePossible(Piece piece, CellModel.Coords from, CellModel.Coords to) {
-        // todo: get piece path
-        // todo: get all cells on path
-        // todo: check if move is possible depending on the kind of the piece
-        // todo: check if the king is under check
+        // todo: check if the king is under check during the move (castling)
+        // todo: check if the king in under check after the move
 
         List<CellModel.Coords> moves = piece.getMoves(from);
         if (!moves.contains(to))
@@ -26,9 +27,30 @@ public class GameLogic {
 
         CellModel.Coords[] path = piece.getPath(from, to);
 
-        Cell[] cellsOnPath = chessBoard.getCellsOnPath(path);
+        LinkedMap<CellModel.Coords, Piece> piecesOnPath = chessBoardModel.getPiecesByCoords(path);
 
-        return piece.isMovePossible(cellsOnPath);
+        if (!piece.isMovePossible(piecesOnPath)) {
+            return false;
+        }
+
+        ChessBoardModel boardModelAfterMove = chessBoardModel.clone();
+        boardModelAfterMove.transferPiece(from, to);
+
+        // 'remove' opponent's pawn after en passant
+        if (piece instanceof Pawn && ((Pawn) piece).isLastMoveEnPassant()) {
+            if (piece.getPieceColor().isWhite()) {
+                boardModelAfterMove.cleanPiece(to.getByCoords((short) 0, (short) -1));
+            } else {
+                boardModelAfterMove.cleanPiece(to.getByCoords((short) 0, (short) 1));
+            }
+        }
+
+        ImmutablePair<CellModel.Coords, King> coordsKingPair = boardModelAfterMove.getKing(piece.getPieceColor());
+        CellModel.Coords kingCoords = coordsKingPair.getLeft();
+        King king = coordsKingPair.getRight();
+        Map<CellModel.Coords, Piece> opponentsPieces = boardModelAfterMove.getOpponentsPieces(piece.getPieceColor());
+
+        return !king.isKingUnderCheck(kingCoords, opponentsPieces, boardModelAfterMove);
     }
 
     /**
@@ -43,12 +65,10 @@ public class GameLogic {
      * @return true - if the move is 'en passant'.
     * */
     public boolean isMoveEnPassant(CellModel.Coords from, CellModel.Coords to) {
-        Cell[] cellsOnPath = chessBoard.getCellsOnPath(new CellModel.Coords[] {from, to});
-        Cell pieceCell = cellsOnPath[0];
-        Cell toCell = cellsOnPath[1];
-        Piece piece = pieceCell.getPiece();
+        LinkedMap<CellModel.Coords, Piece> piecesOnPath = chessBoardModel.getPiecesByCoords(new CellModel.Coords[] {from, to});
+        Piece piece = piecesOnPath.getValue(0);
 
-        if (piece instanceof Pawn && from.getX() != to.getX() && !toCell.hasPiece()) {
+        if (piece instanceof Pawn && from.getX() != to.getX() && piecesOnPath.getValue(1) == null) {
             ((Pawn) piece).markLastMoveEnPassant();
             return true;
         }
@@ -65,5 +85,20 @@ public class GameLogic {
                     (piece.getPieceColor().isWhite() && to.getY() == WHITE_LAST_ROW) ||
                     (!piece.getPieceColor().isWhite() && to.getY() == BLACK_LAST_ROW)
                 );
+    }
+
+    public static boolean doesPieceAttack(Piece piece,
+                                   CellModel.Coords pieceCoords,
+                                   CellModel.Coords attackingCoords,
+                                   ChessBoardModel chessBoardModel) {
+        List<CellModel.Coords> moves = piece.getMoves(pieceCoords);
+        if (!moves.contains(attackingCoords))
+            return false;
+
+        CellModel.Coords[] path = piece.getPath(pieceCoords, attackingCoords);
+
+        LinkedMap<CellModel.Coords, Piece> piecesOnPath = chessBoardModel.getPiecesByCoords(path);
+
+        return piece.canAttack(piecesOnPath);
     }
 }

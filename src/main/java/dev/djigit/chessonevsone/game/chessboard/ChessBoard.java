@@ -23,11 +23,10 @@ import java.util.Map;
 
 public class ChessBoard {
     private final Map<CellModel.Coords, ImmutablePair<Cell, CellListener>> coordsToCell = new HashMap<>();
-    private Map<CellModel.Coords, Piece> coordsToActualPiece;
+    private final ChessBoardModel chessBoardModel;
     private final URL url;
     private ChessBoardListener chessBoardListener;
     private BorderPane chessBoardRootPane;
-    private final Player.Color playerColor;
     private final PlayerListener playerListener;
     private ChessBoardState boardState;
     private final GameLogic gameLogic;
@@ -35,13 +34,15 @@ public class ChessBoard {
 
     public ChessBoard(URL url, Player player) {
         this.url = url;
-        this.playerColor = player.getColor();
-        if (playerColor.isWhite()) {
+        this.chessBoardModel = new ChessBoardModel(new HashMap<>(), player.getColor());
+
+        if (player.getColor().isWhite()) {
             this.boardState = new WaitForSelectedPieceState(this);
         } else {
             this.boardState = new WaitForOpponentMoveState(this);
         }
-        this.gameLogic = new GameLogic(this);
+
+        this.gameLogic = new GameLogic(chessBoardModel);
         this.playerListener = player.getListener();
 
         initData();
@@ -50,7 +51,6 @@ public class ChessBoard {
     private void initData() {
 
         try {
-            coordsToActualPiece = new HashMap<>();
             ChessBoardController chessBoardController;
             FXMLLoader loader = FXMLLoaderFactory.getFXMLLoader(url);
 
@@ -64,25 +64,24 @@ public class ChessBoard {
                 Player.Color pColor = pInfo[1].equals("w") ? Player.Color.WHITE : Player.Color.BLACK;
 
                 if ("pawn".equals(pName))
-                    coordsToActualPiece.put(pCoords, new Pawn(pColor, imgVAN.getImageView()));
+                    chessBoardModel.setPiece(pCoords, new Pawn(pColor, imgVAN.getImageView()));
                 else if ("rook".equals(pName))
-                    coordsToActualPiece.put(pCoords, new Rook(pColor, imgVAN.getImageView()));
+                    chessBoardModel.setPiece(pCoords, new Rook(pColor, imgVAN.getImageView()));
                 else if ("knight".equals(pName))
-                    coordsToActualPiece.put(pCoords, new Knight(pColor, imgVAN.getImageView()));
+                    chessBoardModel.setPiece(pCoords, new Knight(pColor, imgVAN.getImageView()));
                 else if ("bishop".equals(pName))
-                    coordsToActualPiece.put(pCoords, new Bishop(pColor, imgVAN.getImageView()));
+                    chessBoardModel.setPiece(pCoords, new Bishop(pColor, imgVAN.getImageView()));
                 else if ("queen".equals(pName))
-                    coordsToActualPiece.put(pCoords, new Queen(pColor, imgVAN.getImageView()));
+                    chessBoardModel.setPiece(pCoords, new Queen(pColor, imgVAN.getImageView()));
                 else if ("king".equals(pName))
-                    coordsToActualPiece.put(pCoords, new King(pColor, imgVAN.getImageView()));
+                    chessBoardModel.setPiece(pCoords, new King(pColor, imgVAN.getImageView()));
                 else throw new RuntimeException("Unknown piece name");
             });
-
 
             chessBoardController.getCellPanesAndCoords().forEach(paneAndCoords -> {
                 Cell newCell = new Cell(paneAndCoords.getCellPane());
                 CellListener cellListener = newCell.getCellListener();
-                Piece pieceToSet = coordsToActualPiece.getOrDefault(paneAndCoords.getCoords(), null);
+                Piece pieceToSet = chessBoardModel.getPiece(paneAndCoords.getCoords());
 
                 newCell.setPiece(pieceToSet);
                 coordsToCell.put(paneAndCoords.getCoords(), ImmutablePair.of(newCell, cellListener));
@@ -101,14 +100,14 @@ public class ChessBoard {
                 pair -> pair.getLeft().getCellListener().setChessBoardListener(chessBoardListener));
 
         // set history for all pawns to detect en passant in the game
-        coordsToActualPiece.values().forEach(p -> {
+        chessBoardModel.getPieces().forEach(p -> {
             if (p instanceof Pawn)
                 ((Pawn) p).setGameHistory(gameHistory);
         });
     }
 
     public Player.Color getPlayerColor() {
-        return playerColor;
+        return chessBoardModel.getPlayerColor();
     }
 
     public boolean isMovePossible(Piece piece, CellModel.Coords from, CellModel.Coords to) {
@@ -119,29 +118,28 @@ public class ChessBoard {
         Cell fromCell = coordsToCell.get(from).getLeft();
         Cell toCell = coordsToCell.get(to).getLeft();
 
+        chessBoardModel.transferPiece(from, to);
         Piece movingPiece = fromCell.cleanPiece();
-        coordsToActualPiece.put(from, null);
         toCell.setPiece(movingPiece);
-        coordsToActualPiece.put(to, movingPiece);
         movingPiece.setLastMove(new Piece.LastMove(from, to));
 
         // moves needed to clean opponent's piece after
         if (movingPiece instanceof Pawn && ((Pawn) movingPiece).isLastMoveEnPassant()) {
             Cell cellToClean = getOpponentsPawnToDelete(movingPiece);
             cellToClean.cleanPiece();
-            coordsToActualPiece.put(cellToClean.getCellViewModel().getModel().getCoords(), null);
+            chessBoardModel.cleanPiece(cellToClean.getCellViewModel().getModel().getCoords());
         }
 
         if (movingPiece instanceof King && King.isCastling(from, to)) {
             Cell rookCell = getOwnRookToReplaceWhenCastling(from, to);
             Rook movingRook = (Rook) rookCell.cleanPiece();
-            coordsToActualPiece.put(rookCell.getCellViewModel().getModel().getCoords(), null);
+            chessBoardModel.cleanPiece(rookCell.getCellViewModel().getModel().getCoords());
 
             Cell rooksNewCell = coordsToCell
                     .get(from.getByCoords(to.getX() > from.getX() ? (short) 1 : (short) -1, (short) 0))
                     .getLeft();
             rooksNewCell.setPiece(movingRook);
-            coordsToActualPiece.put(rooksNewCell.getCellViewModel().getModel().getCoords(), movingRook);
+            chessBoardModel.setPiece(rooksNewCell.getCellViewModel().getModel().getCoords(), movingRook);
         }
 
         if (GameLogic.isTheLastRawForPawn(to, movingPiece)) {
@@ -153,17 +151,17 @@ public class ChessBoard {
     }
 
     public void doPostMakeMove(Piece piece, CellModel.Coords coords) {
-
         Cell pieceToInsertCell = coordsToCell.get(coords).getLeft();
 
         pieceToInsertCell.setPiece(piece);
-        coordsToActualPiece.put(coords, piece);
+        chessBoardModel.setPiece(coords, piece);
 
         writeToHistory(piece);
     }
 
     public ChoosePiecePopup showChoosePiecePopup(Cell toCell) {
-        ChoosePiecePopup choosePiecePopup = new ChoosePiecePopup(chessBoardListener).buildPopup(playerColor, toCell);
+        ChoosePiecePopup choosePiecePopup =
+                new ChoosePiecePopup(chessBoardListener).buildPopup(chessBoardModel.getPlayerColor(), toCell);
         choosePiecePopup.showPopup();
         return choosePiecePopup;
     }
@@ -218,7 +216,7 @@ public class ChessBoard {
     }
 
     public ChessBoardSnapshot createSnapshot() {
-        Map<CellModel.Coords, Piece> coordsPieceMap = new HashMap<>(coordsToActualPiece);
+        Map<CellModel.Coords, Piece> coordsPieceMap = chessBoardModel.getModelMap();
         return new ChessBoardSnapshot(coordsPieceMap);
     }
 
@@ -231,8 +229,8 @@ public class ChessBoard {
         ChessBoardSnapshot lastSnapshot = gameHistory.getActualPositionSnapshot();
         Map<CellModel.Coords, Piece> coordsToPiece = lastSnapshot.getState();
 
-        coordsToActualPiece.clear();
-        coordsToActualPiece.putAll(coordsToPiece);
+        chessBoardModel.cleanChessboard();
+        chessBoardModel.setPieces(coordsToPiece);
     }
 
     public ChessBoardListener getChessBoardListener() {

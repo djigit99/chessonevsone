@@ -1,10 +1,10 @@
 package dev.djigit.chessonevsone.game.chessboard.piece;
 
-import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
-import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.apache.commons.collections4.map.LinkedMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,14 +59,19 @@ public class Knight extends Piece {
     }
 
     @Override
-    public boolean isMovePossible(Cell[] cells) {
-        return !cells[cells.length-1].hasPiece() ||
-                !cells[cells.length-1].isFriendPiece(getPieceColor());
+    public boolean isMovePossible(LinkedMap<CellModel.Coords, Piece> path) {
+        return path.getValue(path.size()-1) == null ||
+                !path.getValue(path.size()-1).getPieceColor().equals(getPieceColor());
     }
 
     @Override
     public String getName() {
         return "knight";
+    }
+
+    @Override
+    public boolean canAttack(LinkedMap<CellModel.Coords, Piece> path) {
+        return true;
     }
 
     public static Knight createBrandNewKnight(Player.Color pieceColor) {

@@ -1,10 +1,10 @@
 package dev.djigit.chessonevsone.game.chessboard.piece;
 
-import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
-import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.chessboard.history.GameHistory;
 import javafx.scene.image.ImageView;
+import org.apache.commons.collections4.map.LinkedMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,19 +73,20 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public boolean isMovePossible(Cell[] cells) {
-        final int length = cells.length;
-        CellModel.Coords from = cells[0].getCellViewModel().getModel().getCoords();
-        CellModel.Coords to = cells[length-1].getCellViewModel().getModel().getCoords();
+    public boolean isMovePossible(LinkedMap<CellModel.Coords, Piece> path) {
+        final int length = path.size();
+        CellModel.Coords from = path.firstKey();
+        CellModel.Coords to = path.lastKey();
 
         if (from.getX() == to.getX()) {
             for (int i = 1; i <= length - 1; i++) {
-                if (cells[i].hasPiece())
+                Piece pieceOnPath = path.getValue(i);
+                if (pieceOnPath != null)
                     return false;
             }
             return true;
         } else {
-            if (cells[length-1].hasPiece() && !cells[length-1].isFriendPiece(getPieceColor()))
+            if (path.getValue(length-1) != null && !path.getValue(length-1).getPieceColor().equals(getPieceColor()))
                 return true;
 
             // en passant
@@ -114,6 +115,14 @@ public class Pawn extends Piece {
     @Override
     public String getName() {
         return "pawn";
+    }
+
+    @Override
+    public boolean canAttack(LinkedMap<CellModel.Coords, Piece> path) {
+        CellModel.Coords from = path.firstKey();
+        CellModel.Coords to = path.lastKey();
+
+        return from.getX() != to.getX();
     }
 
     public void setGameHistory(GameHistory gameHistory) {

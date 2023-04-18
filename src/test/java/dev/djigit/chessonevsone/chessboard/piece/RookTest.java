@@ -1,11 +1,12 @@
 package dev.djigit.chessonevsone.chessboard.piece;
 
-import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
-import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.chessboard.piece.Knight;
+import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
 import dev.djigit.chessonevsone.game.chessboard.piece.Queen;
 import dev.djigit.chessonevsone.game.chessboard.piece.Rook;
+import org.apache.commons.collections4.map.LinkedMap;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RookTest extends PieceTest{
+public class RookTest {
     private static Rook rook;
 
     @BeforeAll
@@ -72,16 +73,11 @@ public class RookTest extends PieceTest{
     void isMovePossible_Test() {
         rook.setPieceColor(Player.Color.BLACK);
 
-        String paneId1 = "panel_g5";
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.G5, rook);
+        piecesMap.put(CellModel.Coords.G6, null);
 
-        Cell cell1 = generateCell(paneId1, true);
-        cell1.setPiece(rook);
-
-        String paneId2 = "panel_g6";
-
-        Cell cell2 = generateCell(paneId2, false);
-
-        boolean movePossible = rook.isMovePossible(new Cell[]{cell1, cell2});
+        boolean movePossible = rook.isMovePossible(piecesMap);
 
         assertTrue(movePossible);
     }
@@ -90,25 +86,13 @@ public class RookTest extends PieceTest{
     void isMovePossible_pieceIsOnThePath_Test() {
         rook.setPieceColor(Player.Color.WHITE);
 
-        String paneId1 = "panel_d3";
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.D3, rook);
+        piecesMap.put(CellModel.Coords.E3, new Queen(Player.Color.WHITE, null));
+        piecesMap.put(CellModel.Coords.F3, null);
+        piecesMap.put(CellModel.Coords.G3, null);
 
-        Cell cell1 = generateCell(paneId1, true);
-        cell1.setPiece(rook);
-
-        String paneId2 = "panel_e3";
-
-        Cell cell2 = generateCell(paneId2, true);
-        cell2.setPiece(new Queen(Player.Color.WHITE, null));
-
-        String paneId3 = "panel_f3";
-
-        Cell cell3 = generateCell(paneId3, false);
-
-        String paneId4 = "panel_g3";
-
-        Cell cell4 = generateCell(paneId4, false);
-
-        boolean movePossible = rook.isMovePossible(new Cell[]{cell1, cell2, cell3, cell4});
+        boolean movePossible = rook.isMovePossible(piecesMap);
 
         assertFalse(movePossible);
     }
@@ -117,26 +101,13 @@ public class RookTest extends PieceTest{
     void isMovePossible_withOpponentPiece_Test() {
         rook.setPieceColor(Player.Color.WHITE);
 
-        String paneId1 = "panel_h8";
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.H8, rook);
+        piecesMap.put(CellModel.Coords.H7, null);
+        piecesMap.put(CellModel.Coords.H6, null);
+        piecesMap.put(CellModel.Coords.H5, new Knight(Player.Color.BLACK, null));
 
-        Cell cell1 = generateCell(paneId1, true);
-        cell1.setPiece(rook);
-
-        String paneId2 = "panel_h7";
-
-        Cell cell2 = generateCell(paneId2, false);
-        cell2.setPiece(new Queen(Player.Color.WHITE, null));
-
-        String paneId3 = "panel_h6";
-
-        Cell cell3 = generateCell(paneId3, false);
-
-        String paneId4 = "panel_h5";
-
-        Cell cell4 = generateCell(paneId4, true);
-        cell4.setPiece(new Knight(Player.Color.BLACK, null));
-
-        boolean movePossible = rook.isMovePossible(new Cell[]{cell1, cell2, cell3, cell4});
+        boolean movePossible = rook.isMovePossible(piecesMap);
 
         assertTrue(movePossible);
     }

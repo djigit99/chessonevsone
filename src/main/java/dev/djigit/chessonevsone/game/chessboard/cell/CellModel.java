@@ -39,21 +39,12 @@ public class CellModel {
         H5('h', (short)5),H6('h', (short)6),H7('h', (short)7),H8('h',(short)8);
 
 
-        char x;
-        short y;
-        double xPositionRelative;
-        double yPositionRelative;
+        final char x;
+        final short y;
 
         Coords(char x, short y) {
             this.x = x;
             this.y = y;
-        }
-
-        Coords(char x, short y, double xPositionRelative, double yPositionRelative) {
-            this.x = x;
-            this.y = y;
-            this.xPositionRelative = xPositionRelative;
-            this.yPositionRelative = yPositionRelative;
         }
 
         public static Coords getCordsByValue(char x, short y) {

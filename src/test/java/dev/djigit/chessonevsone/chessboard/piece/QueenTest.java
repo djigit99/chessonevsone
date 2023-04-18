@@ -1,11 +1,12 @@
 package dev.djigit.chessonevsone.chessboard.piece;
 
-import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
-import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.chessboard.piece.Knight;
+import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
 import dev.djigit.chessonevsone.game.chessboard.piece.Queen;
 import dev.djigit.chessonevsone.game.chessboard.piece.Rook;
+import org.apache.commons.collections4.map.LinkedMap;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class QueenTest extends PieceTest {
+public class QueenTest {
     private static Queen queen;
 
     @BeforeAll
@@ -62,21 +63,13 @@ public class QueenTest extends PieceTest {
 
     @Test
     void isMovePossible_withEmptyCells_Test() {
-        String panelId1 = "panel_g5";
-        Cell cell1 = generateCell(panelId1, true);
-        cell1.setPiece(queen);
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.G5, queen);
+        piecesMap.put(CellModel.Coords.F4, null);
+        piecesMap.put(CellModel.Coords.E3, null);
+        piecesMap.put(CellModel.Coords.D2, null);
 
-        String panelId2 = "panel_f4";
-        Cell cell2 = generateCell(panelId2, false);
-
-        String panelId3 = "panel_e3";
-        Cell cell3 = generateCell(panelId3, false);
-
-        String panelId4 = "panel_d2";
-        Cell cell4 = generateCell(panelId4, false);
-
-
-        boolean movePossible = queen.isMovePossible(new Cell[]{cell1, cell2, cell3, cell4});
+        boolean movePossible = queen.isMovePossible(piecesMap);
 
         assertTrue(movePossible);
     }
@@ -84,22 +77,14 @@ public class QueenTest extends PieceTest {
     @Test
     void isMovePossible_withOpponentPiece_Test() {
         queen.setPieceColor(Player.Color.WHITE);
-        String panelId1 = "panel_g5";
-        Cell cell1 = generateCell(panelId1, true);
-        cell1.setPiece(queen);
 
-        String panelId2 = "panel_f4";
-        Cell cell2 = generateCell(panelId2, false);
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.G5, queen);
+        piecesMap.put(CellModel.Coords.F4, null);
+        piecesMap.put(CellModel.Coords.E3, new Knight(Player.Color.BLACK, null));
+        piecesMap.put(CellModel.Coords.D2, null);
 
-        String panelId3 = "panel_e3";
-        Cell cell3 = generateCell(panelId3, true);
-        cell3.setPiece(new Knight(Player.Color.BLACK, null));
-
-        String panelId4 = "panel_d2";
-        Cell cell4 = generateCell(panelId4, false);
-
-
-        boolean movePossible = queen.isMovePossible(new Cell[]{cell1, cell2, cell3, cell4});
+        boolean movePossible = queen.isMovePossible(piecesMap);
 
         assertFalse(movePossible);
     }
@@ -107,22 +92,14 @@ public class QueenTest extends PieceTest {
     @Test
     void isMovePossible_withOwnPiece_Test() {
         queen.setPieceColor(Player.Color.WHITE);
-        String panelId1 = "panel_g5";
-        Cell cell1 = generateCell(panelId1, true);
-        cell1.setPiece(queen);
 
-        String panelId2 = "panel_f4";
-        Cell cell2 = generateCell(panelId2, false);
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.G5, queen);
+        piecesMap.put(CellModel.Coords.F4, null);
+        piecesMap.put(CellModel.Coords.E3, null);
+        piecesMap.put(CellModel.Coords.D2, new Rook(Player.Color.WHITE, null));
 
-        String panelId3 = "panel_e3";
-        Cell cell3 = generateCell(panelId3, false);
-
-        String panelId4 = "panel_d2";
-        Cell cell4 = generateCell(panelId4, true);
-        cell4.setPiece(new Rook(Player.Color.WHITE, null));
-
-
-        boolean movePossible = queen.isMovePossible(new Cell[]{cell1, cell2, cell3, cell4});
+        boolean movePossible = queen.isMovePossible(piecesMap);
 
         assertFalse(movePossible);
     }

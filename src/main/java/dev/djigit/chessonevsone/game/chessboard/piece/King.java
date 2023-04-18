@@ -1,12 +1,15 @@
 package dev.djigit.chessonevsone.game.chessboard.piece;
 
-import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
-import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
+import dev.djigit.chessonevsone.game.chessboard.ChessBoardModel;
+import dev.djigit.chessonevsone.game.chessboard.GameLogic;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import javafx.scene.image.ImageView;
+import org.apache.commons.collections4.map.LinkedMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class King extends Piece {
     public King(Player.Color pieceColor, ImageView imageView) {
@@ -85,30 +88,30 @@ public class King extends Piece {
     }
 
     @Override
-    public boolean isMovePossible(Cell[] cells) {
-        CellModel.Coords from = cells[0].getCellViewModel().getModel().getCoords();
-        CellModel.Coords to = cells[cells.length-1].getCellViewModel().getModel().getCoords();
+    public boolean isMovePossible(LinkedMap<CellModel.Coords, Piece> path) {
+        CellModel.Coords from = path.firstKey();
+        CellModel.Coords to = path.lastKey();
 
         boolean isCastling = isCastling(from, to);
 
         if (isCastling) {
-            if (!(cells[cells.length-1].hasPiece() && cells[cells.length-1].getPiece() instanceof Rook))
+            if (!(path.getValue(path.size()-1) != null && path.getValue(path.size()-1) instanceof Rook))
                 return false; // no rook
 
             // if any piece has got a move
-            Rook rook = (Rook) cells[cells.length-1].getPiece();
-            if (rook.getLastMove().isPresent() || cells[0].getPiece().getLastMove().isPresent())
+            Rook rook = (Rook) path.getValue(path.size()-1);
+            if (rook.getLastMove().isPresent() || path.getValue(0).getLastMove().isPresent())
                 return false;
 
             // no piece between the king and rook
-            for (int i = 1; i < cells.length-1; i++) {
-                if (cells[i].hasPiece())
+            for (int i = 1; i < path.size()-1; i++) {
+                if (path.getValue(i) != null)
                     return false;
             }
 
             return true;
         } else {
-            return !cells[1].hasPiece() || !cells[1].isFriendPiece(getPieceColor());
+            return path.getValue(1) == null || !path.getValue(1).getPieceColor().equals(getPieceColor());
         }
     }
 
@@ -117,7 +120,24 @@ public class King extends Piece {
         return "king";
     }
 
+    @Override
+    public boolean canAttack(LinkedMap<CellModel.Coords, Piece> path) {
+        return path.size() == 2;
+    }
+
     public static boolean isCastling(CellModel.Coords from, CellModel.Coords to) {
         return Math.abs(from.getX() - to.getX()) > 1;
+    }
+
+    public boolean isKingUnderCheck(CellModel.Coords kingCoords,
+                                    Map<CellModel.Coords, Piece> coordsOpponentsPiece,
+                                    ChessBoardModel chessBoardModel) {
+        for (Map.Entry<CellModel.Coords, Piece> coordsPiecePair : coordsOpponentsPiece.entrySet()) {
+            CellModel.Coords opPieceCoords = coordsPiecePair.getKey();
+            Piece opPiece = coordsPiecePair.getValue();
+
+            if (GameLogic.doesPieceAttack(opPiece, opPieceCoords, kingCoords, chessBoardModel)) return true;
+        }
+        return false;
     }
 }

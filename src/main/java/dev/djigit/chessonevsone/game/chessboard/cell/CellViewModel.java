@@ -5,10 +5,12 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 
+import java.util.Objects;
+
 public class CellViewModel {
 
-    private CellModel model;
-    private ObjectProperty<State> stateProperty;
+    private final CellModel model;
+    private final ObjectProperty<State> stateProperty;
 
     public CellViewModel(CellModel model) {
         this.model = model;

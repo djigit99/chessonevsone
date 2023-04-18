@@ -1,10 +1,10 @@
 package dev.djigit.chessonevsone.game.chessboard.piece;
 
-import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
-import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.apache.commons.collections4.map.LinkedMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,18 +122,29 @@ public class Queen extends Piece {
     }
 
     @Override
-    public boolean isMovePossible(Cell[] cells) {
-        for (int i = 1; i < cells.length - 1; i++) {
-            if (cells[i].hasPiece())
+    public boolean isMovePossible(LinkedMap<CellModel.Coords, Piece> path) {
+        final int length = path.size();
+
+        for (int i = 1; i < length - 1; i++) {
+            if (path.getValue(i) != null)
                 return false;
         }
 
-        return !cells[cells.length-1].hasPiece() || !cells[cells.length-1].isFriendPiece(getPieceColor());
+        return path.getValue(length-1) == null || !path.getValue(length-1).getPieceColor().equals(getPieceColor());
     }
 
     @Override
     public String getName() {
         return "queen";
+    }
+
+    @Override
+    public boolean canAttack(LinkedMap<CellModel.Coords, Piece> path) {
+        for (int i = 1; i < path.size() - 1; i++) {
+            if (path.getValue(i) != null)
+                return false;
+        }
+        return true;
     }
 
     public static Queen createBrandNewQueen(Player.Color pieceColor) {

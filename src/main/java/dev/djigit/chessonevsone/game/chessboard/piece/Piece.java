@@ -1,17 +1,16 @@
 package dev.djigit.chessonevsone.game.chessboard.piece;
 
-import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
-import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import javafx.scene.image.ImageView;
-
+import org.apache.commons.collections4.map.LinkedMap;
 
 import java.util.List;
 import java.util.Optional;
 
 public abstract class Piece {
     private Player.Color pieceColor;
-    private ImageView imageView;
+    private final ImageView imageView;
     private LastMove lastMove;
 
     public Piece(Player.Color pieceColor, ImageView imageView) {
@@ -62,5 +61,6 @@ public abstract class Piece {
     public abstract String getName();
     public abstract List<CellModel.Coords> getMoves(CellModel.Coords from);
     public abstract CellModel.Coords[] getPath(CellModel.Coords from, CellModel.Coords to);
-    public abstract boolean isMovePossible(Cell[] cells);
+    public abstract boolean isMovePossible(LinkedMap<CellModel.Coords, Piece> path);
+    public abstract boolean canAttack(LinkedMap<CellModel.Coords, Piece> path);
 }

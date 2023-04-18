@@ -1,24 +1,22 @@
 package dev.djigit.chessonevsone.chessboard.piece;
 
-import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
-import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.chessboard.history.ChessBoardSnapshot;
 import dev.djigit.chessonevsone.game.chessboard.history.GameHistory;
 import dev.djigit.chessonevsone.game.chessboard.piece.Pawn;
 import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
+import org.apache.commons.collections4.map.LinkedMap;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PawnTest extends PieceTest {
+public class PawnTest {
     private static Pawn pawn;
 
     @BeforeAll
@@ -94,14 +92,11 @@ public class PawnTest extends PieceTest {
 
     @Test
     void isMovePossible_Test() {
-        String paneId1 = "panel_b2";
-        Cell cell1 = generateCell(paneId1, true);
-        cell1.setPiece(pawn);
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.B2, pawn);
+        piecesMap.put(CellModel.Coords.B3, null);
 
-        String paneId2 = "panel_b3";
-        Cell cell2 = generateCell(paneId2, false);
-
-        boolean movePossible = pawn.isMovePossible(new Cell[]{cell1, cell2});
+        boolean movePossible = pawn.isMovePossible(piecesMap);
 
         assertTrue(movePossible);
     }
@@ -126,14 +121,11 @@ public class PawnTest extends PieceTest {
 
         pawn.setGameHistory(gameHistory);
 
-        String paneId1 = "panel_e5";
-        Cell cell1 = generateCell(paneId1, true);
-        cell1.setPiece(pawn);
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.E5, pawn);
+        piecesMap.put(CellModel.Coords.D6, null);
 
-        String paneId2 = "panel_d6";
-        Cell cell2 = generateCell(paneId2, false);
-
-        boolean movePossible = pawn.isMovePossible(new Cell[]{cell1, cell2});
+        boolean movePossible = pawn.isMovePossible(piecesMap);
 
         assertTrue(movePossible);
     }
@@ -160,14 +152,11 @@ public class PawnTest extends PieceTest {
 
         pawn.setGameHistory(gameHistory);
 
-        String paneId1 = "panel_e5";
-        Cell cell1 = generateCell(paneId1, true);
-        cell1.setPiece(pawn);
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.E5, pawn);
+        piecesMap.put(CellModel.Coords.D6, null);
 
-        String paneId2 = "panel_d6";
-        Cell cell2 = generateCell(paneId2, false);
-
-        boolean movePossible = pawn.isMovePossible(new Cell[]{cell1, cell2});
+        boolean movePossible = pawn.isMovePossible(piecesMap);
 
         assertFalse(movePossible);
     }

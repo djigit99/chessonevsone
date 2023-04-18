@@ -1,11 +1,12 @@
 package dev.djigit.chessonevsone.chessboard.piece;
 
-import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
-import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.chessboard.piece.Bishop;
 import dev.djigit.chessonevsone.game.chessboard.piece.King;
 import dev.djigit.chessonevsone.game.chessboard.piece.Pawn;
+import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
+import org.apache.commons.collections4.map.LinkedMap;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BishopTest extends PieceTest {
+public class BishopTest {
     private static Bishop bishop;
 
     @BeforeAll
@@ -67,71 +68,48 @@ public class BishopTest extends PieceTest {
 
     @Test
     void isMovePossible_withEmptyCells_Test() {
-        String panelId1 = "panel_h5";
-        Cell cell1 = generateCell(panelId1, true);
-        cell1.setPiece(bishop);
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.H5, bishop);
+        piecesMap.put(CellModel.Coords.G4, null);
+        piecesMap.put(CellModel.Coords.F3, null);
 
-        String panelId2 = "panel_g4";
-        Cell cell2 = generateCell(panelId2, false);
-
-        String panelId3 = "panel_f3";
-        Cell cell3 = generateCell(panelId3, false);
-
-        boolean movePossible = bishop.isMovePossible(new Cell[]{cell1, cell2, cell3});
+        boolean movePossible = bishop.isMovePossible(piecesMap);
 
         assertTrue(movePossible);
     }
 
     @Test
     void isMovePossible_withOpponentPiece_Test() {
-        String panelId1 = "panel_h5";
-        Cell cell1 = generateCell(panelId1, true);
-        cell1.setPiece(bishop);
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.H5, bishop);
+        piecesMap.put(CellModel.Coords.G4, null);
+        piecesMap.put(CellModel.Coords.F3, new Pawn(Player.Color.BLACK, null));
 
-        String panelId2 = "panel_g4";
-        Cell cell2 = generateCell(panelId2, false);
-
-        String panelId3 = "panel_f3";
-        Cell cell3 = generateCell(panelId3, true);
-        cell3.setPiece(new Pawn(Player.Color.BLACK, null));
-
-        boolean movePossible = bishop.isMovePossible(new Cell[]{cell1, cell2, cell3});
+        boolean movePossible = bishop.isMovePossible(piecesMap);
 
         assertTrue(movePossible);
     }
 
     @Test
     void isMovePossible_withOwnPiece_Test() {
-        String panelId1 = "panel_h5";
-        Cell cell1 = generateCell(panelId1, true);
-        cell1.setPiece(bishop);
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.H5, bishop);
+        piecesMap.put(CellModel.Coords.G6, null);
+        piecesMap.put(CellModel.Coords.F7, new King(Player.Color.WHITE, null));
 
-        String panelId2 = "panel_g6";
-        Cell cell2 = generateCell(panelId2, false);
-
-        String panelId3 = "panel_f7";
-        Cell cell3 = generateCell(panelId3, true);
-        cell3.setPiece(new King(Player.Color.WHITE, null));
-
-        boolean movePossible = bishop.isMovePossible(new Cell[]{cell1, cell2, cell3});
+        boolean movePossible = bishop.isMovePossible(piecesMap);
 
         assertFalse(movePossible);
     }
 
     @Test
     void isMovePossible_withPieceOnWay_Test() {
-        String panelId1 = "panel_h5";
-        Cell cell1 = generateCell(panelId1, true);
-        cell1.setPiece(bishop);
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.H5, bishop);
+        piecesMap.put(CellModel.Coords.G6, new King(Player.Color.WHITE, null));
+        piecesMap.put(CellModel.Coords.F7, null);
 
-        String panelId2 = "panel_g6";
-        Cell cell2 = generateCell(panelId2, true);
-        cell2.setPiece(new King(Player.Color.WHITE, null));
-
-        String panelId3 = "panel_f7";
-        Cell cell3 = generateCell(panelId3, false);
-
-        boolean movePossible = bishop.isMovePossible(new Cell[]{cell1, cell2, cell3});
+        boolean movePossible = bishop.isMovePossible(piecesMap);
 
         assertFalse(movePossible);
     }

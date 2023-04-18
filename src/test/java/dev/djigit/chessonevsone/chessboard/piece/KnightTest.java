@@ -1,10 +1,11 @@
 package dev.djigit.chessonevsone.chessboard.piece;
 
-import dev.djigit.chessonevsone.game.chessboard.cell.Cell;
-import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.Player;
+import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import dev.djigit.chessonevsone.game.chessboard.piece.King;
 import dev.djigit.chessonevsone.game.chessboard.piece.Knight;
+import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
+import org.apache.commons.collections4.map.LinkedMap;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class KnightTest extends PieceTest {
+public class KnightTest {
 
     private static Knight knight;
 
@@ -58,14 +59,11 @@ public class KnightTest extends PieceTest {
     void isMovePossible_withEmptyCell_Test() {
         knight.setPieceColor(Player.Color.BLACK);
 
-        String panelId1 = "panel_b7";
-        Cell cell1 = generateCell(panelId1, true);
-        cell1.setPiece(knight);
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.B7, knight);
+        piecesMap.put(CellModel.Coords.C5, null);
 
-        String panelId2 = "panel_c5";
-        Cell cell2 = generateCell(panelId2, false);
-
-        boolean movePossible = knight.isMovePossible(new Cell[]{cell1, cell2});
+        boolean movePossible = knight.isMovePossible(piecesMap);
 
         assertTrue(movePossible);
     }
@@ -74,15 +72,11 @@ public class KnightTest extends PieceTest {
     void isMovePossible_withOwnPiece_Test() {
         knight.setPieceColor(Player.Color.BLACK);
 
-        String panelId1 = "panel_f6";
-        Cell cell1 = generateCell(panelId1, true);
-        cell1.setPiece(knight);
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.F6, knight);
+        piecesMap.put(CellModel.Coords.E4, new King(Player.Color.BLACK, null));
 
-        String panelId2 = "panel_e4";
-        Cell cell2 = generateCell(panelId2, true);
-        cell2.setPiece(new King(Player.Color.BLACK, null));
-
-        boolean movePossible = knight.isMovePossible(new Cell[]{cell1, cell2});
+        boolean movePossible = knight.isMovePossible(piecesMap);
 
         assertFalse(movePossible);
     }
@@ -91,15 +85,11 @@ public class KnightTest extends PieceTest {
     void isMovePossible_withOpponentPiece_Test() {
         knight.setPieceColor(Player.Color.BLACK);
 
-        String panelId1 = "panel_c2";
-        Cell cell1 = generateCell(panelId1, true);
-        cell1.setPiece(knight);
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(CellModel.Coords.C2, knight);
+        piecesMap.put(CellModel.Coords.E1, new King(Player.Color.WHITE, null));
 
-        String panelId2 = "panel_e1";
-        Cell cell2 = generateCell(panelId2, true);
-        cell2.setPiece(new King(Player.Color.WHITE, null));
-
-        boolean movePossible = knight.isMovePossible(new Cell[]{cell1, cell2});
+        boolean movePossible = knight.isMovePossible(piecesMap);
 
         assertTrue(movePossible);
     }
