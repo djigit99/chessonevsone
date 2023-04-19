@@ -6,20 +6,20 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.SocketTimeoutException;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
 
 public abstract class PlayerSocket {
     final Logger LOG = Logger.getLogger(PlayerSocket.class.getName());
-    final ConcurrentLinkedQueue<ImmutablePair<MessageType, String>> messagesQueue = new ConcurrentLinkedQueue<>();
+    final LinkedBlockingQueue<ImmutablePair<MessageType, String>> messagesQueue = new LinkedBlockingQueue<>();
     volatile boolean connectionAlive = false;
     ObjectInputStream objectReader;
     ObjectOutputStream objectWriter;
     ExecutorService executorService;
 
-    public ConcurrentLinkedQueue<ImmutablePair<MessageType, String>> getMessagesQueue() {
+    public LinkedBlockingQueue<ImmutablePair<MessageType, String>> getMessagesQueue() {
         return messagesQueue;
     }
 
@@ -42,15 +42,19 @@ public abstract class PlayerSocket {
     Runnable getMessageQueueRunnable() {
         return () -> {
             while (connectionAlive) {
+                MessageType msg = null;
                 try {
-                    MessageType msg = (MessageType) objectReader.readObject();
+                    msg = (MessageType) objectReader.readObject();
                     if (msg.equals(MessageType.OPP_MOVE)) {
                         String move = (String) objectReader.readObject();
-                        messagesQueue.add(ImmutablePair.of(msg, move));
+                        messagesQueue.put(ImmutablePair.of(msg, move));
                     } else {
-                        messagesQueue.add(ImmutablePair.of(msg, null));
+                        messagesQueue.put(ImmutablePair.of(msg, null));
                     }
-                } catch (SocketTimeoutException ignored) {
+                } catch (InterruptedException e) {
+                    LOG.warning("Can't put the message into queue. Message: " + msg);
+                }
+                catch (SocketTimeoutException ignored) {
                     LOG.warning("Socket's read timeout occurred.");
                 }
                 catch (IOException e) {

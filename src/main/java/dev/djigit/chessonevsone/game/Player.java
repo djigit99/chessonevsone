@@ -118,13 +118,12 @@ public abstract class Player {
     protected void listenForMessages() {
         listenForMessagesFuture = listenForMessagesService.submit(() -> {
             while (socket.isConnectionAlive()) {
-                ImmutablePair<MessageType, String> msg = socket.getMessagesQueue().poll();
-                if (msg != null) {
-                    processMessageFromQueue(msg);
-                }
+                ImmutablePair<MessageType, String> msg;
                 try {
-                    Thread.sleep(3000);
+                    msg = socket.getMessagesQueue().take();
+                    processMessageFromQueue(msg);
                 } catch (InterruptedException e) {
+                    LOG.warning("Can't process message from queue.");
                     throw new RuntimeException(e);
                 }
             }
