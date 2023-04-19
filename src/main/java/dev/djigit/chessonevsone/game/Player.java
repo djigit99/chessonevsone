@@ -58,7 +58,7 @@ public abstract class Player {
         WHITE(true),
         BLACK(false);
 
-        private boolean isWhite;
+        private final boolean isWhite;
 
         Color(boolean isWhite) {
             this.isWhite = isWhite;
@@ -122,6 +122,11 @@ public abstract class Player {
                 if (msg != null) {
                     processMessageFromQueue(msg);
                 }
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -129,7 +134,6 @@ public abstract class Player {
     private void processMessageFromQueue(ImmutablePair<MessageType, String> msg) {
         chessBoardListener.onUpdateFromPlayerReceived(msg);
     }
-
 
 
     public PlayerListener getListener() {
