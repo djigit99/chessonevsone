@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Pawn extends Piece {
     private GameHistory gameHistory;
-    private boolean isEnPassant;
+    private boolean isLastMoveEnPassant;
 
     public Pawn(Player.Color pieceColor, ImageView imageView) {
         super(pieceColor, imageView);
@@ -104,8 +104,8 @@ public class Pawn extends Piece {
                 CellModel.Coords fromLMP = lastMove.getFrom();
                 CellModel.Coords toLMP = lastMove.getTo();
 
-                isEnPassant = Math.abs(fromLMP.getY() - toLMP.getY()) > 1; // last pawn went two cells forward
-                return isEnPassant;
+                isLastMoveEnPassant = Math.abs(fromLMP.getY() - toLMP.getY()) > 1; // last pawn went two cells forward
+                return isLastMoveEnPassant;
             }
 
             return false;
@@ -130,10 +130,10 @@ public class Pawn extends Piece {
     }
 
     public boolean isLastMoveEnPassant() {
-        return isEnPassant;
+        return isLastMoveEnPassant;
     }
 
     public void markLastMoveEnPassant() {
-        this.isEnPassant = true;
+        this.isLastMoveEnPassant = true;
     }
 }

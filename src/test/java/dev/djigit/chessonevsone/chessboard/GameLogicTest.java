@@ -4,10 +4,7 @@ import dev.djigit.chessonevsone.game.Player;
 import dev.djigit.chessonevsone.game.chessboard.ChessBoardModel;
 import dev.djigit.chessonevsone.game.chessboard.GameLogic;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
-import dev.djigit.chessonevsone.game.chessboard.piece.Bishop;
-import dev.djigit.chessonevsone.game.chessboard.piece.King;
-import dev.djigit.chessonevsone.game.chessboard.piece.Pawn;
-import dev.djigit.chessonevsone.game.chessboard.piece.Piece;
+import dev.djigit.chessonevsone.game.chessboard.piece.*;
 import org.apache.commons.collections4.map.LinkedMap;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -131,5 +128,27 @@ public class GameLogicTest {
 
         assertFalse(isMoveEnPassant);
 
+    }
+
+    @Test
+    public void doesPieceAttack_Test() {
+        Rook rook = new Rook(Player.Color.WHITE, null);
+        Knight enemyKnight = new Knight(Player.Color.BLACK, null);
+        CellModel.Coords rookCoords = CellModel.Coords.B5;
+        CellModel.Coords knightCoords = CellModel.Coords.H5;
+
+
+        LinkedMap<CellModel.Coords, Piece> piecesMap = new LinkedMap<>();
+        piecesMap.put(rookCoords, rook);
+        piecesMap.put(knightCoords, enemyKnight);
+        CellModel.Coords[] pieceOnPath = new CellModel.Coords[]{
+                rookCoords, rookCoords.getByCoords((short) 1, (short) 0), rookCoords.getByCoords((short) 2, (short) 0),
+                rookCoords.getByCoords((short) 3, (short) 0), rookCoords.getByCoords((short) 4, (short) 0),
+                rookCoords.getByCoords((short) 5, (short) 0), knightCoords
+        };
+
+        when(boardModel.getPiecesByCoords(pieceOnPath)).thenReturn(piecesMap);
+
+        GameLogic.doesPieceAttack(rook, rookCoords, knightCoords, boardModel);
     }
 }
