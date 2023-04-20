@@ -18,9 +18,6 @@ public class GameLogic {
     }
 
     public boolean isMovePossible(Piece piece, CellModel.Coords from, CellModel.Coords to) {
-        // todo: check if the king is under check during the move (castling)
-        // todo: check if the king in under check after the move
-
         List<CellModel.Coords> moves = piece.getMoves(from);
         if (!moves.contains(to))
             return false;
@@ -43,6 +40,12 @@ public class GameLogic {
             } else {
                 boardModelAfterMove.cleanPiece(to.getByCoords((short) 0, (short) 1));
             }
+        }
+
+        if (piece instanceof King && King.isCastling(from, to)) {
+            boolean canKingGoCastling = !isKingUnderCheckWhenCasting(chessBoardModel, (King) piece, from, to);
+            if (!canKingGoCastling)
+                return false;
         }
 
         ImmutablePair<CellModel.Coords, King> coordsKingPair = boardModelAfterMove.getKing(piece.getPieceColor());
@@ -85,6 +88,21 @@ public class GameLogic {
                     (piece.getPieceColor().isWhite() && to.getY() == WHITE_LAST_ROW) ||
                     (!piece.getPieceColor().isWhite() && to.getY() == BLACK_LAST_ROW)
                 );
+    }
+
+    public static boolean isKingUnderCheckWhenCasting(
+            ChessBoardModel chessBoardModel,
+            King king, CellModel.Coords kingCoords, CellModel.Coords to) {
+        Map<CellModel.Coords, Piece> opponentsPieces = chessBoardModel.getOpponentsPieces(king.getPieceColor());
+
+        if (king.isKingUnderCheck(kingCoords, opponentsPieces, chessBoardModel))
+            return true;
+
+        short whereKingGoesWhenCastling = (short) (to.getX() > kingCoords.getX() ? 1 : -1);
+        ChessBoardModel afterKingLeft = chessBoardModel.clone();
+        afterKingLeft.transferPiece(kingCoords, kingCoords.getByCoords(whereKingGoesWhenCastling, (short) 0));
+
+        return king.isKingUnderCheck(kingCoords.getByCoords(whereKingGoesWhenCastling, (short) 0), opponentsPieces, afterKingLeft);
     }
 
     public static boolean doesPieceAttack(Piece piece,
