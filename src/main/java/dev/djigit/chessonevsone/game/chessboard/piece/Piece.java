@@ -1,6 +1,7 @@
 package dev.djigit.chessonevsone.game.chessboard.piece;
 
 import dev.djigit.chessonevsone.game.Player;
+import dev.djigit.chessonevsone.game.chessboard.ChessBoardModel;
 import dev.djigit.chessonevsone.game.chessboard.cell.CellModel;
 import javafx.scene.image.ImageView;
 import org.apache.commons.collections4.map.LinkedMap;
@@ -62,5 +63,18 @@ public abstract class Piece {
     public abstract List<CellModel.Coords> getMoves(CellModel.Coords from);
     public abstract CellModel.Coords[] getPath(CellModel.Coords from, CellModel.Coords to);
     public abstract boolean isMovePossible(LinkedMap<CellModel.Coords, Piece> path);
-    public abstract boolean canAttack(LinkedMap<CellModel.Coords, Piece> path);
+    public boolean doesPieceAttack(CellModel.Coords pieceCoords,
+                                   CellModel.Coords attackingCoords,
+                                   ChessBoardModel chessBoardModel) {
+        List<CellModel.Coords> moves = getMoves(pieceCoords);
+        if (!moves.contains(attackingCoords))
+            return false;
+
+        CellModel.Coords[] path = getPath(pieceCoords, attackingCoords);
+
+        LinkedMap<CellModel.Coords, Piece> piecesOnPath = chessBoardModel.getPiecesByCoords(path);
+
+        return canAttack(piecesOnPath);
+    }
+    abstract boolean canAttack(LinkedMap<CellModel.Coords, Piece> path);
 }

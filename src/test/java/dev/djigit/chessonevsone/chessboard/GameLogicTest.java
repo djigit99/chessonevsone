@@ -149,6 +149,6 @@ public class GameLogicTest {
 
         when(boardModel.getPiecesByCoords(pieceOnPath)).thenReturn(piecesMap);
 
-        GameLogic.doesPieceAttack(rook, rookCoords, knightCoords, boardModel);
+        rook.doesPieceAttack(rookCoords, knightCoords, boardModel);
     }
 }

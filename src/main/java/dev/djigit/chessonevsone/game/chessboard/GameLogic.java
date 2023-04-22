@@ -43,7 +43,7 @@ public class GameLogic {
         }
 
         if (piece instanceof King && King.isCastling(from, to)) {
-            boolean canKingGoCastling = !isKingUnderCheckWhenCasting(chessBoardModel, (King) piece, from, to);
+            boolean canKingGoCastling = !((King) piece).isKingUnderCheckWhenCasting(chessBoardModel, from, to);
             if (!canKingGoCastling)
                 return false;
         }
@@ -77,46 +77,5 @@ public class GameLogic {
         }
 
         return false;
-    }
-
-    public static boolean isTheLastRawForPawn(CellModel.Coords to, Piece piece) {
-        final int WHITE_LAST_ROW = 8;
-        final int BLACK_LAST_ROW = 1;
-
-        return piece instanceof Pawn &&
-                (
-                    (piece.getPieceColor().isWhite() && to.getY() == WHITE_LAST_ROW) ||
-                    (!piece.getPieceColor().isWhite() && to.getY() == BLACK_LAST_ROW)
-                );
-    }
-
-    public static boolean isKingUnderCheckWhenCasting(
-            ChessBoardModel chessBoardModel,
-            King king, CellModel.Coords kingCoords, CellModel.Coords to) {
-        Map<CellModel.Coords, Piece> opponentsPieces = chessBoardModel.getOpponentsPieces(king.getPieceColor());
-
-        if (king.isKingUnderCheck(kingCoords, opponentsPieces, chessBoardModel))
-            return true;
-
-        short whereKingGoesWhenCastling = (short) (to.getX() > kingCoords.getX() ? 1 : -1);
-        ChessBoardModel afterKingLeft = chessBoardModel.clone();
-        afterKingLeft.transferPiece(kingCoords, kingCoords.getByCoords(whereKingGoesWhenCastling, (short) 0));
-
-        return king.isKingUnderCheck(kingCoords.getByCoords(whereKingGoesWhenCastling, (short) 0), opponentsPieces, afterKingLeft);
-    }
-
-    public static boolean doesPieceAttack(Piece piece,
-                                   CellModel.Coords pieceCoords,
-                                   CellModel.Coords attackingCoords,
-                                   ChessBoardModel chessBoardModel) {
-        List<CellModel.Coords> moves = piece.getMoves(pieceCoords);
-        if (!moves.contains(attackingCoords))
-            return false;
-
-        CellModel.Coords[] path = piece.getPath(pieceCoords, attackingCoords);
-
-        LinkedMap<CellModel.Coords, Piece> piecesOnPath = chessBoardModel.getPiecesByCoords(path);
-
-        return piece.canAttack(piecesOnPath);
     }
 }

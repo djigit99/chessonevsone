@@ -136,8 +136,24 @@ public class King extends Piece {
             CellModel.Coords opPieceCoords = coordsPiecePair.getKey();
             Piece opPiece = coordsPiecePair.getValue();
 
-            if (GameLogic.doesPieceAttack(opPiece, opPieceCoords, kingCoords, chessBoardModel)) return true;
+            if (opPiece.doesPieceAttack(opPieceCoords, kingCoords, chessBoardModel)) return true;
         }
         return false;
     }
+    public boolean isKingUnderCheckWhenCasting(
+            ChessBoardModel chessBoardModel,
+            CellModel.Coords kingCoords,
+            CellModel.Coords to) {
+        Map<CellModel.Coords, Piece> opponentsPieces = chessBoardModel.getOpponentsPieces(getPieceColor());
+
+        if (isKingUnderCheck(kingCoords, opponentsPieces, chessBoardModel))
+            return true;
+
+        short whereKingGoesWhenCastling = (short) (to.getX() > kingCoords.getX() ? 1 : -1);
+        ChessBoardModel afterKingLeft = chessBoardModel.clone();
+        afterKingLeft.transferPiece(kingCoords, kingCoords.getByCoords(whereKingGoesWhenCastling, (short) 0));
+
+        return isKingUnderCheck(kingCoords.getByCoords(whereKingGoesWhenCastling, (short) 0), opponentsPieces, afterKingLeft);
+    }
+
 }

@@ -142,7 +142,7 @@ public class ChessBoard {
             chessBoardModel.setPiece(rooksNewCell.getCellViewModel().getModel().getCoords(), movingRook);
         }
 
-        if (GameLogic.isTheLastRawForPawn(to, movingPiece)) {
+        if (movingPiece instanceof Pawn && ((Pawn)movingPiece).isTheLastRawForPawn(to)) {
             return true;
         }
 

@@ -125,6 +125,14 @@ public class Pawn extends Piece {
         return from.getX() != to.getX();
     }
 
+    public boolean isTheLastRawForPawn(CellModel.Coords to) {
+        final int WHITE_LAST_ROW = 8;
+        final int BLACK_LAST_ROW = 1;
+
+        return getPieceColor().isWhite() && to.getY() == WHITE_LAST_ROW ||
+                !getPieceColor().isWhite() && to.getY() == BLACK_LAST_ROW;
+    }
+
     public void setGameHistory(GameHistory gameHistory) {
         this.gameHistory = gameHistory;
     }
